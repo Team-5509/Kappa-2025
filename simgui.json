@@ -51,6 +51,17 @@
           "open": true
         }
       }
+    },
+    "RoboRIO": {
+      "5V Rail": {
+        "open": true
+      },
+      "RoboRIO Input": {
+        "open": true
+      },
+      "window": {
+        "visible": true
+      }
     }
   },
   "NTProvider": {
@@ -123,11 +134,18 @@
       "FMSInfo": {
         "open": true
       },
+      "Shuffleboard": {
+        ".metadata": {
+          "open": true
+        },
+        ".recording": {
+          "open": true
+        }
+      },
       "SmartDashboard": {
         "Field": {
           "open": true
         },
-        "open": true,
         "swerve": {
           "open": true
         }
