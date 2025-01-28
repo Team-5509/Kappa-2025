@@ -48,6 +48,15 @@ private final SendableChooser<Command> autoChooser;
                                                             .scaleTranslation(0.8)
                                                             .allianceRelativeControl(true);
 
+
+  /**
+   * Clone's the angular velocity input stream and converts it to a robotRelative input stream.
+   */
+  SwerveInputStream driveRobotOriented = driveAngularVelocity.copy().robotRelative(true)
+                                                             .allianceRelativeControl(false);
+
+
+
   /**
    * Clone's the angular velocity input stream and converts it to a fieldRelative input stream.
    */
@@ -99,6 +108,7 @@ private final SendableChooser<Command> autoChooser;
 
     Command driveFieldOrientedDirectAngle         = drivebase.driveFieldOriented(driveDirectAngle);
     Command driveFieldOrientedAnglularVelocity    = drivebase.driveFieldOriented(driveAngularVelocity);
+    Command driveRobotOrientedAngularVelocity  = drivebase.driveFieldOriented(driveRobotOriented);
     Command driveSetpointGen                      = drivebase.driveWithSetpointGeneratorFieldRelative(driveDirectAngle);
     Command driveFieldOrientedDirectAngleSim      = drivebase.driveFieldOriented(driveDirectAngleSim);
     Command driveFieldOrientedAnglularVelocitySim = drivebase.driveFieldOriented(driveAngularVelocitySim);
@@ -110,6 +120,7 @@ private final SendableChooser<Command> autoChooser;
       drivebase.setDefaultCommand(driveFieldOrientedDirectAngleSim);
     } else
     {
+    
       drivebase.setDefaultCommand(driveFieldOrientedAnglularVelocity);
     }
 
@@ -132,7 +143,7 @@ private final SendableChooser<Command> autoChooser;
     } else
     {
       driverXbox.a().onTrue((Commands.runOnce(drivebase::zeroGyro)));
-      driverXbox.x().onTrue(Commands.runOnce(drivebase::addFakeVisionReading));
+      // driverXbox.x().onTrue(Commands.runOnce(drivebase::addFakeVisionReading));
       driverXbox.b().whileTrue(
           drivebase.driveToPose(
               new Pose2d(new Translation2d(4, 4), Rotation2d.fromDegrees(0)))
@@ -140,7 +151,7 @@ private final SendableChooser<Command> autoChooser;
       driverXbox.start().whileTrue(Commands.none());
       driverXbox.back().whileTrue(Commands.none());
       driverXbox.leftBumper().whileTrue(Commands.runOnce(drivebase::lock, drivebase).repeatedly());
-      driverXbox.rightBumper().onTrue(Commands.none());
+     driverXbox.rightBumper().whileTrue(driveRobotOrientedAngularVelocity.repeatedly());
     }
 
   }
