@@ -41,16 +41,16 @@ private final SendableChooser<Command> autoChooser;
    * Converts driver input into a field-relative ChassisSpeeds that is controlled by angular velocity.
    */
   SwerveInputStream driveAngularVelocity = SwerveInputStream.of(drivebase.getSwerveDrive(),
-                                                                () -> driverXbox.getLeftY() * -1,
-                                                                () -> driverXbox.getLeftX() * -1)
+                                                                () -> Math.pow(driverXbox.getLeftY(), Constants.DELIN_EXP) * -1,
+                                                                () -> Math.pow(driverXbox.getLeftX(), Constants.DELIN_EXP) * -1)
                                                             .withControllerRotationAxis(driverXbox::getRightX)
                                                             .deadband(OperatorConstants.DEADBAND)
                                                             .scaleTranslation(Constants.GLOBAL_SPEED_MULTIPLIER)
                                                             .allianceRelativeControl(true);
 
   SwerveInputStream driveAngularVelocityFinesse = SwerveInputStream.of(drivebase.getSwerveDrive(),
-                                                                () -> driverXbox.getLeftY() * -1,
-                                                                () -> driverXbox.getLeftX() * -1)
+                                                                () -> Math.pow(driverXbox.getLeftY(), Constants.DELIN_EXP) * -1,
+                                                                () -> Math.pow(driverXbox.getLeftX(), Constants.DELIN_EXP) * -1)
                                                             .withControllerRotationAxis(driverXbox::getRightX)
                                                             .deadband(OperatorConstants.DEADBAND)
                                                             .scaleTranslation(Constants.GLOBAL_SPEED_MULTIPLIER * Constants.FINESSE_SPEED_PERCENT)
@@ -65,8 +65,8 @@ private final SendableChooser<Command> autoChooser;
 
 
   SwerveInputStream driveAngularVelocitySim = SwerveInputStream.of(drivebase.getSwerveDrive(),
-                                                                   () -> -driverXbox.getLeftY(),
-                                                                   () -> -driverXbox.getLeftX())
+                                                                   () -> Math.pow(driverXbox.getLeftY(), Constants.DELIN_EXP) * -1,
+                                                                   () -> Math.pow(driverXbox.getLeftX(), Constants.DELIN_EXP) * -1)
                                                                .withControllerRotationAxis(() -> driverXbox.getRawAxis(2))
                                                                .deadband(OperatorConstants.DEADBAND)
                                                                .scaleTranslation(Constants.GLOBAL_SPEED_MULTIPLIER)
