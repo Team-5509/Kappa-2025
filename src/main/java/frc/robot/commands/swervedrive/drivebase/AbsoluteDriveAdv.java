@@ -7,6 +7,7 @@ package frc.robot.commands.swervedrive.drivebase;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
+import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Constants;
@@ -28,6 +29,7 @@ public class AbsoluteDriveAdv extends Command
   private final DoubleSupplier  headingAdjust;
   private final BooleanSupplier lookAway, lookTowards, lookLeft, lookRight;
   private boolean resetHeading = false;
+  private XboxController driverController = new XboxController(0), auxController = new XboxController(1);
 
   /**
    * Used to drive a swerve robot in full field-centric mode.  vX and vY supply translation inputs, where x is
@@ -116,7 +118,16 @@ public class AbsoluteDriveAdv extends Command
       resetHeading = false;
     }
 
-    ChassisSpeeds desiredSpeeds = swerve.getTargetSpeeds(vX.getAsDouble(), vY.getAsDouble(), headingX, headingY);
+    double multiplier = driverController.getRawButton(4) ? Constants.FINESSE_SPEED_PERCENT : 1;
+    double xInput = vX.getAsDouble(), yInput = vY.getAsDouble();
+    if (xInput < 0) { xInput = -1 * Math.pow(-1 * xInput, Constants.DELIN_EXP); }
+    else { xInput = Math.pow(xInput, Constants.DELIN_EXP); }
+    if (yInput < 0) { yInput = -1 * Math.pow(-1 * yInput, Constants.DELIN_EXP); }
+    else { yInput = Math.pow(yInput, Constants.DELIN_EXP); }
+    yInput *= multiplier;
+    xInput *= multiplier;
+
+    ChassisSpeeds desiredSpeeds = swerve.getTargetSpeeds(xInput, yInput, headingX, headingY);
 
     // Limit velocity to prevent tippy
     Translation2d translation = SwerveController.getTranslation2d(desiredSpeeds);

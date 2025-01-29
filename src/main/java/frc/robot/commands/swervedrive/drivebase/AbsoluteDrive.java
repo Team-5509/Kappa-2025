@@ -7,6 +7,7 @@ package frc.robot.commands.swervedrive.drivebase;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
+import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Constants;
@@ -25,6 +26,7 @@ public class AbsoluteDrive extends Command
   private final SwerveSubsystem swerve;
   private final DoubleSupplier  vX, vY;
   private final DoubleSupplier headingHorizontal, headingVertical;
+  private XboxController driverController = new XboxController(0), auxController = new XboxController(1);
   private boolean initRotation = false;
 
   /**
@@ -69,9 +71,17 @@ public class AbsoluteDrive extends Command
   @Override
   public void execute()
   {
+    double multiplier = driverController.getRawButton(4) ? Constants.FINESSE_SPEED_PERCENT : 1;
+    double xInput = vX.getAsDouble(), yInput = vY.getAsDouble();
+    if (xInput < 0) { xInput = -1 * Math.pow(-1 * xInput, Constants.DELIN_EXP); }
+    else { xInput = Math.pow(xInput, Constants.DELIN_EXP); }
+    if (yInput < 0) { yInput = -1 * Math.pow(-1 * yInput, Constants.DELIN_EXP); }
+    else { yInput = Math.pow(yInput, Constants.DELIN_EXP); }
+    yInput *= multiplier;
+    xInput *= multiplier;
 
     // Get the desired chassis speeds based on a 2 joystick module.
-    ChassisSpeeds desiredSpeeds = swerve.getTargetSpeeds(vX.getAsDouble(), vY.getAsDouble(),
+    ChassisSpeeds desiredSpeeds = swerve.getTargetSpeeds(xInput, yInput,
                                                          headingHorizontal.getAsDouble(),
                                                          headingVertical.getAsDouble());
 
