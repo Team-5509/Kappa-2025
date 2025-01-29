@@ -25,7 +25,6 @@ public class AbsoluteFieldDrive extends Command
 
   private final SwerveSubsystem swerve;
   private final DoubleSupplier  vX, vY, heading;
-  private XboxController driverController = new XboxController(0), auxController = new XboxController(1);
 
   /**
    * Used to drive a swerve robot in full field-centric mode.  vX and vY supply translation inputs, where x is
@@ -62,17 +61,8 @@ public class AbsoluteFieldDrive extends Command
   public void execute()
   {
 
-    double multiplier = driverController.getRawButton(4) ? Constants.FINESSE_SPEED_PERCENT : 1;
-    double xInput = vX.getAsDouble(), yInput = vY.getAsDouble();
-    if (xInput < 0) { xInput = -1 * Math.pow(-1 * xInput, Constants.DELIN_EXP); }
-    else { xInput = Math.pow(xInput, Constants.DELIN_EXP); }
-    if (yInput < 0) { yInput = -1 * Math.pow(-1 * yInput, Constants.DELIN_EXP); }
-    else { yInput = Math.pow(yInput, Constants.DELIN_EXP); }
-    yInput *= multiplier;
-    xInput *= multiplier;
-
     // Get the desired chassis speeds based on a 2 joystick module.
-    ChassisSpeeds desiredSpeeds = swerve.getTargetSpeeds(xInput, yInput,
+    ChassisSpeeds desiredSpeeds = swerve.getTargetSpeeds(vX.getAsDouble(), vY.getAsDouble(),
                                                          new Rotation2d(heading.getAsDouble() * Math.PI));
 
     // Limit velocity to prevent tippy

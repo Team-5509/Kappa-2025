@@ -26,6 +26,7 @@ public final class Constants
   // Maximum speed of the robot in meters per second, used to limit acceleration.
   public static final double DELIN_EXP = 1.5;
 public static final double FINESSE_SPEED_PERCENT = 0.5;
+public static final double GLOBAL_SPEED_MULTIPLIER = 0.8;
 
 //  public static final class AutonConstants
 //  {
