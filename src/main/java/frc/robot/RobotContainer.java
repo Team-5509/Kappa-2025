@@ -185,8 +185,8 @@ private final SendableChooser<Command> autoChooser;
   public Command getAutonomousCommand()
   {
     // An example command will be run in autonomous
-    // return drivebase.getAutonomousCommand("2.5 Piece Auto");
-    return autoChooser.getSelected();
+    return drivebase.getAutonomousCommand("Test");
+    //return autoChooser.getSelected();
   }
 
   public void setMotorBrake(boolean brake)
