@@ -45,7 +45,26 @@ private final SendableChooser<Command> autoChooser;
                                                                 () -> driverXbox.getLeftX() * -1)
                                                             .withControllerRotationAxis(driverXbox::getRightX) 
                                                             .deadband(OperatorConstants.DEADBAND)
-                                                            .scaleTranslation(0.8)
+                                                            .scaleTranslation(OperatorConstants.SPEED_MAXIMUM_FACTOR)
+                                                            .allianceRelativeControl(true);
+
+//  private final static double speedFactorCalculation(Double TriggerAxis){
+// double speedFactorCalculation = -(Constants.OperatorConstants.SPEED_MAXIMUM_FACTOR - 
+//                                     Constants.OperatorConstants.SPEED_MINIMUM_FACTOR)
+//                                         *(TriggerAxis) + Constants.OperatorConstants.SPEED_MAXIMUM_FACTOR;
+//    return speedFactorCalculation(TriggerAxis);
+//  }
+  /**
+   * Converts driver input into a field-relative ChassisSpeeds that is controlled by angular velocity with a trigger axis based slowdown.
+   */
+  SwerveInputStream driveAngularVelocityFinesse = SwerveInputStream.of(drivebase.getSwerveDrive(),
+                                                                () -> driverXbox.getLeftY() * -1,
+                                                                () -> driverXbox.getLeftX() * -1)
+                                                            .withControllerRotationAxis(driverXbox::getRightX) 
+                                                            .deadband(OperatorConstants.DEADBAND)
+                                                            .scaleTranslation(OperatorConstants.SPEED_MINIMUM_FACTOR)
+                                                            .cubeRotationControllerAxis(true)
+                                                            .cubeTranslationControllerAxis(true)
                                                             .allianceRelativeControl(true);
 
 
@@ -108,6 +127,7 @@ private final SendableChooser<Command> autoChooser;
 
     Command driveFieldOrientedDirectAngle         = drivebase.driveFieldOriented(driveDirectAngle);
     Command driveFieldOrientedAnglularVelocity    = drivebase.driveFieldOriented(driveAngularVelocity);
+    Command driveFieldOrientedAnglularVelocityFinnese    = drivebase.driveFieldOriented(driveAngularVelocityFinesse);
     Command driveRobotOrientedAngularVelocity  = drivebase.driveFieldOriented(driveRobotOriented);
     Command driveSetpointGen                      = drivebase.driveWithSetpointGeneratorFieldRelative(driveDirectAngle);
     Command driveFieldOrientedDirectAngleSim      = drivebase.driveFieldOriented(driveDirectAngleSim);
@@ -152,6 +172,7 @@ private final SendableChooser<Command> autoChooser;
       driverXbox.back().whileTrue(Commands.none());
       driverXbox.leftBumper().whileTrue(Commands.runOnce(drivebase::lock, drivebase).repeatedly());
      driverXbox.rightBumper().whileTrue(driveRobotOrientedAngularVelocity.repeatedly());
+     driverXbox.x().whileTrue( driveFieldOrientedAnglularVelocityFinnese);
     }
 
   }
