@@ -43,7 +43,7 @@ private final SendableChooser<Command> autoChooser;
   SwerveInputStream driveAngularVelocity = SwerveInputStream.of(drivebase.getSwerveDrive(),
                                                                 () -> Math.pow(driverXbox.getLeftY(), Constants.DELIN_EXP) * -1,
                                                                 () -> Math.pow(driverXbox.getLeftX(), Constants.DELIN_EXP) * -1)
-                                                            .withControllerRotationAxis(driverXbox::getRightX)
+                                                            .withControllerRotationAxis(() -> Math.pow(driverXbox.getRightX(), Constants.DELIN_EXP))
                                                             .deadband(OperatorConstants.DEADBAND)
                                                             .scaleTranslation(Constants.GLOBAL_SPEED_MULTIPLIER)
                                                             .allianceRelativeControl(true);
@@ -51,7 +51,7 @@ private final SendableChooser<Command> autoChooser;
   SwerveInputStream driveAngularVelocityFinesse = SwerveInputStream.of(drivebase.getSwerveDrive(),
                                                                 () -> Math.pow(driverXbox.getLeftY(), Constants.DELIN_EXP) * -1,
                                                                 () -> Math.pow(driverXbox.getLeftX(), Constants.DELIN_EXP) * -1)
-                                                            .withControllerRotationAxis(driverXbox::getRightX)
+                                                            .withControllerRotationAxis(() -> Math.pow(driverXbox.getRightX(), Constants.DELIN_EXP) * Constants.FINESSE_SPEED_PERCENT)
                                                             .deadband(OperatorConstants.DEADBAND)
                                                             .scaleTranslation(Constants.GLOBAL_SPEED_MULTIPLIER * Constants.FINESSE_SPEED_PERCENT)
                                                             .allianceRelativeControl(true);
@@ -67,7 +67,7 @@ private final SendableChooser<Command> autoChooser;
   SwerveInputStream driveAngularVelocitySim = SwerveInputStream.of(drivebase.getSwerveDrive(),
                                                                    () -> Math.pow(driverXbox.getLeftY(), Constants.DELIN_EXP) * -1,
                                                                    () -> Math.pow(driverXbox.getLeftX(), Constants.DELIN_EXP) * -1)
-                                                               .withControllerRotationAxis(() -> driverXbox.getRawAxis(2))
+                                                               .withControllerRotationAxis(() -> Math.pow(driverXbox.getRawAxis(2), Constants.DELIN_EXP))
                                                                .deadband(OperatorConstants.DEADBAND)
                                                                .scaleTranslation(Constants.GLOBAL_SPEED_MULTIPLIER)
                                                                .allianceRelativeControl(true);
