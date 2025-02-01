@@ -48,6 +48,14 @@ private final SendableChooser<Command> autoChooser;
                                                             .scaleTranslation(Constants.GLOBAL_SPEED_MULTIPLIER)
                                                             .allianceRelativeControl(true);
 
+  SwerveInputStream driveAngularVelocityAprilTag = SwerveInputStream.of(drivebase.getSwerveDrive(),
+                                                                () -> Math.pow(AprilDrive.getLeftY(), Constants.DELIN_EXP) * -1,
+                                                                () -> Math.pow(AprilDrive.getLeftX(), Constants.DELIN_EXP) * -1)
+                                                            .withControllerRotationAxis(() -> Math.pow(AprilDrive.getRightX(), Constants.DELIN_EXP))
+                                                            .deadband(OperatorConstants.DEADBAND)
+                                                            .scaleTranslation(Constants.GLOBAL_SPEED_MULTIPLIER).robotRelative(true)
+                                                            .allianceRelativeControl(false);
+
   SwerveInputStream driveAngularVelocityFinesse = SwerveInputStream.of(drivebase.getSwerveDrive(),
                                                                 () -> Math.pow(driverXbox.getLeftY(), Constants.DELIN_EXP) * -1,
                                                                 () -> Math.pow(driverXbox.getLeftX(), Constants.DELIN_EXP) * -1)
@@ -113,6 +121,7 @@ private final SendableChooser<Command> autoChooser;
     Command driveSetpointGenSim = drivebase.driveWithSetpointGeneratorFieldRelative(
         driveDirectAngleSim);
     Command driveFieldOrientedAngularVelocityFinesse = drivebase.driveFieldOriented(driveAngularVelocityFinesse);
+    Command driveAprilTag = drivebase.driveFieldOriented(driveAngularVelocityAprilTag);
 
     if (RobotBase.isSimulation())
     {
@@ -146,7 +155,7 @@ private final SendableChooser<Command> autoChooser;
           drivebase.driveToPose(
               new Pose2d(new Translation2d(4, 4), Rotation2d.fromDegrees(0)))
                               );
-      driverXbox.start().whileTrue(Commands.none());
+      driverXbox.start().whileTrue(driveAprilTag);
       driverXbox.back().whileTrue(Commands.none());
       driverXbox.leftBumper().whileTrue(Commands.runOnce(drivebase::lock, drivebase).repeatedly());
       driverXbox.rightBumper().onTrue(Commands.none());
