@@ -50,7 +50,7 @@ private final SendableChooser<Command> autoChooser;
 
   SwerveInputStream driveAngularVelocityAprilTag = SwerveInputStream.of(drivebase.getSwerveDrive(),
                                                                 () -> Math.pow(AprilDrive.getLeftY(), Constants.DELIN_EXP) * -1,
-                                                                () -> Math.pow(AprilDrive.getLeftX(), Constants.DELIN_EXP) * -1)
+                                                                () -> Math.pow(driverXbox.getLeftX(), Constants.DELIN_EXP) * -1) //sub for controller in meantime, TODO make ArpilDrive.getLeftX work
                                                             .withControllerRotationAxis(() -> Math.pow(AprilDrive.getRightX(), Constants.DELIN_EXP))
                                                             .deadband(OperatorConstants.DEADBAND)
                                                             .scaleTranslation(Constants.GLOBAL_SPEED_MULTIPLIER).robotRelative(true)
