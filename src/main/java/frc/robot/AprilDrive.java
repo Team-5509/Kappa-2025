@@ -37,19 +37,6 @@ public class AprilDrive {
     };
     private static final PhotonCamera CAMERA = new PhotonCamera("center"); //TODO not tested yet
 
-    /* As I do not have all the variables I need yet, I have left placeholders.
-     *
-     * Measured by camera:
-     * tagRotation - the percieved yaw of the tag in radians, standing to left is -, straight on is 1/2 pi
-     * tagAngle - the change in pitch to make the camera centered on the tag, in radians
-     * tagX - the yaw of the robot in radians, tag to right of camera is positive, straight on is 0
-     * tagID - the ID of the tag
-     * 
-     * Constant:
-     * cameraOffset - the pitch of the camera in radians, up is +, level with ground is 0
-     * cameraHeight - the height of the camera in meters
-    */
-
     private static PhotonTrackedTarget getTarget() {
         PhotonPipelineResult p = CAMERA.getLatestResult();
         if (p.hasTargets()) { return p.getBestTarget(); }
