@@ -44,26 +44,26 @@ public class RobotContainer {
    * by angular velocity.
    */
   SwerveInputStream driveAngularVelocity = SwerveInputStream.of(drivebase.getSwerveDrive(),
-      () -> Math.pow(driverXbox.getLeftY(), Constants.DELIN_EXP) * -1,
-      () -> Math.pow(driverXbox.getLeftX(), Constants.DELIN_EXP) * -1)
+      () -> Math.pow(Math.abs(driverXbox.getLeftY()), Constants.DELIN_EXP) * -1 * Math.signum(driverXbox.getLeftY()),
+      () -> Math.pow(Math.abs(driverXbox.getLeftX()), Constants.DELIN_EXP) * -1 * Math.signum(driverXbox.getLeftX()))
       .withControllerRotationAxis(
-          () -> Math.pow(driverXbox.getRightX(), Constants.DELIN_EXP) * Constants.FINESSE_SPEED_PERCENT)
+          () -> Math.pow(Math.abs(driverXbox.getRightX()), Constants.DELIN_EXP) * -1 * Math.signum(driverXbox.getRightX()))
       .deadband(OperatorConstants.DEADBAND)
       .scaleTranslation(Constants.GLOBAL_SPEED_MULTIPLIER)
       .allianceRelativeControl(true);
 
   SwerveInputStream driveAngularVelocityAprilTag = SwerveInputStream.of(drivebase.getSwerveDrive(),
-      () -> Math.pow(AprilDrive.getLeftY(), Constants.DELIN_EXP) * -1,
-      () -> Math.pow(driverXbox.getLeftX(), Constants.DELIN_EXP) * -1) //sub for controller in meantime, TODO make ArpilDrive.getLeftX work
-      .withControllerRotationAxis(() -> Math.pow(AprilDrive.getRightX(), Constants.DELIN_EXP))
+  () -> Math.pow(Math.abs(AprilDrive.getLeftY()), Constants.DELIN_EXP) * -1 * Math.signum(AprilDrive.getLeftY()),
+  () -> Math.pow(Math.abs(driverXbox.getLeftX()), Constants.DELIN_EXP) * -1 * Math.signum(driverXbox.getLeftX())) //sub for controller in meantime, TODO make ArpilDrive.getLeftX work
+      .withControllerRotationAxis(() -> Math.pow(Math.abs(AprilDrive.getRightX()), Constants.DELIN_EXP) * -1 * Math.signum(AprilDrive.getRightX()))
       .deadband(OperatorConstants.DEADBAND)
       .scaleTranslation(Constants.GLOBAL_SPEED_MULTIPLIER).robotRelative(true)
       .allianceRelativeControl(false);
 
   SwerveInputStream driveAngularVelocityFinesse = SwerveInputStream.of(drivebase.getSwerveDrive(),
-      () -> Math.pow(driverXbox.getLeftY(), Constants.DELIN_EXP) * -1,
-      () -> Math.pow(driverXbox.getLeftX(), Constants.DELIN_EXP) * -1)
-      .withControllerRotationAxis(() -> Math.pow(driverXbox.getRawAxis(2), Constants.DELIN_EXP))
+  () -> Math.pow(Math.abs(driverXbox.getLeftY()), Constants.DELIN_EXP) * -1 * Math.signum(driverXbox.getLeftY()),
+  () -> Math.pow(Math.abs(driverXbox.getLeftX()), Constants.DELIN_EXP) * -1 * Math.signum(driverXbox.getLeftX()))
+      .withControllerRotationAxis(() -> Math.pow(Math.abs(driverXbox.getRightX()), Constants.DELIN_EXP) * -1 * Math.signum(driverXbox.getRightX() * Constants.FINESSE_SPEED_PERCENT))
       .deadband(OperatorConstants.DEADBAND)
       .scaleTranslation(Constants.GLOBAL_SPEED_MULTIPLIER * Constants.FINESSE_SPEED_PERCENT)
       .allianceRelativeControl(true);
@@ -96,9 +96,9 @@ public class RobotContainer {
       .headingWhile(true);
 
   SwerveInputStream driveAngularVelocitySim = SwerveInputStream.of(drivebase.getSwerveDrive(),
-      () -> Math.pow(driverXbox.getLeftY(), Constants.DELIN_EXP) * -1,
-      () -> Math.pow(driverXbox.getLeftX(), Constants.DELIN_EXP) * -1)
-      .withControllerRotationAxis(() -> driverXbox.getRawAxis(2))
+  () -> Math.pow(Math.abs(driverXbox.getLeftY()), Constants.DELIN_EXP) * -1 * Math.signum(driverXbox.getLeftY()),
+  () -> Math.pow(Math.abs(driverXbox.getLeftX()), Constants.DELIN_EXP) * -1 * Math.signum(driverXbox.getLeftX()))
+      .withControllerRotationAxis(() -> Math.pow(Math.abs(driverXbox.getRightX()), Constants.DELIN_EXP) * -1 * Math.signum(driverXbox.getRightX()))
       .deadband(OperatorConstants.DEADBAND)
       .scaleTranslation(Constants.GLOBAL_SPEED_MULTIPLIER)
       .allianceRelativeControl(true);
