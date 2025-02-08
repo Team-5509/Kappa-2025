@@ -46,6 +46,8 @@ private final SendableChooser<Command> autoChooser;
                                                             .withControllerRotationAxis(() -> driverXbox.getRightX() * -1) 
                                                             .deadband(OperatorConstants.DEADBAND)
                                                             .scaleTranslation(OperatorConstants.SPEED_MAXIMUM_FACTOR)
+                                                            .cubeRotationControllerAxis(true)
+                                                            .cubeTranslationControllerAxis(true)
                                                             .allianceRelativeControl(true);
 
 //  private final static double speedFactorCalculation(Double TriggerAxis){
