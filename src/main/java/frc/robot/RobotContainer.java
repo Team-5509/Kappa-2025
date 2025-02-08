@@ -175,6 +175,9 @@ public class RobotContainer {
       driverXbox.leftBumper().onTrue(Commands.none());
       driverXbox.rightBumper().onTrue(Commands.none());
     } else {
+      //These keybinds are the ones used during Teleop.
+      //If you change these, please note it on the appropriate keybind sheet.
+      //This is to prevent conflicting keybinds.
       driverXbox.a().onTrue((Commands.runOnce(drivebase::zeroGyro)));
       // driverXbox.x().onTrue(Commands.runOnce(drivebase::addFakeVisionReading));
       driverXbox.b().whileTrue(
