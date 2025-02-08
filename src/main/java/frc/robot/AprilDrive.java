@@ -9,8 +9,8 @@ public class AprilDrive {
     private static final double ORBIT_CLOSE_ENOUGH = 0.122173; //in radians, TODO currently not calibrated
     private static final double SPIN_CLOSE_ENOUGH = 0.122173; //in radians, TODO currently not calibrated
 
-    private static final double CAMERA_OFFSET = 1.0041; //in radians above level, TODO currently not verified
-    private static final double CAMERA_HEIGHT = 0.56; //in meters above ground, TODO currently not verified
+    private static final double CAMERA_OFFSET = 0; //in radians above level, TODO currently not finalized
+    private static final double CAMERA_HEIGHT = 0.1651; //in meters above ground, TODO currently not finalized
 
     /* double[][] TAG_INFO is a 2D array that holds the tag configs.
      * TAG_INFO[tagID - 1] gives a double[] with the information for each tag.
@@ -23,19 +23,31 @@ public class AprilDrive {
      * 
      * Indexes 1 and 2 are r and theta in polar coordinates, respectively.
     */
-    private static final double[][] TAG_INFO = { //TODO no info added yet
-        {1, 1, 0, 0},
-        {1, 1, 0, 0},
-        {1, 1, 0, 0},
-        {1, 1, 0, 0},
-        {1, 1, 0, 0},
-        {1, 1, 0, 0},
-        {1, 1, 0, 0},
-        {1, 1, 0, 0},
-        {1, 1, 0, 0},
-        {1, 1, 0, 0},
+    private static final double[][] TAG_INFO = { //TODO add desired positiond
+        {1.4859, 1, 0, 0}, //Red coral stations
+        {1.4859, 1, 0, 0},
+        {1.298575, 1, 0, 0}, //Red processor
+        {1.88595, 1, 0, 0}, //Red barge
+        {1.88595, 1, 0, 0},
+        {0.3048, 1, 0, 0}, //Red reef
+        {0.3048, 1, 0, 0},
+        {0.3048, 1, 0, 0},
+        {0.3048, 1, 0, 0},
+        {0.3048, 1, 0, 0},
+        {0.3048, 1, 0, 0},
+        {1.4859, 1, 0, 0}, //Blue coral stations
+        {1.4859, 1, 0, 0},
+        {1.298575, 1, 0, 0}, //Blue processor
+        {1.88595, 1, 0, 0}, //Blue barge
+        {1.88595, 1, 0, 0},
+        {0.3048, 1, 0, 0}, //Blue reef
+        {0.3048, 1, 0, 0},
+        {0.3048, 1, 0, 0},
+        {0.3048, 1, 0, 0},
+        {0.3048, 1, 0, 0},
+        {0.3048, 1, 0, 0}
     };
-    private static final PhotonCamera CAMERA = new PhotonCamera("center"); //TODO not tested yet
+    private static final PhotonCamera CAMERA = new PhotonCamera("center");
 
     private static PhotonTrackedTarget getTarget() {
         PhotonPipelineResult p = CAMERA.getLatestResult();
@@ -59,13 +71,13 @@ public class AprilDrive {
         else { return 0; }
     }*/
 
-    public static double getLeftY() { //assuming positive return value moves forwards TODO verify that guess
+    public static double getLeftY() { //assuming negative return value moves forwards TODO verify that guess
         PhotonTrackedTarget target = getTarget();
         if (/*getLeftX() == 0 && */target != null) {
             double distance = (TAG_INFO[target.getFiducialId() - 1][0] - CAMERA_HEIGHT) / Math.tan(degToRad(target.getPitch()) + CAMERA_OFFSET);
             if (Math.abs(distance - TAG_INFO[target.getFiducialId() - 1][1]) < DISTANCE_CLOSE_ENOUGH) { return 0; }
-            else if (distance > TAG_INFO[target.getFiducialId() - 1][1]) { return (1 * Math.abs(distance - TAG_INFO[target.getFiducialId() - 1][1])); }
-            else if (distance < TAG_INFO[target.getFiducialId() - 1][1]) { return (-1 * Math.abs(distance - TAG_INFO[target.getFiducialId() - 1][1])); }
+            else if (distance > TAG_INFO[target.getFiducialId() - 1][1]) { return (-1 * Math.abs(distance - TAG_INFO[target.getFiducialId() - 1][1])); }
+            else if (distance < TAG_INFO[target.getFiducialId() - 1][1]) { return (1 * Math.abs(distance - TAG_INFO[target.getFiducialId() - 1][1])); }
             else { return 0; }
         }
         else { return 0; }

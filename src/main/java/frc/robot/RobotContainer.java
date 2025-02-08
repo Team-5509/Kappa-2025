@@ -57,7 +57,7 @@ public class RobotContainer {
   () -> Math.pow(Math.abs(driverXbox.getLeftX()), Constants.DELIN_EXP) * -1 * Math.signum(driverXbox.getLeftX())) //sub for controller in meantime, TODO make ArpilDrive.getLeftX work
       .withControllerRotationAxis(() -> Math.pow(Math.abs(AprilDrive.getRightX()), Constants.DELIN_EXP) * -1 * Math.signum(AprilDrive.getRightX()))
       .deadband(OperatorConstants.DEADBAND)
-      .scaleTranslation(Constants.GLOBAL_SPEED_MULTIPLIER).robotRelative(true)
+      .scaleTranslation(Constants.GLOBAL_SPEED_MULTIPLIER * Constants.FINESSE_SPEED_PERCENT).robotRelative(true)
       .allianceRelativeControl(false);
 
   SwerveInputStream driveAngularVelocityFinesse = SwerveInputStream.of(drivebase.getSwerveDrive(),
