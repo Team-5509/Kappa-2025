@@ -4,8 +4,12 @@
 
 package frc.robot.commands.intake;
 
+import frc.robot.RobotContainer;
 import frc.robot.subsystems.Intake;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.Commands;
+
+
 
 /** An example command that uses an example subsystem. */
 public class IntakeCoral extends Command {
@@ -17,10 +21,11 @@ public class IntakeCoral extends Command {
    *
    * @param subsystem The subsystem used by this command.
    */
-  public IntakeCoral(Intake subsystem) {
+  public IntakeCoral(Intake subsystem, double speed) {
     m_Intake= subsystem;
-    // Use addRequirements() here to declare subsystem dependencies.
-    addRequirements(subsystem);
+    addRequirements(m_Intake);
+    m_Intake.runIntake(speed);
+    
   }
 
   // Called when the command is initially scheduled.
@@ -29,7 +34,10 @@ public class IntakeCoral extends Command {
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
-  public void execute() {}
+  public void execute() {
+    
+  }
+  
 
   // Called once the command ends or is interrupted.
   @Override

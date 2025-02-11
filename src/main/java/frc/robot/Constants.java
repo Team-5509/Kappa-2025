@@ -50,5 +50,6 @@ public final class Constants
     public static final double TURN_CONSTANT    = 6;
     public static final double SPEED_MAXIMUM_FACTOR = .8;
     public static final double SPEED_MINIMUM_FACTOR = .45;
+    public static final int ID_INTAKE = 17;
   }
 }
