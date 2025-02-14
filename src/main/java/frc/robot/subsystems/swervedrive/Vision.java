@@ -333,29 +333,29 @@ public class Vision
    /**
     * Left Camera
     */
-   LEFT_CAM("left",
-            new Rotation3d(0, Math.toRadians(-24.094), Math.toRadians(30)),
-            new Translation3d(Units.inchesToMeters(12.056),
-                              Units.inchesToMeters(10.981),
-                              Units.inchesToMeters(8.44)),
+   LEFT_CAM("Apple",
+            new Rotation3d(0, 0, 0),
+            new Translation3d(Units.inchesToMeters(14.25),
+                              Units.inchesToMeters(12.25),
+                              Units.inchesToMeters(6.5)),
             VecBuilder.fill(4, 4, 8), VecBuilder.fill(0.5, 0.5, 1)),
    /**
     * Right Camera
     */
-   RIGHT_CAM("right",
-             new Rotation3d(0, Math.toRadians(-24.094), Math.toRadians(-30)),
-             new Translation3d(Units.inchesToMeters(12.056),
-                               Units.inchesToMeters(-10.981),
-                               Units.inchesToMeters(8.44)),
+   RIGHT_CAM("Banana",
+             new Rotation3d(0, 0, 0),
+             new Translation3d(Units.inchesToMeters(14.25),
+                               Units.inchesToMeters(-12.25),
+                               Units.inchesToMeters(6.5)),
              VecBuilder.fill(4, 4, 8), VecBuilder.fill(0.5, 0.5, 1)),
    /**
     * Center Camera
     */
-   CENTER_CAM("center",
-              new Rotation3d(0, Units.degreesToRadians(0), 0),
-              new Translation3d(Units.inchesToMeters(14.25),
-                                Units.inchesToMeters(-12),
-                                Units.inchesToMeters(6)),
+   CENTER_CAM("Cherry",
+              new Rotation3d(0, 0, Math.toRadians(180)),
+              new Translation3d(Units.inchesToMeters(-14.25),
+                                Units.inchesToMeters(-12.25),
+                                Units.inchesToMeters(6.5)),
               VecBuilder.fill(4, 4, 8), VecBuilder.fill(0.5, 0.5, 1));
 
    /**
@@ -389,7 +389,7 @@ public class Vision
    /**
     * Estimated robot pose.
     */
-   public        Optional<EstimatedRobotPose> estimatedRobotPose = Optional.empty();
+   public        Optional<EstimatedRobotPose> estimatedRobotPose;
    /**
     * Simulated camera instance which only exists during simulations.
     */
