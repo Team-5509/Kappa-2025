@@ -19,6 +19,8 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
+import frc.robot.subsystems.CoralSubsystem;
+import frc.robot.subsystems.CoralSubsystem.Setpoint;
 import frc.robot.Constants.OperatorConstants;
 import frc.robot.subsystems.swervedrive.SwerveSubsystem;
 import java.io.File;
@@ -32,6 +34,7 @@ import swervelib.SwerveInputStream;
 public class RobotContainer
 {
 
+  private final CoralSubsystem m_coralSubSystem = new CoralSubsystem();
 private final SendableChooser<Command> autoChooser;
   // Replace with CommandPS4Controller or CommandJoystick if needed
   final         CommandXboxController driverXbox = new CommandXboxController(0);
@@ -178,6 +181,10 @@ private final SendableChooser<Command> autoChooser;
       driverXbox.leftBumper().whileTrue(Commands.runOnce(drivebase::lock, drivebase).repeatedly());
      driverXbox.rightBumper().whileTrue(driveRobotOrientedAngularVelocity.repeatedly());
      driverXbox.x().whileTrue( driveFieldOrientedAnglularVelocityFinnese);
+     auxXbox.b().onTrue(m_coralSubSystem.setSetpointCommand(Setpoint.kLevel1));
+     auxXbox.a().onTrue(m_coralSubSystem.setSetpointCommand(Setpoint.kLevel2));
+     auxXbox.x().onTrue(m_coralSubSystem.setSetpointCommand(Setpoint.kLevel3));
+     auxXbox.y().onTrue(m_coralSubSystem.setSetpointCommand(Setpoint.kLevel4));
    
      
     }
