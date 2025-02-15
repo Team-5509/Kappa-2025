@@ -22,6 +22,20 @@ import swervelib.math.Matter;
  */
 public final class Constants {
 
+  public static final class HingeConstants {
+    public static double kP = 0.01;
+    public static double kI = 0;
+    public static double kD = 0;
+    public static double kMinOutput = -1;
+    public static double kMaxOutput = 1;
+    public static double Kv = 0; // set to zero when using position control
+  
+    public static double maxVel = 1000;
+    public static double maxAccel = 1000;
+    public static double allowedErr =0.1;
+  
+  }
+
   public static final class NeoMotorConstants {
     public static final double kFreeSpeedRpm = 5676;
   }
