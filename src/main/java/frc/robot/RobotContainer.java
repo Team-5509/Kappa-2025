@@ -184,7 +184,7 @@ public class RobotContainer {
           drivebase.driveToPose(
               new Pose2d(new Translation2d(4, 4), Rotation2d.fromDegrees(0))));
       driverXbox.start().whileTrue(driveAprilTag);
-      driverXbox.back().whileTrue(Commands.none());
+      driverXbox.back().whileTrue(AutoPose.drive(drivebase)); //TODO fix the method call so it isn't weird TODO bind to home if possible
       driverXbox.leftBumper().whileTrue(Commands.runOnce(drivebase::lock, drivebase).repeatedly());
       driverXbox.rightBumper().whileTrue(driveRobotOrientedAngularVelocity.repeatedly());
       driverXbox.x().whileTrue(driveFieldOrientedAngularVelocityFinesse);
