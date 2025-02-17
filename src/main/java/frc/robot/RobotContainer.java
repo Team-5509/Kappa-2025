@@ -68,7 +68,7 @@ private final SendableChooser<Command> autoChooser;
   SwerveInputStream driveAngularVelocityFinesse = SwerveInputStream.of(drivebase.getSwerveDrive(),
                                                                 () -> driverXbox.getLeftY() * -1,
                                                                 () -> driverXbox.getLeftX() * -1)
-                                                            .withControllerRotationAxis(driverXbox::getRightX) 
+                                                                .withControllerRotationAxis(() -> driverXbox.getRightX() * -1) 
                                                             .deadband(OperatorConstants.DEADBAND)
                                                             .scaleTranslation(OperatorConstants.SPEED_MINIMUM_FACTOR)
                                                             .cubeRotationControllerAxis(true)
