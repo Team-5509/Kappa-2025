@@ -13,11 +13,13 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Configs;
 import frc.robot.Constants.CoralSubsystemConstants;
+import frc.robot.Constants.HingeSubsystemConstants;
 import frc.robot.Constants.CoralSubsystemConstants.ElevatorSetpoints;
 import frc.robot.Constants.CoralSubsystemConstants.IntakeSetpoints;
+import frc.robot.Constants.HingeSubsystemConstants.HingeSetpoints;
 
 
-public class CoralSubsystem extends SubsystemBase {
+public class HingeSubsystem extends SubsystemBase {
   /** Subsystem-wide setpoints */
   public enum Setpoint {
     kFeederStation,
@@ -32,28 +34,24 @@ public class CoralSubsystem extends SubsystemBase {
 
   // Initialize elevator SPARK. We will use MAXMotion position control for the elevator, so we also
   // need to initialize the closed loop controller and encoder.
-  private SparkMax elevatorFollowerMotor =
-  new SparkMax(CoralSubsystemConstants.kElevatorFollowerMotorCanId, MotorType.kBrushless);
-  private SparkMax elevatorMotor =
-      new SparkMax(CoralSubsystemConstants.kElevatorMotorCanId, MotorType.kBrushless);
-  private SparkClosedLoopController elevatorClosedLoopController =
-      elevatorMotor.getClosedLoopController();
-  private RelativeEncoder elevatorEncoder = elevatorMotor.getEncoder();
+  
+  private SparkMax hingeMotor =
+      new SparkMax(HingeSubsystemConstants.kHingeMotorCanId, MotorType.kBrushless);
+  private SparkClosedLoopController hingeClosedLoopController =
+      hingeMotor.getClosedLoopController();
+  private RelativeEncoder hingeEncoder = hingeMotor.getEncoder();
 
-  // Initialize intake SPARK. We will use open loop control for this so we don't need a closed loop
-  // controller like above.
-  private SparkMax intakeMotor =
-      new SparkMax(CoralSubsystemConstants.kIntakeMotorCanId, MotorType.kBrushless);
+
 
   // Member variables for subsystem state management
   private boolean wasResetByButton = false;
   private boolean wasResetByLimit = false;
-  private double elevatorCurrentTarget = ElevatorSetpoints.kFeederStation;
+  private double hingeCurrentTarget = HingeSetpoints.kFeederStation;
 
  
 
 
-  public CoralSubsystem() {
+  public HingeSubsystem() {
     /*
      * Apply the appropriate configurations to the SPARKs.
      *
@@ -64,24 +62,17 @@ public class CoralSubsystem extends SubsystemBase {
      * the SPARK loses power. This is useful for power cycles that may occur
      * mid-operation.
      */
-    elevatorMotor.configure(
-        Configs.CoralSubsystem.elevatorConfig,
+    hingeMotor.configure(
+        Configs.HingeSubsystem.hingeConfig,
         ResetMode.kResetSafeParameters,
         PersistMode.kPersistParameters);
-    elevatorFollowerMotor.configure(
-        Configs.CoralSubsystem.elevatorConfig.follow(CoralSubsystemConstants.kElevatorMotorCanId),
-        ResetMode.kResetSafeParameters,
-        PersistMode.kPersistParameters);
-    intakeMotor.configure(
-        Configs.CoralSubsystem.intakeConfig,
-        ResetMode.kResetSafeParameters,
-        PersistMode.kPersistParameters);
+   
 
     // Display mechanism2d
 
 
     // Zero arm and elevator encoders on initialization
-    elevatorEncoder.setPosition(0);
+    hingeEncoder.setPosition(0);
 
   }
 
@@ -91,18 +82,18 @@ public class CoralSubsystem extends SubsystemBase {
    * setpoints.
    */
   private void moveToSetpoint() {
-    elevatorClosedLoopController.setReference(
-        elevatorCurrentTarget, ControlType.kMAXMotionPositionControl);
+    hingeClosedLoopController.setReference(
+       hingeCurrentTarget, ControlType.kMAXMotionPositionControl);
   }
 
   /** Zero the elevator encoder when the limit switch is pressed. */
-  private void zeroElevatorOnLimitSwitch() {
-    if (!wasResetByLimit && elevatorMotor.getReverseLimitSwitch().isPressed()) {
+  private void zeroHingeOnLimitSwitch() {
+    if (!wasResetByLimit && hingeMotor.getReverseLimitSwitch().isPressed()) {
       // Zero the encoder only when the limit switch is switches from "unpressed" to "pressed" to
       // prevent constant zeroing while pressed
-      elevatorEncoder.setPosition(0);
+      hingeEncoder.setPosition(0);
       wasResetByLimit = true;
-    } else if (!elevatorMotor.getReverseLimitSwitch().isPressed()) {
+    } else if (!hingeMotor.getReverseLimitSwitch().isPressed()) {
       wasResetByLimit = false;
     }
   }
@@ -113,16 +104,12 @@ public class CoralSubsystem extends SubsystemBase {
       // Zero the encoders only when button switches from "unpressed" to "pressed" to prevent
       // constant zeroing while pressed
       wasResetByButton = true;
-      elevatorEncoder.setPosition(0);
+      hingeEncoder.setPosition(0);
     } else if (!RobotController.getUserButton()) {
       wasResetByButton = false;
     }
   }
 
-  /** Set the intake motor power in the range of [-1, 1]. */
-  private void setIntakePower(double power) {
-    intakeMotor.set(power);
-  }
 
   /**
    * Command to set the subsystem setpoint. This will set the arm and elevator to their predefined
@@ -134,57 +121,38 @@ public class CoralSubsystem extends SubsystemBase {
           switch (setpoint) {
             case kFeederStation:
              
-              elevatorCurrentTarget = ElevatorSetpoints.kFeederStation;
+              hingeCurrentTarget = ElevatorSetpoints.kFeederStation;
               break;
             case kLevel1:
             
-              elevatorCurrentTarget = ElevatorSetpoints.kLevel1;
+              hingeCurrentTarget = ElevatorSetpoints.kLevel1;
               break;
             case kLevel2:
               
-              elevatorCurrentTarget = ElevatorSetpoints.kLevel2;
+              hingeCurrentTarget = ElevatorSetpoints.kLevel2;
               break;
             case kLevel3:
 
-              elevatorCurrentTarget = ElevatorSetpoints.kLevel3;
+              hingeCurrentTarget = ElevatorSetpoints.kLevel3;
               break;
             case kLevel4:
           
-              elevatorCurrentTarget = ElevatorSetpoints.kLevel4;
+              hingeCurrentTarget = ElevatorSetpoints.kLevel4;
               break;
           }
         });
   }
 
-  /**
-   * Command to run the intake motor. When the command is interrupted, e.g. the button is released,
-   * the motor will stop.
-   */
-  public Command runIntakeCommand() {
-    return this.startEnd(
-        () -> this.setIntakePower(IntakeSetpoints.kForward), () -> this.setIntakePower(0.0));
-  }
-
-  /**
-   * Command to reverses the intake motor. When the command is interrupted, e.g. the button is
-   * released, the motor will stop.
-   */
-  public Command reverseIntakeCommand() {
-    return this.startEnd(
-        () -> this.setIntakePower(IntakeSetpoints.kReverse), () -> this.setIntakePower(0.0));
-  }
-
   @Override
   public void periodic() {
     moveToSetpoint();
-    zeroElevatorOnLimitSwitch();
+    zeroHingeOnLimitSwitch();
     zeroOnUserButton();
 
     // Display subsystem values
 
-    SmartDashboard.putNumber("Coral/Elevator/Target Position", elevatorCurrentTarget);
-    SmartDashboard.putNumber("Coral/Elevator/Actual Position", elevatorEncoder.getPosition());
-    SmartDashboard.putNumber("Coral/Intake/Applied Output", intakeMotor.getAppliedOutput());
+    SmartDashboard.putNumber("Hinge/Target Position", hingeCurrentTarget);
+    SmartDashboard.putNumber("Hinge/Actual Position", hingeEncoder.getPosition());
 
   }
   /** Get the current drawn by each simulation physics model */

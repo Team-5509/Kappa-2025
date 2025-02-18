@@ -21,6 +21,7 @@ import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.subsystems.CoralSubsystem;
 import frc.robot.subsystems.CoralSubsystem.Setpoint;
+import frc.robot.subsystems.HingeSubsystem;
 import frc.robot.Constants.OperatorConstants;
 import frc.robot.subsystems.swervedrive.SwerveSubsystem;
 import java.io.File;
@@ -35,6 +36,7 @@ public class RobotContainer
 {
 
   private final CoralSubsystem m_coralSubSystem = new CoralSubsystem();
+  private final HingeSubsystem m_hingeSubSystem = new HingeSubsystem();
 private final SendableChooser<Command> autoChooser;
   // Replace with CommandPS4Controller or CommandJoystick if needed
   final         CommandXboxController driverXbox = new CommandXboxController(0);
@@ -171,13 +173,15 @@ private final SendableChooser<Command> autoChooser;
     } else
     {
       driverXbox.a().onTrue((Commands.runOnce(drivebase::zeroGyro)));
-      // driverXbox.x().onTrue(Commands.runOnce(drivebase::addFakeVisionReading));
+
       driverXbox.b().whileTrue(
           drivebase.driveToPose(
               new Pose2d(new Translation2d(4, 4), Rotation2d.fromDegrees(0)))
                               );
-      driverXbox.start().whileTrue(Commands.none());
+      driverXbox.start().whileTrue(m_hingeSubSystem.setSetpointCommand(HingeSubsystem.Setpoint.kLevel1));
       driverXbox.back().whileTrue(Commands.none());
+      driverXbox.y().onTrue(m_hingeSubSystem.setSetpointCommand(HingeSubsystem.Setpoint.kLevel4));
+      
       driverXbox.leftBumper().whileTrue(Commands.runOnce(drivebase::lock, drivebase).repeatedly());
      driverXbox.rightBumper().whileTrue(driveRobotOrientedAngularVelocity.repeatedly());
      driverXbox.x().whileTrue( driveFieldOrientedAnglularVelocityFinnese);
@@ -185,6 +189,7 @@ private final SendableChooser<Command> autoChooser;
      auxXbox.a().onTrue(m_coralSubSystem.setSetpointCommand(Setpoint.kLevel2));
      auxXbox.x().onTrue(m_coralSubSystem.setSetpointCommand(Setpoint.kLevel3));
      auxXbox.y().onTrue(m_coralSubSystem.setSetpointCommand(Setpoint.kLevel4));
+
    
      
     }

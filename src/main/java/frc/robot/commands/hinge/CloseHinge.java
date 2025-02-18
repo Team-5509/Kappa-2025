@@ -4,20 +4,20 @@
 
 package frc.robot.commands.hinge;
 
-import frc.robot.subsystems.Hinge;
+import frc.robot.subsystems.HingeSubsystem;
 import edu.wpi.first.wpilibj2.command.Command;
 
 /** An example command that uses an example subsystem. */
 public class CloseHinge extends Command {
   @SuppressWarnings({"PMD.UnusedPrivateField", "PMD.SingularField"})
-  private final Hinge m_Hinge;
+  private final HingeSubsystem m_Hinge;
 
   /**
    * Creates a new ExampleCommand.
    *
    * @param subsystem The subsystem used by this command.
    */
-  public CloseHinge(Hinge subsystem) {
+  public CloseHinge(HingeSubsystem subsystem) {
     m_Hinge = subsystem;
     // Use addRequirements() here to declare subsystem dependencies.
     addRequirements(subsystem);

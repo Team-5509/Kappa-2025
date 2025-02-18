@@ -30,9 +30,11 @@ public final class Constants {
     // TODO change these Id values to fit the motor ID values
     
     public static final int kElevatorMotorCanId = 13;
-    public static final int kIntakeMotorCanId = 14;
+    public static final int kElevatorFollowerMotorCanId = 14;
+    public static final int kIntakeMotorCanId = 15;
 
     public static final class ElevatorSetpoints {
+      // TODO fix these values to the actual Reef levels
       public static final int kFeederStation = 0;
       public static final int kLevel1 = 0;
       public static final int kLevel2 = 0;
@@ -45,18 +47,22 @@ public final class Constants {
       public static final double kReverse = -0.5;
     }
   }
-    public static final class ModuleConstants {
-  
-      public static final int kDrivingMotorPinionTeeth = 14;
-      public static final double kDrivingMotorFreeSpeedRps = NeoMotorConstants.kFreeSpeedRpm / 60;
-      public static final double kWheelDiameterMeters = 0.0762;
-      public static final double kWheelCircumferenceMeters = kWheelDiameterMeters * Math.PI;
 
-      public static final double kDrivingMotorReduction =
-          (45.0 * 22) / (kDrivingMotorPinionTeeth * 15);
-      public static final double kDriveWheelFreeSpeedRps =
-          (kDrivingMotorFreeSpeedRps * kWheelCircumferenceMeters) / kDrivingMotorReduction;
-    }
+  public static final class HingeSubsystemConstants {
+    // TODO change these Id values to fit the motor ID values
+    
+    public static final int kHingeMotorCanId = 16;
+  
+
+    public static final class HingeSetpoints {
+      // TODO fix these values to the actual Reef levels
+      public static final int kFeederStation = 0;
+      public static final int kLevel1 = 0;
+      public static final int kLevel2 = 0;
+      public static final int kLevel3 = 100;
+      public static final int kLevel4 = 150;
+      }
+  }
  
 
   public static final double ROBOT_MASS = (148 - 20.3) * 0.453592; // 32lbs * kg per pound
