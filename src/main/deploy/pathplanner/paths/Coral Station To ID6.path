@@ -8,8 +8,8 @@
       },
       "prevControl": null,
       "nextControl": {
-        "x": 1.9158211259153595,
-        "y": 7.336939037815235
+        "x": 1.7591386526950836,
+        "y": 7.089499679737702
       },
       "isLocked": false,
       "linkedName": "Coral Station"
@@ -20,8 +20,8 @@
         "y": 5.18780737704918
       },
       "prevControl": {
-        "x": 3.5504301618496616,
-        "y": 5.175011126524618
+        "x": 3.536372950819672,
+        "y": 5.4994877049180335
       },
       "nextControl": null,
       "isLocked": false,
@@ -32,7 +32,7 @@
   "constraintZones": [
     {
       "name": "Constraints Zone",
-      "minWaypointRelativePos": 0.7003597122302198,
+      "minWaypointRelativePos": 0.7,
       "maxWaypointRelativePos": 1.0,
       "constraints": {
         "maxVelocity": 1.0,
