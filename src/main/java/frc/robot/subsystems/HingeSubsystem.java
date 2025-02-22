@@ -12,10 +12,8 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Configs;
-import frc.robot.Constants.CoralSubsystemConstants;
+
 import frc.robot.Constants.HingeSubsystemConstants;
-import frc.robot.Constants.CoralSubsystemConstants.ElevatorSetpoints;
-import frc.robot.Constants.CoralSubsystemConstants.IntakeSetpoints;
 import frc.robot.Constants.HingeSubsystemConstants.HingeSetpoints;
 
 
@@ -121,23 +119,23 @@ public class HingeSubsystem extends SubsystemBase {
           switch (setpoint) {
             case kFeederStation:
              
-              hingeCurrentTarget = ElevatorSetpoints.kFeederStation;
+              hingeCurrentTarget = HingeSetpoints.kFeederStation;
               break;
             case kLevel1:
             
-              hingeCurrentTarget = ElevatorSetpoints.kLevel1;
+              hingeCurrentTarget = HingeSetpoints.kLevel1;
               break;
             case kLevel2:
               
-              hingeCurrentTarget = ElevatorSetpoints.kLevel2;
+              hingeCurrentTarget = HingeSetpoints.kLevel2;
               break;
             case kLevel3:
 
-              hingeCurrentTarget = ElevatorSetpoints.kLevel3;
+              hingeCurrentTarget = HingeSetpoints.kLevel3;
               break;
             case kLevel4:
           
-              hingeCurrentTarget = ElevatorSetpoints.kLevel4;
+              hingeCurrentTarget = HingeSetpoints.kLevel4;
               break;
           }
         });
