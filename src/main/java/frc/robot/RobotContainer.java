@@ -192,7 +192,7 @@ public class RobotContainer {
       driverXbox.rightBumper().onTrue(Commands.none());
     } else {
       driverXbox.a().onTrue((Commands.runOnce(drivebase::zeroGyro)));
-      driverXbox.y().onTrue(m_hangSubSystem.setSetpointCommand(Setpoint.kLevel2));
+      driverXbox.y().onTrue(m_hangSubSystem.setSetpointCommand(HangSubsystem.Setpoint.kLevel2));
       driverXbox.b().whileTrue(
           drivebase.driveToPose(
               new Pose2d(new Translation2d(4, 4), Rotation2d.fromDegrees(0))));
@@ -206,7 +206,10 @@ public class RobotContainer {
       auxXbox.a().onTrue(m_elevatorSubSystem.setSetpointCommand(Setpoint.kLevel2));
       auxXbox.x().onTrue(m_elevatorSubSystem.setSetpointCommand(Setpoint.kLevel3));
       auxXbox.y().onTrue(m_elevatorSubSystem.setSetpointCommand(Setpoint.kLevel4));
-
+      auxXbox.rightBumper().onTrue(m_intakeSubSystem.reverseIntakeCommand());
+      auxXbox.leftBumper().onTrue(m_intakeSubSystem.runIntakeCommand());
+      auxXbox.axisMagnitudeGreaterThan(5, 0.2).whileTrue(m_hingeSubSystem.CustomHingeControl(auxXbox.getRightY()));
+      auxXbox.axisMagnitudeGreaterThan(1, 0.2).whileTrue(m_elevatorSubSystem.CustomElevatorControl(auxXbox.getLeftY()));
 
     }
 

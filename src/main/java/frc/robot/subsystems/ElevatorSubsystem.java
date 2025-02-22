@@ -146,7 +146,11 @@ public class ElevatorSubsystem extends SubsystemBase {
         });
   }
 
- 
+  public Command CustomElevatorControl(double power){
+    // TODO move to constants and determine a factor
+   double SPEED_FACTOR = 0.2;
+      return this.startEnd(() ->  elevatorMotor.set(power * SPEED_FACTOR), () -> elevatorMotor.set(0));
+  } 
   @Override
   public void periodic() {
     moveToSetpoint();

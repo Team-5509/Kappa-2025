@@ -141,6 +141,12 @@ public class HingeSubsystem extends SubsystemBase {
         });
   }
 
+  public Command CustomHingeControl(double power){
+    // TODO move to constants and determine a factor
+   double HINGE_SPEED_FACTOR = 0.2;
+      return this.startEnd(() ->  hingeMotor.set(power * HINGE_SPEED_FACTOR), () -> hingeMotor.set(0));
+  } 
+
   @Override
   public void periodic() {
     moveToSetpoint();

@@ -7,6 +7,8 @@ import com.revrobotics.spark.SparkBase.ResetMode;
 import com.revrobotics.spark.SparkClosedLoopController;
 import com.revrobotics.spark.SparkLowLevel.MotorType;
 import com.revrobotics.spark.SparkMax;
+
+import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.RobotController;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -36,7 +38,10 @@ public class IntakeSubsystem extends SubsystemBase {
   // controller like above.
   private SparkMax intakeMotor =
       new SparkMax(IntakeSubsystemConstants.kIntakeMotorCanId, MotorType.kBrushless);
-
+  private DigitalInput intakeInput = 
+      new DigitalInput(IntakeSubsystemConstants.KIntakeInputDigitalIO);
+      private DigitalInput outtakeInput = 
+      new DigitalInput(IntakeSubsystemConstants.KOuttakeInputDigitalIO);
 
 
 
@@ -64,7 +69,6 @@ public class IntakeSubsystem extends SubsystemBase {
 
 
 
-
   }
 
 
@@ -73,7 +77,7 @@ public class IntakeSubsystem extends SubsystemBase {
 
 
   /** Set the intake motor power in the range of [-1, 1]. */
-  private void setIntakePower(double power) {
+  public void setIntakePower(double power) {
     intakeMotor.set(power);
   }
 
@@ -90,8 +94,16 @@ public class IntakeSubsystem extends SubsystemBase {
   public Command runIntakeCommand() {
     return this.startEnd(
         () -> this.setIntakePower(IntakeSetpoints.kForward), () -> this.setIntakePower(0.0));
+
   }
 
+  public Boolean getIntakeInput() {
+    return intakeInput.get();
+  }
+  
+  public Boolean getOuttakeInput() {
+    return outtakeInput.get();
+  }
   /**
    * Command to reverses the intake motor. When the command is interrupted, e.g. the button is
    * released, the motor will stop.
