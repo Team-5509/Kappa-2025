@@ -188,10 +188,7 @@ public class RobotContainer {
       driverXbox.b().whileTrue(
           drivebase.driveToPose(
               new Pose2d(new Translation2d(4, 4), Rotation2d.fromDegrees(0))));
-      driverXbox.start().whileTrue(m_hingeSubSystem.setSetpointCommand(HingeSubsystem.Setpoint.kLevel1));
       driverXbox.back().whileTrue(Commands.none());
-      driverXbox.y().onTrue(m_hingeSubSystem.setSetpointCommand(HingeSubsystem.Setpoint.kLevel4));
-
       driverXbox.leftBumper().whileTrue(Commands.runOnce(drivebase::lock, drivebase).repeatedly());
       driverXbox.rightBumper().whileTrue(driveRobotOrientedAngularVelocity.repeatedly());
       driverXbox.x().whileTrue(driveFieldOrientedAnglularVelocityFinnese);
@@ -199,6 +196,9 @@ public class RobotContainer {
       auxXbox.a().onTrue(m_coralSubSystem.setSetpointCommand(Setpoint.kLevel2));
       auxXbox.x().onTrue(m_coralSubSystem.setSetpointCommand(Setpoint.kLevel3));
       auxXbox.y().onTrue(m_coralSubSystem.setSetpointCommand(Setpoint.kLevel4));
+      auxXbox.start().whileTrue(m_hingeSubSystem.setSetpointCommand(HingeSubsystem.Setpoint.kLevel1));
+      auxXbox.back().whileTrue(Commands.none());
+      auxXbox.y().onTrue(m_hingeSubSystem.setSetpointCommand(HingeSubsystem.Setpoint.kLevel4)); 
 
     }
 
