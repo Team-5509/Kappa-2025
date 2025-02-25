@@ -19,11 +19,17 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
-import frc.robot.subsystems.CoralSubsystem;
-import frc.robot.subsystems.CoralSubsystem.Setpoint;
+import frc.robot.subsystems.ElevatorSubsystem;
+import frc.robot.subsystems.ElevatorSubsystem.Setpoint;
 import frc.robot.subsystems.HingeSubsystem;
+import frc.robot.subsystems.HangSubsystem;
+import frc.robot.subsystems.IntakeSubsystem;
 import frc.robot.Constants.OperatorConstants;
+import frc.robot.Constants.HangSubsystemConstants;
+import frc.robot.Constants.HangSubsystemConstants.HangSetpoints;
 import frc.robot.subsystems.swervedrive.SwerveSubsystem;
+import frc.robot.Constants.IntakeSubsystemConstants.IntakeSetpoints;
+import frc.robot.Constants.IntakeSubsystemConstants;
 import java.io.File;
 import swervelib.SwerveInputStream;
 
@@ -37,8 +43,10 @@ import swervelib.SwerveInputStream;
  */
 public class RobotContainer {
 
-  private final CoralSubsystem m_coralSubSystem = new CoralSubsystem();
+  private final ElevatorSubsystem m_elevatorSubSystem = new ElevatorSubsystem();
   private final HingeSubsystem m_hingeSubSystem = new HingeSubsystem();
+  private final HangSubsystem m_hangSubSystem = new HangSubsystem();
+  private final IntakeSubsystem m_intakeSubSystem = new IntakeSubsystem();
   private final SendableChooser<Command> autoChooser;
   // Replace with CommandPS4Controller or CommandJoystick if needed
   final CommandXboxController driverXbox = new CommandXboxController(0);
@@ -184,7 +192,7 @@ public class RobotContainer {
       driverXbox.rightBumper().onTrue(Commands.none());
     } else {
       driverXbox.a().onTrue((Commands.runOnce(drivebase::zeroGyro)));
-
+      driverXbox.y().onTrue(m_hangSubSystem.setSetpointCommand(HangSubsystem.Setpoint.kLevel2));
       driverXbox.b().whileTrue(
           drivebase.driveToPose(
               new Pose2d(new Translation2d(4, 4), Rotation2d.fromDegrees(0))));
@@ -192,13 +200,16 @@ public class RobotContainer {
       driverXbox.leftBumper().whileTrue(Commands.runOnce(drivebase::lock, drivebase).repeatedly());
       driverXbox.rightBumper().whileTrue(driveRobotOrientedAngularVelocity.repeatedly());
       driverXbox.x().whileTrue(driveFieldOrientedAnglularVelocityFinnese);
-      auxXbox.b().onTrue(m_coralSubSystem.setSetpointCommand(Setpoint.kLevel1));
-      auxXbox.a().onTrue(m_coralSubSystem.setSetpointCommand(Setpoint.kLevel2));
-      auxXbox.x().onTrue(m_coralSubSystem.setSetpointCommand(Setpoint.kLevel3));
-      auxXbox.y().onTrue(m_coralSubSystem.setSetpointCommand(Setpoint.kLevel4));
-      auxXbox.start().whileTrue(m_hingeSubSystem.setSetpointCommand(HingeSubsystem.Setpoint.kLevel1));
-      auxXbox.back().whileTrue(Commands.none());
-      auxXbox.y().onTrue(m_hingeSubSystem.setSetpointCommand(HingeSubsystem.Setpoint.kLevel4)); 
+
+      // Auxilary Controller 
+      auxXbox.b().onTrue(m_elevatorSubSystem.setSetpointCommand(Setpoint.kLevel1));
+      auxXbox.a().onTrue(m_elevatorSubSystem.setSetpointCommand(Setpoint.kLevel2));
+      auxXbox.x().onTrue(m_elevatorSubSystem.setSetpointCommand(Setpoint.kLevel3));
+      auxXbox.y().onTrue(m_elevatorSubSystem.setSetpointCommand(Setpoint.kLevel4));
+      auxXbox.rightBumper().onTrue(m_intakeSubSystem.reverseIntakeCommand());
+      auxXbox.leftBumper().onTrue(m_intakeSubSystem.runIntakeCommand());
+      auxXbox.axisMagnitudeGreaterThan(5, 0.2).whileTrue(m_hingeSubSystem.CustomHingeControl(auxXbox.getRightY()));
+      auxXbox.axisMagnitudeGreaterThan(1, 0.2).whileTrue(m_elevatorSubSystem.CustomElevatorControl(auxXbox.getLeftY()));
 
     }
 

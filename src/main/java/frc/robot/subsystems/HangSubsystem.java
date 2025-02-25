@@ -12,12 +12,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Configs;
-import frc.robot.Constants.CoralSubsystemConstants;
-import frc.robot.Constants.HingeSubsystemConstants;
 import frc.robot.Constants.HangSubsystemConstants;
-import frc.robot.Constants.CoralSubsystemConstants.ElevatorSetpoints;
-import frc.robot.Constants.CoralSubsystemConstants.IntakeSetpoints;
-import frc.robot.Constants.HingeSubsystemConstants.HingeSetpoints;
 import frc.robot.Constants.HangSubsystemConstants.HangSetpoints;
 
 
@@ -27,8 +22,6 @@ public class HangSubsystem extends SubsystemBase {
     kFeederStation,
     kLevel1,
     kLevel2,
-    kLevel3,
-    kLevel4;
   }
 
   // Initialize arm SPARK. We will use MAXMotion position control for the arm, so we also need to
@@ -123,15 +116,15 @@ public class HangSubsystem extends SubsystemBase {
           switch (setpoint) {
             case kFeederStation:
              
-              hangCurrentTarget = ElevatorSetpoints.kFeederStation;
+              hangCurrentTarget = HangSetpoints.kFeederStation;
               break;
             case kLevel1:
             
-              hangCurrentTarget = ElevatorSetpoints.kLevel1;
+              hangCurrentTarget = HangSetpoints.kLevel1;
               break;
             case kLevel2:
               
-              hangCurrentTarget = ElevatorSetpoints.kLevel2;
+              hangCurrentTarget = HangSetpoints.kLevel2;
               break;
           }
         });
