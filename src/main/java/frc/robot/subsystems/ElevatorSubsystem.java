@@ -12,12 +12,11 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Configs;
-import frc.robot.Constants.CoralSubsystemConstants;
-import frc.robot.Constants.CoralSubsystemConstants.ElevatorSetpoints;
-import frc.robot.Constants.CoralSubsystemConstants.IntakeSetpoints;
+import frc.robot.Constants.ElevatorSubsystemConstants;
+import frc.robot.Constants.ElevatorSubsystemConstants.ElevatorSetpoints;
 
 
-public class CoralSubsystem extends SubsystemBase {
+public class ElevatorSubsystem extends SubsystemBase {
   /** Subsystem-wide setpoints */
   public enum Setpoint {
     kFeederStation,
@@ -33,17 +32,15 @@ public class CoralSubsystem extends SubsystemBase {
   // Initialize elevator SPARK. We will use MAXMotion position control for the elevator, so we also
   // need to initialize the closed loop controller and encoder.
   private SparkMax elevatorFollowerMotor =
-  new SparkMax(CoralSubsystemConstants.kElevatorFollowerMotorCanId, MotorType.kBrushless);
+  new SparkMax(ElevatorSubsystemConstants.kElevatorFollowerMotorCanId, MotorType.kBrushless);
   private SparkMax elevatorMotor =
-      new SparkMax(CoralSubsystemConstants.kElevatorMotorCanId, MotorType.kBrushless);
+      new SparkMax(ElevatorSubsystemConstants.kElevatorMotorCanId, MotorType.kBrushless);
   private SparkClosedLoopController elevatorClosedLoopController =
       elevatorMotor.getClosedLoopController();
   private RelativeEncoder elevatorEncoder = elevatorMotor.getEncoder();
 
   // Initialize intake SPARK. We will use open loop control for this so we don't need a closed loop
   // controller like above.
-  private SparkMax intakeMotor =
-      new SparkMax(CoralSubsystemConstants.kIntakeMotorCanId, MotorType.kBrushless);
 
   // Member variables for subsystem state management
   private boolean wasResetByButton = false;
@@ -53,7 +50,7 @@ public class CoralSubsystem extends SubsystemBase {
  
 
 
-  public CoralSubsystem() {
+  public ElevatorSubsystem() {
     /*
      * Apply the appropriate configurations to the SPARKs.
      *
@@ -69,11 +66,7 @@ public class CoralSubsystem extends SubsystemBase {
         ResetMode.kResetSafeParameters,
         PersistMode.kPersistParameters);
     elevatorFollowerMotor.configure(
-        Configs.CoralSubsystem.elevatorConfig.follow(CoralSubsystemConstants.kElevatorMotorCanId),
-        ResetMode.kResetSafeParameters,
-        PersistMode.kPersistParameters);
-    intakeMotor.configure(
-        Configs.CoralSubsystem.intakeConfig,
+        Configs.CoralSubsystem.elevatorConfig.follow(ElevatorSubsystemConstants.kElevatorMotorCanId),
         ResetMode.kResetSafeParameters,
         PersistMode.kPersistParameters);
 
@@ -119,10 +112,7 @@ public class CoralSubsystem extends SubsystemBase {
     }
   }
 
-  /** Set the intake motor power in the range of [-1, 1]. */
-  private void setIntakePower(double power) {
-    intakeMotor.set(power);
-  }
+
 
   /**
    * Command to set the subsystem setpoint. This will set the arm and elevator to their predefined
@@ -156,24 +146,11 @@ public class CoralSubsystem extends SubsystemBase {
         });
   }
 
-  /**
-   * Command to run the intake motor. When the command is interrupted, e.g. the button is released,
-   * the motor will stop.
-   */
-  public Command runIntakeCommand() {
-    return this.startEnd(
-        () -> this.setIntakePower(IntakeSetpoints.kForward), () -> this.setIntakePower(0.0));
-  }
-
-  /**
-   * Command to reverses the intake motor. When the command is interrupted, e.g. the button is
-   * released, the motor will stop.
-   */
-  public Command reverseIntakeCommand() {
-    return this.startEnd(
-        () -> this.setIntakePower(IntakeSetpoints.kReverse), () -> this.setIntakePower(0.0));
-  }
-
+  public Command CustomElevatorControl(double power){
+    // TODO move to constants and determine a factor
+   double SPEED_FACTOR = 0.2;
+      return this.startEnd(() ->  elevatorMotor.set(power * SPEED_FACTOR), () -> elevatorMotor.set(0));
+  } 
   @Override
   public void periodic() {
     moveToSetpoint();
@@ -184,7 +161,7 @@ public class CoralSubsystem extends SubsystemBase {
 
     SmartDashboard.putNumber("Coral/Elevator/Target Position", elevatorCurrentTarget);
     SmartDashboard.putNumber("Coral/Elevator/Actual Position", elevatorEncoder.getPosition());
-    SmartDashboard.putNumber("Coral/Intake/Applied Output", intakeMotor.getAppliedOutput());
+
 
   }
   /** Get the current drawn by each simulation physics model */

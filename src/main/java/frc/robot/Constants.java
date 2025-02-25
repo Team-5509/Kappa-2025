@@ -26,12 +26,12 @@ public final class Constants {
     public static final double kFreeSpeedRpm = 5676;
   }
 
-  public static final class CoralSubsystemConstants {
+  public static final class ElevatorSubsystemConstants {
     // TODO change these Id values to fit the motor ID values
     
     public static final int kElevatorMotorCanId = 13;
     public static final int kElevatorFollowerMotorCanId = 14;
-    public static final int kIntakeMotorCanId = 15;
+
 
     public static final class ElevatorSetpoints {
       // TODO fix these values to the actual Reef levels
@@ -41,12 +41,20 @@ public final class Constants {
       public static final int kLevel3 = 100;
       public static final int kLevel4 = 150;
       }
+  }
+  public static final class IntakeSubsystemConstants {
+    // TODO change these Id values to fit the motor ID values
+
+    public static final int kIntakeMotorCanId = 15;
+    public static final int KIntakeInputDigitalIO = 0; 
+    public static final int KOuttakeInputDigitalIO = 1; 
 
     public static final class IntakeSetpoints {
       public static final double kForward = 0.5;
       public static final double kReverse = -0.5;
     }
   }
+
   public static final class HangSubsystemConstants {
     // TODO change these Id values to fit the motor ID values
     
