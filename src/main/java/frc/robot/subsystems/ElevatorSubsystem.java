@@ -83,7 +83,7 @@ public class ElevatorSubsystem extends SubsystemBase {
    * position control which will allow for a smooth acceleration and deceleration to the mechanisms'
    * setpoints.
    */
-  private void moveToSetpoint() {
+  public void moveToSetpoint() {
     elevatorClosedLoopController.setReference(
         elevatorCurrentTarget, ControlType.kMAXMotionPositionControl);
   }
@@ -148,9 +148,15 @@ public class ElevatorSubsystem extends SubsystemBase {
 
   public Command CustomElevatorControl(double power){
     // TODO move to constants and determine a factor
-   double SPEED_FACTOR = 0.2;
-      return this.startEnd(() ->  elevatorMotor.set(power * SPEED_FACTOR), () -> elevatorMotor.set(0));
-  } 
+    final double SPEED_FACTOR = 0.5;
+    final double DEADBAND = 0.1;
+    return this.run(() -> {
+      double adjustedPower = Math.abs(power) > DEADBAND ? power * SPEED_FACTOR : 0.0;
+      elevatorMotor.set(adjustedPower);
+      elevatorCurrentTarget = elevatorEncoder.getPosition();
+    }).withName("ManualElevatorControl");
+
+  }
   @Override
   public void periodic() {
     moveToSetpoint();
@@ -165,5 +171,8 @@ public class ElevatorSubsystem extends SubsystemBase {
 
   }
   /** Get the current drawn by each simulation physics model */
-
+  
+  public double getElevatorEncoder() {
+    return elevatorMotor.getEncoder().getPosition();
+  }
 }

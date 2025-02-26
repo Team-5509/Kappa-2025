@@ -29,6 +29,8 @@ import frc.robot.Constants.HangSubsystemConstants;
 import frc.robot.Constants.HangSubsystemConstants.HangSetpoints;
 import frc.robot.subsystems.swervedrive.SwerveSubsystem;
 import frc.robot.Constants.IntakeSubsystemConstants.IntakeSetpoints;
+import frc.robot.commands.AutoElevator;
+import frc.robot.commands.RunHinge;
 import frc.robot.Constants.IntakeSubsystemConstants;
 import java.io.File;
 import swervelib.SwerveInputStream;
@@ -47,6 +49,7 @@ public class RobotContainer {
   private final HingeSubsystem m_hingeSubSystem = new HingeSubsystem();
   private final HangSubsystem m_hangSubSystem = new HangSubsystem();
   private final IntakeSubsystem m_intakeSubSystem = new IntakeSubsystem();
+  
   private final SendableChooser<Command> autoChooser;
   // Replace with CommandPS4Controller or CommandJoystick if needed
   final CommandXboxController driverXbox = new CommandXboxController(0);
@@ -136,6 +139,7 @@ public class RobotContainer {
    */
   public RobotContainer() {
     NamedCommands.registerCommand("HingeL4", m_hingeSubSystem.setSetpointCommand(HingeSubsystem.Setpoint.kLevel4));
+    // NamedCommands.registerCommand("AutoElevator", m_elevatorSubSystem.AutoElevator);
     autoChooser = AutoBuilder.buildAutoChooser();
     SmartDashboard.putData("Auto Chooser", autoChooser);
     // Configure the trigger bindings
@@ -168,6 +172,7 @@ public class RobotContainer {
     Command driveFieldOrientedAnglularVelocitySim = drivebase.driveFieldOriented(driveAngularVelocitySim);
     Command driveSetpointGenSim = drivebase.driveWithSetpointGeneratorFieldRelative(
         driveDirectAngleSim);
+        Command runHinge = new RunHinge(m_hingeSubSystem, () -> auxXbox.getRightY() );
 
     if (RobotBase.isSimulation()) {
       drivebase.setDefaultCommand(driveFieldOrientedDirectAngleSim);
@@ -208,7 +213,8 @@ public class RobotContainer {
       auxXbox.y().onTrue(m_elevatorSubSystem.setSetpointCommand(Setpoint.kLevel4));
       auxXbox.rightBumper().onTrue(m_intakeSubSystem.reverseIntakeCommand());
       auxXbox.leftBumper().onTrue(m_intakeSubSystem.runIntakeCommand());
-      auxXbox.axisMagnitudeGreaterThan(5, 0.2).whileTrue(m_hingeSubSystem.CustomHingeControl(auxXbox.getRightY()));
+      auxXbox.axisMagnitudeGreaterThan(5, 0.2).whileTrue(runHinge);
+      auxXbox.start().onTrue(m_hingeSubSystem.setSetpointCommand(HingeSubsystem.Setpoint.kLevel4));
       auxXbox.axisMagnitudeGreaterThan(1, 0.2).whileTrue(m_elevatorSubSystem.CustomElevatorControl(auxXbox.getLeftY()));
 
     }

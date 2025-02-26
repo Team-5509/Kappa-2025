@@ -1,5 +1,7 @@
 package frc.robot.subsystems;
 
+import java.util.function.DoubleSupplier;
+
 import com.revrobotics.RelativeEncoder;
 import com.revrobotics.spark.SparkBase.ControlType;
 import com.revrobotics.spark.SparkBase.PersistMode;
@@ -7,12 +9,14 @@ import com.revrobotics.spark.SparkBase.ResetMode;
 import com.revrobotics.spark.SparkClosedLoopController;
 import com.revrobotics.spark.SparkLowLevel.MotorType;
 import com.revrobotics.spark.SparkMax;
+
+import edu.wpi.first.units.measure.Power;
 import edu.wpi.first.wpilibj.RobotController;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Configs;
-
+import frc.robot.Constants.ElevatorSubsystemConstants.ElevatorSetpoints;
 import frc.robot.Constants.HingeSubsystemConstants;
 import frc.robot.Constants.HingeSubsystemConstants.HingeSetpoints;
 
@@ -83,7 +87,10 @@ public class HingeSubsystem extends SubsystemBase {
     hingeClosedLoopController.setReference(
        hingeCurrentTarget, ControlType.kMAXMotionPositionControl);
   }
-
+public void syncHingeControl(){
+  hingeCurrentTarget = hingeEncoder.getPosition();
+  moveToSetpoint();
+}
   /** Zero the elevator encoder when the limit switch is pressed. */
   private void zeroHingeOnLimitSwitch() {
     if (!wasResetByLimit && hingeMotor.getReverseLimitSwitch().isPressed()) {
@@ -141,11 +148,22 @@ public class HingeSubsystem extends SubsystemBase {
         });
   }
 
-  public Command CustomHingeControl(double power){
+  public Command CustomHingeControl(DoubleSupplier Power){
+  double power = Power.getAsDouble();
     // TODO move to constants and determine a factor
-   double HINGE_SPEED_FACTOR = 0.2;
-      return this.startEnd(() ->  hingeMotor.set(power * HINGE_SPEED_FACTOR), () -> hingeMotor.set(0));
-  } 
+    System.out.println("Hello I made it here");
+      final double SPEED_FACTOR = 0.5;
+      final double DEADBAND = -1;
+      SmartDashboard.putNumber("Hinge/Xbox Right Y Power", power);
+      return this.run(() -> {
+        double adjustedPower = Math.abs(power) > DEADBAND ? power * SPEED_FACTOR : 0.0;
+        hingeMotor.set(adjustedPower);
+        hingeCurrentTarget = hingeEncoder.getPosition();
+        moveToSetpoint();
+      }).withName("ManualHingeControl");
+  
+    }
+
 
   @Override
   public void periodic() {
@@ -160,5 +178,7 @@ public class HingeSubsystem extends SubsystemBase {
 
   }
   /** Get the current drawn by each simulation physics model */
-
+  public void setHingePower(double speed){
+    hingeMotor.set(speed);
+  }
 }
