@@ -59,6 +59,7 @@ public final class Constants {
     // TODO change these Id values to fit the motor ID values
     
     public static final int kHangMotorCanId = 17;
+    public static final int kHangFollowerMotorCanId = 18;
   
 
     public static final class HangSetpoints {

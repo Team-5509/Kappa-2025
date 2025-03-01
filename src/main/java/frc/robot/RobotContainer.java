@@ -29,7 +29,14 @@ import frc.robot.Constants.HangSubsystemConstants;
 import frc.robot.Constants.HangSubsystemConstants.HangSetpoints;
 import frc.robot.subsystems.swervedrive.SwerveSubsystem;
 import frc.robot.Constants.IntakeSubsystemConstants.IntakeSetpoints;
-import frc.robot.commands.AutoElevator;
+import frc.robot.commands.AutoElevatorCoral;
+import frc.robot.commands.AutoElevatorTrough;
+import frc.robot.commands.AutoElevatorkLevel2;
+import frc.robot.commands.AutoElevatorkLevel3;
+import frc.robot.commands.AutoElevatorkLevel4;
+import frc.robot.commands.ExampleCommand;
+import frc.robot.commands.IntakeWithSensor;
+import frc.robot.commands.OuttakeWithSensor;
 import frc.robot.commands.RunElevator;
 import frc.robot.commands.RunHinge;
 import frc.robot.Constants.IntakeSubsystemConstants;
@@ -140,7 +147,16 @@ public class RobotContainer {
    */
   public RobotContainer() {
     NamedCommands.registerCommand("HingeL4", m_hingeSubSystem.setSetpointCommand(HingeSubsystem.Setpoint.kLevel4));
-    // NamedCommands.registerCommand("AutoElevator", m_elevatorSubSystem.AutoElevator);
+    NamedCommands.registerCommand("AutoElevatorCoral", new AutoElevatorCoral(m_elevatorSubSystem));
+    NamedCommands.registerCommand("AutoElevatorTrough", new AutoElevatorTrough(m_elevatorSubSystem));
+    NamedCommands.registerCommand("AutoElevatorkLevel2", new AutoElevatorkLevel2(m_elevatorSubSystem));
+    NamedCommands.registerCommand("AutoElevatorkLevel3", new AutoElevatorkLevel3(m_elevatorSubSystem));
+    NamedCommands.registerCommand("AutoElevatorkLevel4", new AutoElevatorkLevel4(m_elevatorSubSystem));
+    NamedCommands.registerCommand( "AutoIntake", new IntakeWithSensor(m_intakeSubSystem));
+    NamedCommands.registerCommand( "AutoOuttake", new OuttakeWithSensor(m_intakeSubSystem));
+
+
+    
     autoChooser = AutoBuilder.buildAutoChooser();
     SmartDashboard.putData("Auto Chooser", autoChooser);
     // Configure the trigger bindings
@@ -175,6 +191,9 @@ public class RobotContainer {
         driveDirectAngleSim);
         Command runHinge = new RunHinge(m_hingeSubSystem, () -> auxXbox.getRightY() );
         Command runElevator = new RunElevator(m_elevatorSubSystem, () -> auxXbox.getLeftY() );
+        Command outtakeWithSensor = new OuttakeWithSensor(m_intakeSubSystem);
+        Command intakeWithSensor = new IntakeWithSensor(m_intakeSubSystem);
+
 
     if (RobotBase.isSimulation()) {
       drivebase.setDefaultCommand(driveFieldOrientedDirectAngleSim);
@@ -198,26 +217,29 @@ public class RobotContainer {
       driverXbox.leftBumper().onTrue(Commands.none());
       driverXbox.rightBumper().onTrue(Commands.none());
     } else {
-      driverXbox.a().onTrue((Commands.runOnce(drivebase::zeroGyro)));
-      driverXbox.y().onTrue(m_hangSubSystem.setSetpointCommand(HangSubsystem.Setpoint.kLevel2));
+      driverXbox.start().onTrue((Commands.runOnce(drivebase::zeroGyro)));
+      
       driverXbox.b().whileTrue(
           drivebase.driveToPose(
               new Pose2d(new Translation2d(4, 4), Rotation2d.fromDegrees(0))));
-      driverXbox.back().whileTrue(Commands.none());
-      driverXbox.leftBumper().whileTrue(Commands.runOnce(drivebase::lock, drivebase).repeatedly());
-      driverXbox.rightBumper().whileTrue(driveRobotOrientedAngularVelocity.repeatedly());
-      driverXbox.x().whileTrue(driveFieldOrientedAnglularVelocityFinnese);
+      driverXbox.back().onTrue(m_hangSubSystem.setSetpointCommand(HangSubsystem.Setpoint.kLevel1));
+      driverXbox.x().whileTrue(Commands.runOnce(drivebase::lock, drivebase).repeatedly());
+      driverXbox.leftBumper().whileTrue(driveRobotOrientedAngularVelocity.repeatedly());
+      driverXbox.rightBumper().whileTrue(driveFieldOrientedAnglularVelocityFinnese);
+      driverXbox.y().onTrue(m_hangSubSystem.setSetpointCommand(HangSubsystem.Setpoint.kLevel2));
 
-      // Auxilary Controller 
+      // Auxillary Controller 
       auxXbox.b().onTrue(m_elevatorSubSystem.setSetpointCommand(Setpoint.kLevel1));
       auxXbox.a().onTrue(m_elevatorSubSystem.setSetpointCommand(Setpoint.kLevel2));
       auxXbox.x().onTrue(m_elevatorSubSystem.setSetpointCommand(Setpoint.kLevel3));
       auxXbox.y().onTrue(m_elevatorSubSystem.setSetpointCommand(Setpoint.kLevel4));
-      auxXbox.rightBumper().onTrue(m_intakeSubSystem.reverseIntakeCommand());
-      auxXbox.leftBumper().onTrue(m_intakeSubSystem.runIntakeCommand());
+      auxXbox.rightBumper().onTrue(outtakeWithSensor);
+      auxXbox.leftBumper().onTrue(intakeWithSensor);
       auxXbox.axisMagnitudeGreaterThan(5, 0.2).whileTrue(runHinge);
       auxXbox.start().onTrue(m_hingeSubSystem.setSetpointCommand(HingeSubsystem.Setpoint.kLevel4));
       auxXbox.axisMagnitudeGreaterThan(1, 0.2).whileTrue(runElevator);
+      auxXbox.povUp().onTrue(m_hangSubSystem.setSetpointCommand(HangSubsystem.Setpoint.kLevel2));
+      auxXbox.povDown().onTrue(m_hangSubSystem.setSetpointCommand(HangSubsystem.Setpoint.kLevel1));
 
     }
 
@@ -237,4 +259,6 @@ public class RobotContainer {
   public void setMotorBrake(boolean brake) {
     drivebase.setMotorBrake(brake);
   }
+
+ 
 }

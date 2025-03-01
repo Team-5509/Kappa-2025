@@ -11,16 +11,16 @@ import frc.robot.subsystems.ElevatorSubsystem.Setpoint;
 import edu.wpi.first.wpilibj2.command.Command;
 
 /** An example command that uses an example subsystem. */
-public class AutoElevator extends Command {
+public class AutoElevatorkLevel3 extends Command {
   @SuppressWarnings({"PMD.UnusedPrivateField", "PMD.SingularField"})
   private final ElevatorSubsystem m_elevatorSubsystem;
- private double elevatorCurrentTarget = ElevatorSetpoints.kFeederStation;
+ private double elevatorCurrentTarget = ElevatorSetpoints.kLevel3;
   /**
    * Creates a new ExampleCommand.
    *
    * @param subsystem The subsystem used by this command.
    */
-  public AutoElevator(ElevatorSubsystem subsystem) {
+  public AutoElevatorkLevel3(ElevatorSubsystem subsystem) {
     m_elevatorSubsystem = subsystem;
     // Use addRequirements() here to declare subsystem dependencies.
     addRequirements(subsystem);
@@ -29,7 +29,7 @@ public class AutoElevator extends Command {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    elevatorCurrentTarget = ElevatorSetpoints.kLevel4; 
+    m_elevatorSubsystem.setElevatorCurrentTarget(elevatorCurrentTarget); 
     m_elevatorSubsystem.moveToSetpoint();
   }
 
@@ -44,8 +44,8 @@ public class AutoElevator extends Command {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    if (m_elevatorSubsystem.getElevatorEncoder() >= ElevatorSetpoints.kLevel4 - 20 
-    || m_elevatorSubsystem.getElevatorEncoder() <= ElevatorSetpoints.kLevel4 + 20){
+    if (m_elevatorSubsystem.getElevatorEncoder() >= elevatorCurrentTarget - 1 
+    || m_elevatorSubsystem.getElevatorEncoder() <= elevatorCurrentTarget + 1){
       return true;
     }
     return false;

@@ -62,11 +62,11 @@ public class ElevatorSubsystem extends SubsystemBase {
      * mid-operation.
      */
     elevatorMotor.configure(
-        Configs.CoralSubsystem.elevatorConfig,
+        Configs.ElevatorSubsystem.elevatorConfig,
         ResetMode.kResetSafeParameters,
         PersistMode.kPersistParameters);
     elevatorFollowerMotor.configure(
-        Configs.CoralSubsystem.elevatorConfig.follow(ElevatorSubsystemConstants.kElevatorMotorCanId),
+        Configs.ElevatorSubsystem.elevatorConfig.follow(ElevatorSubsystemConstants.kElevatorMotorCanId),
         ResetMode.kResetSafeParameters,
         PersistMode.kPersistParameters);
 
@@ -183,5 +183,8 @@ public class ElevatorSubsystem extends SubsystemBase {
   public void syncElevatorControl(){
     elevatorCurrentTarget = elevatorEncoder.getPosition();
     moveToSetpoint();
+  }
+  public void setElevatorCurrentTarget(double currentTarget){
+    elevatorCurrentTarget = currentTarget;
   }
 }

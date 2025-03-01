@@ -10,6 +10,7 @@ import com.revrobotics.spark.SparkMax;
 
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.RobotController;
+import edu.wpi.first.wpilibj.motorcontrol.Spark;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -44,6 +45,8 @@ public class IntakeSubsystem extends SubsystemBase {
       new DigitalInput(IntakeSubsystemConstants.KOuttakeInputDigitalIO);
 
 
+  private double m_Color = 0.0;
+  private Spark m_blinkin = new Spark(0);
 
  
 
@@ -61,7 +64,7 @@ public class IntakeSubsystem extends SubsystemBase {
      */
 
     intakeMotor.configure(
-        Configs.CoralSubsystem.intakeConfig,
+        Configs.ElevatorSubsystem.intakeConfig,
         ResetMode.kResetSafeParameters,
         PersistMode.kPersistParameters);
 

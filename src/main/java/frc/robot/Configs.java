@@ -13,8 +13,8 @@ public final class Configs {
  
 
 
-  public static final class CoralSubsystem {
-    public static final SparkFlexConfig elevatorConfig = new SparkFlexConfig();
+  public static final class ElevatorSubsystem {
+    public static final SparkMaxConfig elevatorConfig = new SparkMaxConfig();
     public static final SparkMaxConfig intakeConfig = new SparkMaxConfig();
 
     static {

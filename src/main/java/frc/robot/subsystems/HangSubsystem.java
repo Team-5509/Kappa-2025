@@ -12,6 +12,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Configs;
+import frc.robot.Constants.ElevatorSubsystemConstants;
 import frc.robot.Constants.HangSubsystemConstants;
 import frc.robot.Constants.HangSubsystemConstants.HangSetpoints;
 
@@ -32,6 +33,8 @@ public class HangSubsystem extends SubsystemBase {
   
   private SparkMax hangMotor =
       new SparkMax(HangSubsystemConstants.kHangMotorCanId, MotorType.kBrushless);
+      private SparkMax hangFollowerMotor =
+      new SparkMax(HangSubsystemConstants.kHangFollowerMotorCanId, MotorType.kBrushless);
   private SparkClosedLoopController hangClosedLoopController =
       hangMotor.getClosedLoopController();
   private RelativeEncoder hangEncoder = hangMotor.getEncoder();
@@ -61,6 +64,11 @@ public class HangSubsystem extends SubsystemBase {
         Configs.HangSubsystem.hangConfig,
         ResetMode.kResetSafeParameters,
         PersistMode.kPersistParameters);
+      hangFollowerMotor.configure(
+        Configs.HangSubsystem.hangConfig.follow(ElevatorSubsystemConstants.kElevatorMotorCanId),
+        ResetMode.kResetSafeParameters,
+        PersistMode.kPersistParameters);
+ 
    
 
     // Display mechanism2d
