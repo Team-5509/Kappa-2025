@@ -175,4 +175,13 @@ public class ElevatorSubsystem extends SubsystemBase {
   public double getElevatorEncoder() {
     return elevatorMotor.getEncoder().getPosition();
   }
+
+  public void setElevatorPower(double speed){
+    elevatorMotor.set(speed);
+  }
+
+  public void syncElevatorControl(){
+    elevatorCurrentTarget = elevatorEncoder.getPosition();
+    moveToSetpoint();
+  }
 }
