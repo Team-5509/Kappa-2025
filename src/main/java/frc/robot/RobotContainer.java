@@ -30,6 +30,7 @@ import frc.robot.Constants.HangSubsystemConstants.HangSetpoints;
 import frc.robot.subsystems.swervedrive.SwerveSubsystem;
 import frc.robot.Constants.IntakeSubsystemConstants.IntakeSetpoints;
 import frc.robot.commands.AutoElevator;
+import frc.robot.commands.RunElevator;
 import frc.robot.commands.RunHinge;
 import frc.robot.Constants.IntakeSubsystemConstants;
 import java.io.File;
@@ -173,6 +174,7 @@ public class RobotContainer {
     Command driveSetpointGenSim = drivebase.driveWithSetpointGeneratorFieldRelative(
         driveDirectAngleSim);
         Command runHinge = new RunHinge(m_hingeSubSystem, () -> auxXbox.getRightY() );
+        Command runElevator = new RunElevator(m_elevatorSubSystem, () -> auxXbox.getLeftY() );
 
     if (RobotBase.isSimulation()) {
       drivebase.setDefaultCommand(driveFieldOrientedDirectAngleSim);
@@ -215,7 +217,7 @@ public class RobotContainer {
       auxXbox.leftBumper().onTrue(m_intakeSubSystem.runIntakeCommand());
       auxXbox.axisMagnitudeGreaterThan(5, 0.2).whileTrue(runHinge);
       auxXbox.start().onTrue(m_hingeSubSystem.setSetpointCommand(HingeSubsystem.Setpoint.kLevel4));
-      auxXbox.axisMagnitudeGreaterThan(1, 0.2).whileTrue(m_elevatorSubSystem.CustomElevatorControl(auxXbox.getLeftY()));
+      auxXbox.axisMagnitudeGreaterThan(1, 0.2).whileTrue(runElevator);
 
     }
 
