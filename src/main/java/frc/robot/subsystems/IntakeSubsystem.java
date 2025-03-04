@@ -45,8 +45,8 @@ public class IntakeSubsystem extends SubsystemBase {
       new DigitalInput(IntakeSubsystemConstants.KOuttakeInputDigitalIO);
 
 
-  private double m_Color = 0.0;
-  private Spark m_blinkin = new Spark(0);
+  // private double m_Color = 0.0;
+  // private Spark m_blinkin = new Spark(0);
 
  
 
