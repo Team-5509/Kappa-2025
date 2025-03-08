@@ -7,7 +7,11 @@
     "Center Paths",
     "Right Paths"
   ],
-  "autoFolders": [],
+  "autoFolders": [
+    "Left Autons",
+    "Center Autons",
+    "Right Autons"
+  ],
   "defaultMaxVel": 3.0,
   "defaultMaxAccel": 3.0,
   "defaultMaxAngVel": 270.0,

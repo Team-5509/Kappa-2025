@@ -16,6 +16,8 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Configs;
 import frc.robot.Constants.IntakeSubsystemConstants.IntakeSetpoints;
+import frc.robot.Constants.ElevatorSubsystemConstants;
+import frc.robot.Constants.HangSubsystemConstants;
 import frc.robot.Constants.IntakeSubsystemConstants;
 
 
@@ -43,10 +45,14 @@ public class IntakeSubsystem extends SubsystemBase {
       new DigitalInput(IntakeSubsystemConstants.KIntakeInputDigitalIO);
       private DigitalInput outtakeInput = 
       new DigitalInput(IntakeSubsystemConstants.KOuttakeInputDigitalIO);
+            private SparkMax intakeFollowerMotor =
+      new SparkMax(IntakeSubsystemConstants.kIntakeFollowerMotorCanId, MotorType.kBrushless);
+  private SparkClosedLoopController intakeClosedLoopController =
+      intakeMotor.getClosedLoopController();
 
 
-  // private double m_Color = 0.0;
-  // private Spark m_blinkin = new Spark(0);
+  private double m_Color = 0.0;
+  private Spark m_blinkin = new Spark(0);
 
  
 
@@ -67,6 +73,11 @@ public class IntakeSubsystem extends SubsystemBase {
         Configs.ElevatorSubsystem.intakeConfig,
         ResetMode.kResetSafeParameters,
         PersistMode.kPersistParameters);
+              intakeFollowerMotor.configure(
+        Configs.HangSubsystem.hangConfig.follow(ElevatorSubsystemConstants.kElevatorMotorCanId),
+        ResetMode.kResetSafeParameters,
+        PersistMode.kPersistParameters);
+ 
 
     // Display mechanism2d
 

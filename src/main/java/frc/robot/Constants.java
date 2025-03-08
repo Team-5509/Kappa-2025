@@ -21,7 +21,7 @@ import swervelib.math.Matter;
  * constants are needed, to reduce verbosity.
  */
 public final class Constants {
-
+  public static final int BLINKIN_LED_CONTROLLER_PORT = 1;
   public static final class NeoMotorConstants {
     public static final double kFreeSpeedRpm = 5676;
   }
@@ -46,6 +46,7 @@ public final class Constants {
     // TODO change these Id values to fit the motor ID values
 
     public static final int kIntakeMotorCanId = 15;
+    public static final int kIntakeFollowerMotorCanId = 16;
     public static final int KIntakeInputDigitalIO = 0; 
     public static final int KOuttakeInputDigitalIO = 1; 
 
@@ -58,8 +59,8 @@ public final class Constants {
   public static final class HangSubsystemConstants {
     // TODO change these Id values to fit the motor ID values
     
-    public static final int kHangMotorCanId = 17;
-    public static final int kHangFollowerMotorCanId = 18;
+    public static final int kHangMotorCanId = 18;
+  
   
 
     public static final class HangSetpoints {
@@ -71,7 +72,7 @@ public final class Constants {
   public static final class HingeSubsystemConstants {
     // TODO change these Id values to fit the motor ID values
     
-    public static final int kHingeMotorCanId = 16;
+    public static final int kHingeMotorCanId = 17;
   
 
     public static final class HingeSetpoints {
@@ -133,6 +134,7 @@ public final class Constants {
     public static final double TURN_CONSTANT = 6;
     public static final double SPEED_MAXIMUM_FACTOR = .8;
     public static final double SPEED_MINIMUM_FACTOR = .45;
-    public static final int ID_INTAKE = 17;
+
+
   }
 }

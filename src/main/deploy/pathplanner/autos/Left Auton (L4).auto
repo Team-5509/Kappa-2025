@@ -9,6 +9,12 @@
           "data": {
             "commands": [
               {
+                "type": "named",
+                "data": {
+                  "name": "AutoElevatorkLevel4"
+                }
+              },
+              {
                 "type": "path",
                 "data": {
                   "pathName": "StartPos 1 to ID20"
@@ -18,14 +24,32 @@
           }
         },
         {
+          "type": "named",
+          "data": {
+            "name": "OuttakeWithSensor"
+          }
+        },
+        {
           "type": "parallel",
           "data": {
             "commands": [
+              {
+                "type": "named",
+                "data": {
+                  "name": "AutoElevatorCoral"
+                }
+              },
               {
                 "type": "path",
                 "data": {
                   "pathName": "ID20 to A Coral Station"
                 }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "IntakeWithSensor"
+                }
               }
             ]
           }
@@ -34,6 +58,12 @@
           "type": "parallel",
           "data": {
             "commands": [
+              {
+                "type": "named",
+                "data": {
+                  "name": "AutoElevatorkLevel4"
+                }
+              },
               {
                 "type": "path",
                 "data": {
@@ -44,14 +74,32 @@
           }
         },
         {
+          "type": "named",
+          "data": {
+            "name": "OuttakeWithSensor"
+          }
+        },
+        {
           "type": "parallel",
           "data": {
             "commands": [
+              {
+                "type": "named",
+                "data": {
+                  "name": "AutoElevatorCoral"
+                }
+              },
               {
                 "type": "path",
                 "data": {
                   "pathName": "ID19 to A CoralStation"
                 }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "IntakeWithSensor"
+                }
               }
             ]
           }
@@ -61,18 +109,30 @@
           "data": {
             "commands": [
               {
+                "type": "named",
+                "data": {
+                  "name": "AutoElevatorkLevel4"
+                }
+              },
+              {
                 "type": "path",
                 "data": {
                   "pathName": " A Coral Station To ID19"
                 }
               }
             ]
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "OuttakeWithSensor"
           }
         }
       ]
     }
   },
   "resetOdom": true,
-  "folder": null,
+  "folder": "Left Autons",
   "choreoAuto": false
 }

@@ -33,8 +33,6 @@ public class HangSubsystem extends SubsystemBase {
   
   private SparkMax hangMotor =
       new SparkMax(HangSubsystemConstants.kHangMotorCanId, MotorType.kBrushless);
-      private SparkMax hangFollowerMotor =
-      new SparkMax(HangSubsystemConstants.kHangFollowerMotorCanId, MotorType.kBrushless);
   private SparkClosedLoopController hangClosedLoopController =
       hangMotor.getClosedLoopController();
   private RelativeEncoder hangEncoder = hangMotor.getEncoder();
@@ -64,10 +62,7 @@ public class HangSubsystem extends SubsystemBase {
         Configs.HangSubsystem.hangConfig,
         ResetMode.kResetSafeParameters,
         PersistMode.kPersistParameters);
-      hangFollowerMotor.configure(
-        Configs.HangSubsystem.hangConfig.follow(ElevatorSubsystemConstants.kElevatorMotorCanId),
-        ResetMode.kResetSafeParameters,
-        PersistMode.kPersistParameters);
+
  
    
 
