@@ -7,6 +7,8 @@ import com.revrobotics.spark.SparkBase.ResetMode;
 import com.revrobotics.spark.SparkClosedLoopController;
 import com.revrobotics.spark.SparkLowLevel.MotorType;
 import com.revrobotics.spark.SparkMax;
+import com.revrobotics.spark.config.SparkBaseConfig.IdleMode;
+import com.revrobotics.spark.config.SparkMaxConfig;
 
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.RobotController;
@@ -60,7 +62,8 @@ public class IntakeSubsystem extends SubsystemBase {
 
 
   
- 
+      public static final SparkMaxConfig intakeConfig = new SparkMaxConfig();
+
 
 
   public IntakeSubsystem() {
@@ -74,16 +77,18 @@ public class IntakeSubsystem extends SubsystemBase {
      * the SPARK loses power. This is useful for power cycles that may occur
      * mid-operation.
      */
+ 
 
     intakeMotor.configure(
         Configs.ElevatorSubsystem.intakeConfig,
         ResetMode.kResetSafeParameters,
         PersistMode.kPersistParameters);
+
         intakeFollowerMotor.configure(
-        Configs.ElevatorSubsystem.intakeFollowerConfig.follow(IntakeSubsystemConstants.kIntakeMotorCanId),
+          Configs.ElevatorSubsystem.elevatorConfig.follow(IntakeSubsystemConstants.kIntakeMotorCanId, true),
         ResetMode.kResetSafeParameters,
         PersistMode.kPersistParameters);
-        intakeFollowerMotor.setInverted(true);
+        
  
 
     // Display mechanism2d

@@ -17,7 +17,7 @@ public final class Configs {
     public static final SparkMaxConfig elevatorConfig = new SparkMaxConfig();
     
     public static final SparkMaxConfig intakeConfig = new SparkMaxConfig();
-    public static final SparkMaxConfig intakeFollowerConfig = new SparkMaxConfig();
+
 
     static {
 
@@ -43,6 +43,7 @@ public final class Configs {
           .closedLoop
           .feedbackSensor(FeedbackSensor.kPrimaryEncoder)
           // Set PID values for position control
+          //TODO: Set P value empirically
           .p(0.1)
           .outputRange(-1, 1)
           .maxMotion
@@ -53,7 +54,7 @@ public final class Configs {
 
       // Configure basic settings of the intake motor
       intakeConfig.inverted(true).idleMode(IdleMode.kBrake).smartCurrentLimit(40);
-      intakeFollowerConfig.inverted(false).idleMode(IdleMode.kBrake).smartCurrentLimit(40);
+
     }
   }
 

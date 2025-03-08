@@ -83,7 +83,10 @@ public class HangSubsystem extends SubsystemBase {
     hangClosedLoopController.setReference(
        hangCurrentTarget, ControlType.kMAXMotionPositionControl);
   }
-
+  public void syncHangControl(){
+    hangCurrentTarget = hangEncoder.getPosition();
+    moveToSetpoint();
+  }
   /** Zero the elevator encoder when the limit switch is pressed. */
   private void zeroHangOnLimitSwitch() {
     if (!wasResetByLimit && hangMotor.getReverseLimitSwitch().isPressed()) {
@@ -146,5 +149,7 @@ public class HangSubsystem extends SubsystemBase {
 
   }
   /** Get the current drawn by each simulation physics model */
-
+  public void setHangPower(double speed){
+    hangMotor.set(speed);
+  }
 }
