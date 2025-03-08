@@ -4,8 +4,8 @@
 
 package frc.robot.commands;
 
-import frc.robot.BlinkinLEDController;
-import frc.robot.BlinkinLEDController.BlinkinPattern;
+// import frc.robot.BlinkinLEDController;
+// import frc.robot.BlinkinLEDController.BlinkinPattern;
 import frc.robot.Constants.IntakeSubsystemConstants;
 import frc.robot.subsystems.ExampleSubsystem;
 
@@ -54,7 +54,7 @@ public class OuttakeWithSensor extends Command {
   public boolean isFinished() {
     if(!(m_intakeSubsystem.getOuttakeInput())){
       m_intakeSubsystem.setIntakePower(0);
-            BlinkinLEDController.setPattern(BlinkinPattern.SKY_BLUE);
+            // BlinkinLEDController.setPattern(BlinkinPattern.SKY_BLUE);
 
       return true;
     } 

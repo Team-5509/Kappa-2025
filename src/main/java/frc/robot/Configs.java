@@ -15,13 +15,15 @@ public final class Configs {
 
   public static final class ElevatorSubsystem {
     public static final SparkMaxConfig elevatorConfig = new SparkMaxConfig();
+    
     public static final SparkMaxConfig intakeConfig = new SparkMaxConfig();
+    public static final SparkMaxConfig intakeFollowerConfig = new SparkMaxConfig();
 
     static {
 
   
       // Configure basic settings of the elevator motor
-      elevatorConfig.idleMode(IdleMode.kCoast).smartCurrentLimit(50).voltageCompensation(12);
+      elevatorConfig.idleMode(IdleMode.kCoast).smartCurrentLimit(50).voltageCompensation(12).inverted(true);
 
       /*
        * Configure the reverse limit switch for the elevator. By enabling the limit switch, this
@@ -51,6 +53,7 @@ public final class Configs {
 
       // Configure basic settings of the intake motor
       intakeConfig.inverted(true).idleMode(IdleMode.kBrake).smartCurrentLimit(40);
+      intakeFollowerConfig.inverted(false).idleMode(IdleMode.kBrake).smartCurrentLimit(40);
     }
   }
 
@@ -61,7 +64,7 @@ public final class Configs {
 
     static {
       // Configure basic settings of the arm motor
-    hingeConfig.idleMode(IdleMode.kCoast).smartCurrentLimit(40).voltageCompensation(12);
+    hingeConfig.idleMode(IdleMode.kCoast).smartCurrentLimit(40).voltageCompensation(12).inverted(true);
 
       /*
        * Configure the closed loop controller. We want to make sure we set the
@@ -87,7 +90,8 @@ public final class Configs {
 
     static {
       // Configure basic settings of the arm motor
-    hangConfig.idleMode(IdleMode.kCoast).smartCurrentLimit(40).voltageCompensation(12);
+    hangConfig.idleMode(IdleMode.kCoast).smartCurrentLimit(40).voltageCompensation(12).inverted(true
+    );
 
       /*
        * Configure the closed loop controller. We want to make sure we set the

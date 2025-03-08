@@ -222,11 +222,12 @@ public class RobotContainer {
       driverXbox.b().whileTrue(
           drivebase.driveToPose(
               new Pose2d(new Translation2d(4, 4), Rotation2d.fromDegrees(0))));
-      driverXbox.back().onTrue(m_hangSubSystem.setSetpointCommand(HangSubsystem.Setpoint.kLevel1));
       driverXbox.x().whileTrue(Commands.runOnce(drivebase::lock, drivebase).repeatedly());
       driverXbox.leftBumper().whileTrue(driveRobotOrientedAngularVelocity.repeatedly());
       driverXbox.rightBumper().whileTrue(driveFieldOrientedAnglularVelocityFinnese);
-      driverXbox.y().onTrue(m_hangSubSystem.setSetpointCommand(HangSubsystem.Setpoint.kLevel2));
+      driverXbox.povDown().onTrue(m_hangSubSystem.setSetpointCommand(HangSubsystem.Setpoint.kLevel2));
+      driverXbox.povUp().onTrue(m_hangSubSystem.setSetpointCommand(HangSubsystem.Setpoint.kLevel1));
+      auxXbox.axisMagnitudeGreaterThan(5, 0.2).whileTrue(runHinge);
 
       // Auxillary Controller 
       auxXbox.b().onTrue(m_elevatorSubSystem.setSetpointCommand(Setpoint.kLevel1));
@@ -235,11 +236,9 @@ public class RobotContainer {
       auxXbox.y().onTrue(m_elevatorSubSystem.setSetpointCommand(Setpoint.kLevel4));
       auxXbox.rightBumper().onTrue(outtakeWithSensor);
       auxXbox.leftBumper().onTrue(intakeWithSensor);
-      auxXbox.axisMagnitudeGreaterThan(5, 0.2).whileTrue(runHinge);
       auxXbox.start().onTrue(m_hingeSubSystem.setSetpointCommand(HingeSubsystem.Setpoint.kLevel4));
       auxXbox.axisMagnitudeGreaterThan(1, 0.2).whileTrue(runElevator);
-      auxXbox.povUp().onTrue(m_hangSubSystem.setSetpointCommand(HangSubsystem.Setpoint.kLevel2));
-      auxXbox.povDown().onTrue(m_hangSubSystem.setSetpointCommand(HangSubsystem.Setpoint.kLevel1));
+
 
     }
 

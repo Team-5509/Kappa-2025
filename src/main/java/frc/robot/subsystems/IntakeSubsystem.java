@@ -41,19 +41,25 @@ public class IntakeSubsystem extends SubsystemBase {
   // controller like above.
   private SparkMax intakeMotor =
       new SparkMax(IntakeSubsystemConstants.kIntakeMotorCanId, MotorType.kBrushless);
+
   private DigitalInput intakeInput = 
       new DigitalInput(IntakeSubsystemConstants.KIntakeInputDigitalIO);
+
       private DigitalInput outtakeInput = 
       new DigitalInput(IntakeSubsystemConstants.KOuttakeInputDigitalIO);
+
             private SparkMax intakeFollowerMotor =
       new SparkMax(IntakeSubsystemConstants.kIntakeFollowerMotorCanId, MotorType.kBrushless);
+
   private SparkClosedLoopController intakeClosedLoopController =
       intakeMotor.getClosedLoopController();
 
+      private RelativeEncoder intakeEncoder = intakeMotor.getEncoder();
 
-  private double m_Color = 0.0;
-  private Spark m_blinkin = new Spark(0);
+      private RelativeEncoder intakeFollowerEncoder = intakeFollowerMotor.getEncoder();
 
+
+  
  
 
 
@@ -73,10 +79,11 @@ public class IntakeSubsystem extends SubsystemBase {
         Configs.ElevatorSubsystem.intakeConfig,
         ResetMode.kResetSafeParameters,
         PersistMode.kPersistParameters);
-              intakeFollowerMotor.configure(
-        Configs.HangSubsystem.hangConfig.follow(ElevatorSubsystemConstants.kElevatorMotorCanId),
+        intakeFollowerMotor.configure(
+        Configs.ElevatorSubsystem.intakeFollowerConfig.follow(IntakeSubsystemConstants.kIntakeMotorCanId),
         ResetMode.kResetSafeParameters,
         PersistMode.kPersistParameters);
+        intakeFollowerMotor.setInverted(true);
  
 
     // Display mechanism2d
@@ -134,6 +141,8 @@ public class IntakeSubsystem extends SubsystemBase {
     // Display subsystem values
 
   
+    SmartDashboard.putNumber("Coral/Intake/Actual Position", intakeEncoder.getPosition());
+    SmartDashboard.putNumber("Coral/Intake/Actual Follower Position", intakeFollowerEncoder.getPosition());
     SmartDashboard.putNumber("Coral/Intake/Applied Output", intakeMotor.getAppliedOutput());
 
   }

@@ -14,12 +14,12 @@ import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.subsystems.IntakeSubsystem;
 import frc.robot.Constants.IntakeSubsystemConstants.IntakeSetpoints;
 import frc.robot.Constants.IntakeSubsystemConstants;
-import frc.robot.BlinkinLEDController;
-import frc.robot.BlinkinLEDController.BlinkinPattern;
+// import frc.robot.BlinkinLEDController;
+// import frc.robot.BlinkinLEDController.BlinkinPattern;
 /** An example command that uses an example subsystem. */
 public class IntakeWithSensor extends Command {
   private static Spark m_blinkin;
-  private static BlinkinPattern m_currentPattern;
+  // private static BlinkinPattern m_currentPattern;
   @SuppressWarnings({ "PMD.UnusedPrivateField", "PMD.SingularField" })
   private final IntakeSubsystem m_intakeSubsystem;
 
@@ -57,7 +57,7 @@ public class IntakeWithSensor extends Command {
   public boolean isFinished() {
     if (m_intakeSubsystem.getIntakeInput()) {
       m_intakeSubsystem.setIntakePower(0);
-      BlinkinLEDController.setPattern(BlinkinPattern.GOLD);
+      // BlinkinLEDController.setPattern(BlinkinPattern.GOLD);
       return true;
     } else {
       return false;

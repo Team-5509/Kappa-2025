@@ -26,7 +26,7 @@
         {
           "type": "named",
           "data": {
-            "name": "OuttakeWithSensor"
+            "name": "AutoOuttake"
           }
         },
         {
@@ -48,7 +48,7 @@
               {
                 "type": "named",
                 "data": {
-                  "name": "IntakeWithSensor"
+                  "name": "AutoIntake"
                 }
               }
             ]
@@ -76,7 +76,7 @@
         {
           "type": "named",
           "data": {
-            "name": "OuttakeWithSensor"
+            "name": "AutoOuttake"
           }
         },
         {
@@ -98,7 +98,7 @@
               {
                 "type": "named",
                 "data": {
-                  "name": "IntakeWithSensor"
+                  "name": "AutoIntake"
                 }
               }
             ]
@@ -126,7 +126,7 @@
         {
           "type": "named",
           "data": {
-            "name": "OuttakeWithSensor"
+            "name": "AutoOuttake"
           }
         }
       ]
