@@ -146,10 +146,15 @@ public class HangSubsystem extends SubsystemBase {
 
     SmartDashboard.putNumber("Hang/Target Position", hangCurrentTarget);
     SmartDashboard.putNumber("Hang/Actual Position", hangEncoder.getPosition());
+    SmartDashboard.putNumber("Hang/Current", getHangCurrent());
 
   }
   /** Get the current drawn by each simulation physics model */
   public void setHangPower(double speed){
     hangMotor.set(speed);
+  }
+
+  public double getHangCurrent(){
+    return hangMotor.getOutputCurrent();
   }
 }

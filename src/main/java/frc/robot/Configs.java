@@ -31,9 +31,10 @@ public final class Configs {
        * pressed.
        */
       elevatorConfig
-          .limitSwitch
-          .reverseLimitSwitchEnabled(true)
-          .reverseLimitSwitchType(Type.kNormallyOpen);
+          .softLimit.forwardSoftLimit(70)
+          .forwardSoftLimitEnabled(true)
+          .reverseSoftLimit(0)
+          .reverseSoftLimitEnabled(true);
 
       /*
        * Configure the closed loop controller. We want to make sure we set the

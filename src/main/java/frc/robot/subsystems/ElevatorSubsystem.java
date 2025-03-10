@@ -42,6 +42,8 @@ public class ElevatorSubsystem extends SubsystemBase {
   // Initialize intake SPARK. We will use open loop control for this so we don't need a closed loop
   // controller like above.
 
+
+
   // Member variables for subsystem state management
   private boolean wasResetByButton = false;
   private boolean wasResetByLimit = false;
@@ -61,6 +63,7 @@ public class ElevatorSubsystem extends SubsystemBase {
      * the SPARK loses power. This is useful for power cycles that may occur
      * mid-operation.
      */
+          
     elevatorMotor.configure(
         Configs.ElevatorSubsystem.elevatorConfig,
         ResetMode.kResetSafeParameters,
@@ -157,11 +160,14 @@ public class ElevatorSubsystem extends SubsystemBase {
 
     SmartDashboard.putNumber("Coral/Elevator/Target Position", elevatorCurrentTarget);
     SmartDashboard.putNumber("Coral/Elevator/Actual Position", elevatorEncoder.getPosition());
+    SmartDashboard.putNumber("Coral/Elevator/Current", getElevatorCurrent());
 
 
   }
   /** Get the current drawn by each simulation physics model */
-  
+  public double getElevatorCurrent(){
+    return elevatorMotor.getOutputCurrent();
+  }
   public double getElevatorEncoder() {
     return elevatorMotor.getEncoder().getPosition();
   }
