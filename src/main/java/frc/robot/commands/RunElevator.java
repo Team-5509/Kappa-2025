@@ -36,7 +36,7 @@ public class RunElevator extends Command {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    m_elevatorSubsystem.setElevatorPower(m_controllerInput.getAsDouble());
+    m_elevatorSubsystem.setElevatorPower(m_controllerInput.getAsDouble()*0.5);
 
   }
 

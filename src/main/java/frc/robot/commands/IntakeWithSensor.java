@@ -58,6 +58,7 @@ public class IntakeWithSensor extends Command {
     if (m_intakeSubsystem.getIntakeInput()) {
       m_intakeSubsystem.setIntakePower(0);
       // BlinkinLEDController.setPattern(BlinkinPattern.GOLD);
+  
       return true;
     } else {
       return false;
