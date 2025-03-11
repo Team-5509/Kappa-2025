@@ -34,11 +34,11 @@ public final class Constants {
 
     public static final class ElevatorSetpoints {
       // TODO fix these values to the actual Reef levels
-      public static final int kFeederStation = 15;
-      public static final int kLevel1 = 15;
-      public static final int kLevel2 = 30;
-      public static final int kLevel3 = 40;
-      public static final int kLevel4 = 60;
+      public static final double kFeederStation = 9.5;
+      public static final int kLevel1 = 10;
+      public static final int kLevel2 = 20;
+      public static final int kLevel3 = 35;
+      public static final int kLevel4 = 61;
       }
   }
   public static final class IntakeSubsystemConstants {

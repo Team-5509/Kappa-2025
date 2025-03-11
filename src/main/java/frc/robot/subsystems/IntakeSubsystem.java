@@ -85,7 +85,7 @@ public class IntakeSubsystem extends SubsystemBase {
         PersistMode.kPersistParameters);
 
         intakeFollowerMotor.configure(
-          Configs.ElevatorSubsystem.elevatorConfig.follow(IntakeSubsystemConstants.kIntakeMotorCanId, true),
+          Configs.ElevatorSubsystem.intakeConfig.follow(IntakeSubsystemConstants.kIntakeMotorCanId, true),
         ResetMode.kResetSafeParameters,
         PersistMode.kPersistParameters);
         
@@ -146,8 +146,8 @@ public class IntakeSubsystem extends SubsystemBase {
     // Display subsystem values
 
   
-    SmartDashboard.putNumber("Coral/Intake/Actual Position", intakeEncoder.getPosition());
-    SmartDashboard.putNumber("Coral/Intake/Actual Follower Position", intakeFollowerEncoder.getPosition());
+    SmartDashboard.putBoolean("Coral/Intake/intake input", getIntakeInput());
+    SmartDashboard.putBoolean("Coral/Intake/outtake input", getOuttakeInput());
     SmartDashboard.putNumber("Coral/Intake/Applied Output", intakeMotor.getAppliedOutput());
 
   }

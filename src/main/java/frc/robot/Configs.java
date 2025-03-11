@@ -23,7 +23,7 @@ public final class Configs {
 
   
       // Configure basic settings of the elevator motor
-      elevatorConfig.idleMode(IdleMode.kCoast).smartCurrentLimit(40).voltageCompensation(12).inverted(true);
+      elevatorConfig.idleMode(IdleMode.kBrake).smartCurrentLimit(40).voltageCompensation(12).inverted(true);
 
       /*
        * Configure the reverse limit switch for the elevator. By enabling the limit switch, this
@@ -31,7 +31,7 @@ public final class Configs {
        * pressed.
        */
       elevatorConfig
-          .softLimit.forwardSoftLimit(70)
+          .softLimit.forwardSoftLimit(62)
           .forwardSoftLimitEnabled(true)
           .reverseSoftLimit(0)
           .reverseSoftLimitEnabled(true);
@@ -45,7 +45,8 @@ public final class Configs {
           .feedbackSensor(FeedbackSensor.kPrimaryEncoder)
           // Set PID values for position control
           //TODO: Set P value empirically
-          .p(0.1)
+          .p(0.05)
+          .d(0.05)
           .outputRange(-1, 1)
           .maxMotion
           // Set MAXMotion parameters for position control

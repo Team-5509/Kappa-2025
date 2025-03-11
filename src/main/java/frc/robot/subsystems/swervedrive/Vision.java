@@ -336,7 +336,7 @@ public class Vision
     LEFT_CAM("Banana",
     new Rotation3d(0, 0, 0),
     new Translation3d(Units.inchesToMeters(14.25),
-                      Units.inchesToMeters(12.25),
+                      Units.inchesToMeters(-12.25),
                       Units.inchesToMeters(6.5)),
     VecBuilder.fill(4, 4, 8), VecBuilder.fill(0.5, 0.5, 1)),
 /**
@@ -345,7 +345,7 @@ public class Vision
 RIGHT_CAM("Apple",
      new Rotation3d(0, 0, 0),
      new Translation3d(Units.inchesToMeters(14.25),
-                       Units.inchesToMeters(-12.25),
+                       Units.inchesToMeters(12.25),
                        Units.inchesToMeters(6.5)),
      VecBuilder.fill(4, 4, 8), VecBuilder.fill(0.5, 0.5, 1)),
 /**
