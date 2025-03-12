@@ -22,7 +22,7 @@ public class IntakeWithSensor extends Command {
   // private static BlinkinPattern m_currentPattern;
   @SuppressWarnings({ "PMD.UnusedPrivateField", "PMD.SingularField" })
   private final IntakeSubsystem m_intakeSubsystem;
-
+private boolean intakeFlag = true;
   /**
    * Creates a new ExampleCommand.
    *
@@ -38,13 +38,13 @@ public class IntakeWithSensor extends Command {
   @Override
   public void initialize() {
     m_intakeSubsystem.setIntakePower(IntakeSetpoints.kForward);
-
+intakeFlag = true;
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-
+    intakeFlag = m_intakeSubsystem.getOuttakeInput();
   }
 
   // Called once the command ends or is interrupted.
@@ -55,7 +55,7 @@ public class IntakeWithSensor extends Command {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    if (m_intakeSubsystem.getIntakeInput()) {
+    if (m_intakeSubsystem.getIntakeInput() && !intakeFlag) {
       m_intakeSubsystem.setIntakePower(0);
       // BlinkinLEDController.setPattern(BlinkinPattern.GOLD);
   

@@ -52,7 +52,7 @@ public class OuttakeWithSensor extends Command {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    if(!(m_intakeSubsystem.getOuttakeInput())){
+    if((m_intakeSubsystem.getOuttakeInput())){
       m_intakeSubsystem.setIntakePower(0);
             // BlinkinLEDController.setPattern(BlinkinPattern.SKY_BLUE);
 
