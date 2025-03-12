@@ -37,6 +37,7 @@ import frc.robot.commands.AutoElevatorkLevel4;
 import frc.robot.commands.ExampleCommand;
 import frc.robot.commands.IntakeWithSensor;
 import frc.robot.commands.OuttakeWithSensor;
+import frc.robot.commands.RunOuttake;
 import frc.robot.commands.RunElevator;
 import frc.robot.commands.RunHinge;
 import frc.robot.commands.RunHang;
@@ -194,7 +195,7 @@ public class RobotContainer {
         Command runHinge = new RunHinge(m_hingeSubSystem, () -> auxXbox.getRightY() *-1 );
         Command runHang = new RunHang(m_hangSubSystem, () -> driverXbox.getRightTriggerAxis() );
         Command runHangReverse = new RunHangReverse(m_hangSubSystem, () -> driverXbox.getLeftTriggerAxis() );
-
+        Command runOuttake = new RunOuttake(m_intakeSubSystem, () -> auxXbox.getRightY());
         Command runElevator = new RunElevator(m_elevatorSubSystem, () -> auxXbox.getLeftY() * -1);
         Command outtakeWithSensor = new OuttakeWithSensor(m_intakeSubSystem);
         Command intakeWithSensor = new IntakeWithSensor(m_intakeSubSystem);
@@ -241,11 +242,12 @@ public class RobotContainer {
       auxXbox.b().onTrue(m_elevatorSubSystem.setSetpointCommand(Setpoint.kLevel2));
       auxXbox.y().onTrue(m_elevatorSubSystem.setSetpointCommand(Setpoint.kLevel3));
       auxXbox.x().onTrue(m_elevatorSubSystem.setSetpointCommand(Setpoint.kLevel4));
+      auxXbox.start().onTrue(m_hingeSubSystem.setSetpointCommand(HingeSubsystem.Setpoint.kLevel4));
       auxXbox.rightBumper().onTrue(outtakeWithSensor);
       auxXbox.leftBumper().onTrue(intakeWithSensor);
       // auxXbox.start().onTrue(m_hingeSubSystem.setSetpointCommand(HingeSubsystem.Setpoint.kLevel4));
       auxXbox.axisMagnitudeGreaterThan(1, 0.2).whileTrue(runElevator);
-      auxXbox.axisMagnitudeGreaterThan(5, 0.2).whileTrue(runHinge);
+      auxXbox.axisMagnitudeGreaterThan(5, 0.2).whileTrue(runOuttake);
 
     }
 

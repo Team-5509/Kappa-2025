@@ -45,8 +45,8 @@ public final class Constants {
 
     public static final int kIntakeMotorCanId = 15;
     public static final int kIntakeFollowerMotorCanId = 16;
-    public static final int KIntakeInputDigitalIO = 0; 
-    public static final int KOuttakeInputDigitalIO = 1; 
+    public static final int KIntakeInputDigitalIO = 9; 
+    public static final int KOuttakeInputDigitalIO = 8; 
 
     public static final class IntakeSetpoints {
       public static final double kForward = 0.5;

@@ -333,7 +333,7 @@ public class Vision
    /**
     * Left Camera
     */
-    LEFT_CAM("Banana",
+    LEFT_CAM("Apple",
     new Rotation3d(0, 0, 0),
     new Translation3d(Units.inchesToMeters(14.25),
                       Units.inchesToMeters(-12.25),
@@ -342,7 +342,7 @@ public class Vision
 /**
 * Right Camera
 */
-RIGHT_CAM("Apple",
+RIGHT_CAM("Banana",
      new Rotation3d(0, 0, 0),
      new Translation3d(Units.inchesToMeters(14.25),
                        Units.inchesToMeters(12.25),

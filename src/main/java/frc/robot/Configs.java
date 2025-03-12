@@ -69,6 +69,11 @@ public final class Configs {
       // Configure basic settings of the arm motor
     hingeConfig.idleMode(IdleMode.kCoast).smartCurrentLimit(40).voltageCompensation(12).inverted(true);
 
+    hingeConfig
+          .softLimit.forwardSoftLimit(15)
+          .forwardSoftLimitEnabled(true)
+          .reverseSoftLimit(0)
+          .reverseSoftLimitEnabled(true);
       /*
        * Configure the closed loop controller. We want to make sure we set the
        * feedback sensor as the primary encoder.
