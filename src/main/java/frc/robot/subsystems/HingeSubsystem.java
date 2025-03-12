@@ -148,23 +148,6 @@ public void syncHingeControl(){
         });
   }
 
-  // public Command CustomHingeControl(DoubleSupplier Power){
-  // double power = Power.getAsDouble();
-  //   // TODO move to constants and determine a factor
-  //   System.out.println("Hello I made it here");
-  //     final double SPEED_FACTOR = 0.5;
-  //     final double DEADBAND = -1;
-  //     SmartDashboard.putNumber("Hinge/Xbox Right Y Power", power);
-  //     return this.run(() -> {
-  //       double adjustedPower = Math.abs(power) > DEADBAND ? power * SPEED_FACTOR : 0.0;
-  //       hingeMotor.set(adjustedPower);
-  //       hingeCurrentTarget = hingeEncoder.getPosition();
-  //       moveToSetpoint();
-  //     }).withName("ManualHingeControl");
-  
-  //   }
-
-
   @Override
   public void periodic() {
     moveToSetpoint();
