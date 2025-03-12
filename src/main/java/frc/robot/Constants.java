@@ -78,7 +78,7 @@ public final class Constants {
       public static final int kLevel1 = 0;
       public static final int kLevel2 = 10;
       public static final int kLevel3 = 10;
-      public static final int kLevel4 = 10;
+      public static final int kLevel4 = 15;
       }
 
       

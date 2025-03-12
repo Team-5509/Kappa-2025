@@ -242,7 +242,8 @@ public class RobotContainer {
       auxXbox.b().onTrue(m_elevatorSubSystem.setSetpointCommand(Setpoint.kLevel2));
       auxXbox.y().onTrue(m_elevatorSubSystem.setSetpointCommand(Setpoint.kLevel3));
       auxXbox.x().onTrue(m_elevatorSubSystem.setSetpointCommand(Setpoint.kLevel4));
-      auxXbox.start().onTrue(m_hingeSubSystem.setSetpointCommand(HingeSubsystem.Setpoint.kLevel4));
+      auxXbox.povUp().onTrue(m_hingeSubSystem.setSetpointCommand(HingeSubsystem.Setpoint.kLevel4));
+      auxXbox.povDown().onTrue(m_hingeSubSystem.setSetpointCommand(HingeSubsystem.Setpoint.kLevel1));
       auxXbox.rightBumper().onTrue(outtakeWithSensor);
       auxXbox.leftBumper().onTrue(intakeWithSensor);
       // auxXbox.start().onTrue(m_hingeSubSystem.setSetpointCommand(HingeSubsystem.Setpoint.kLevel4));
