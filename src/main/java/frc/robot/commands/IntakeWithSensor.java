@@ -50,18 +50,34 @@ intakeFlag = true;
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
+    m_intakeSubsystem.setIntakePower(0);
   }
 
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    if (m_intakeSubsystem.getIntakeInput() && !intakeFlag) {
-      m_intakeSubsystem.setIntakePower(0);
-      // BlinkinLEDController.setPattern(BlinkinPattern.GOLD);
-  
-      return true;
-    } else {
+    boolean inner_is_visible = !m_intakeSubsystem.getIntakeInput();
+    boolean outer_is_visible = !m_intakeSubsystem.getOuttakeInput();
+    if (!inner_is_visible && !outer_is_visible) {
       return false;
+    } else if (inner_is_visible && !outer_is_visible) {
+      m_intakeSubsystem.setIntakePower(0.5);
+      return false;
+    } else if (inner_is_visible && outer_is_visible) {
+      m_intakeSubsystem.setIntakePower(0.2);
+      return false;
+    } else if (!inner_is_visible && outer_is_visible) {
+      return true;
     }
+    return false;
+
+    // if (m_intakeSubsystem.getIntakeInput() && !intakeFlag) {
+    //   m_intakeSubsystem.setIntakePower(0);
+    //   // BlinkinLEDController.setPattern(BlinkinPattern.GOLD);
+  
+    //   return true;
+    // } else {
+    //   return false;
+    // }
   }
 }

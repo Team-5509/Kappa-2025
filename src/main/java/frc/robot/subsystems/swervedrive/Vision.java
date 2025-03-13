@@ -334,7 +334,7 @@ public class Vision
     * Left Camera
     */
     LEFT_CAM("Apple",
-    new Rotation3d(180, 0, 0),
+    new Rotation3d(0, 0, 0),
     new Translation3d(Units.inchesToMeters(14.25),
                       Units.inchesToMeters(-12.25),
                       Units.inchesToMeters(6.5)),
@@ -343,7 +343,7 @@ public class Vision
 * Right Camera
 */
 RIGHT_CAM("Banana",
-     new Rotation3d(180, 0, 0),
+     new Rotation3d(0, 0, 0),
      new Translation3d(Units.inchesToMeters(14.25),
                        Units.inchesToMeters(12.25),
                        Units.inchesToMeters(6.5)),

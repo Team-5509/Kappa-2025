@@ -47,19 +47,18 @@ public class OuttakeWithSensor extends Command {
 
   // Called once the command ends or is interrupted.
   @Override
-  public void end(boolean interrupted) {}
+  public void end(boolean interrupted) {
+       m_intakeSubsystem.setIntakePower(0);
+  }
 
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    if((m_intakeSubsystem.getOuttakeInput())){
-      m_intakeSubsystem.setIntakePower(0);
-            // BlinkinLEDController.setPattern(BlinkinPattern.SKY_BLUE);
-
+    boolean outer_is_visible = !m_intakeSubsystem.getOuttakeInput();
+    if (!outer_is_visible){
       return true;
-    } 
-    else {
-      return false;
     }
+    return false;
+    
   }
 }
