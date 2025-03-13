@@ -27,6 +27,9 @@ deploy {
                 // getTargetTypeClass is a shortcut to get the class type using a string
 
                 frcJava(getArtifactTypeClass('FRCJavaArtifact')) {
+                        // Note: the heap dump path here is a path on a USB flash drive, see below
+    jvmArgs.add("-XX:+HeapDumpOnOutOfMemoryError")
+    jvmArgs.add("-XX:HeapDumpPath=/u/frc-usercode.hprof")
                 }
 
                 // Static files artifact

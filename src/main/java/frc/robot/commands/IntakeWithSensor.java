@@ -64,7 +64,7 @@ intakeFlag = true;
       m_intakeSubsystem.setIntakePower(0.5);
       return false;
     } else if (inner_is_visible && outer_is_visible) {
-      m_intakeSubsystem.setIntakePower(0.2);
+      m_intakeSubsystem.setIntakePower(0.4);
       return false;
     } else if (!inner_is_visible && outer_is_visible) {
       return true;

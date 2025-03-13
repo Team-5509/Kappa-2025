@@ -31,11 +31,13 @@ public final class Configs {
        * pressed.
        */
       elevatorConfig
-          .softLimit.forwardSoftLimit(62)
+          .softLimit.forwardSoftLimit(61.15)
           .forwardSoftLimitEnabled(true)
           .reverseSoftLimit(0)
           .reverseSoftLimitEnabled(true);
 
+
+          
       /*
        * Configure the closed loop controller. We want to make sure we set the
        * feedback sensor as the primary encoder.
@@ -44,8 +46,8 @@ public final class Configs {
           .closedLoop
           .feedbackSensor(FeedbackSensor.kPrimaryEncoder)
           // Set PID values for position control
-          //TODO: Set P value empirically
           .p(0.05)
+          
           .d(0.05)
           .outputRange(-1, 1)
           .maxMotion

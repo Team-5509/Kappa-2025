@@ -249,6 +249,7 @@ public class RobotContainer {
       // auxXbox.start().onTrue(m_hingeSubSystem.setSetpointCommand(HingeSubsystem.Setpoint.kLevel4));
       auxXbox.axisMagnitudeGreaterThan(1, 0.2).whileTrue(runElevator);
       auxXbox.axisMagnitudeGreaterThan(5, 0.2).whileTrue(runOuttake);
+      auxXbox.axisMagnitudeGreaterThan(3, 0.2).onTrue(m_elevatorSubSystem.setSetpointCommand(Setpoint.kFeederStation));
 
     }
 

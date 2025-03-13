@@ -307,7 +307,7 @@ public class Vision
        PhotonPipelineResult latest = c.resultsList.get(0);
        if (latest.hasTargets())
        {
-         targets.addAll(latest.targets);
+        //  targets.addAll(latest.targets);
        }
      }
    }
