@@ -7,7 +7,7 @@
         {
           "type": "path",
           "data": {
-            "pathName": "Center to ID 21"
+            "pathName": "Center to ID 21(Trough)"
           }
         },
         {
@@ -19,13 +19,13 @@
         {
           "type": "named",
           "data": {
-            "name": "AutoElevatorkLevel4"
+            "name": "AutoElevatorkLevel2"
           }
         },
         {
           "type": "wait",
           "data": {
-            "waitTime": 3.0
+            "waitTime": 1.0
           }
         },
         {

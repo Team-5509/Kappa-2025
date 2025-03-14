@@ -1,0 +1,38 @@
+{
+  "version": "2025.0",
+  "command": {
+    "type": "sequential",
+    "data": {
+      "commands": [
+        {
+          "type": "sequential",
+          "data": {
+            "commands": [
+              {
+                "type": "path",
+                "data": {
+                  "pathName": "Test - Center to ID 21"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "AutoElevatorkLevel2"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "AutoOuttake"
+                }
+              }
+            ]
+          }
+        }
+      ]
+    }
+  },
+  "resetOdom": true,
+  "folder": "Center Autons",
+  "choreoAuto": false
+}

@@ -44,8 +44,8 @@ public class AutoElevatorTrough extends Command {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    if (m_elevatorSubsystem.getElevatorEncoder() >= elevatorCurrentTarget - 1 
-    || m_elevatorSubsystem.getElevatorEncoder() <= elevatorCurrentTarget + 1){
+    if (m_elevatorSubsystem.getElevatorEncoder() >= elevatorCurrentTarget - .1 
+    || m_elevatorSubsystem.getElevatorEncoder() <= elevatorCurrentTarget + .1){
       return true;
     }
     return false;

@@ -196,7 +196,7 @@ public class RobotContainer {
         Command runHang = new RunHang(m_hangSubSystem, () -> driverXbox.getRightTriggerAxis() );
         Command runHangReverse = new RunHangReverse(m_hangSubSystem, () -> driverXbox.getLeftTriggerAxis() );
         Command runOuttake = new RunOuttake(m_intakeSubSystem, () -> auxXbox.getRightY() * -1);
-        Command runElevator = new RunElevator(m_elevatorSubSystem, () -> auxXbox.getLeftY() * -1);
+        Command runElevator = new RunElevator(m_elevatorSubSystem, () -> auxXbox.getLeftY() * -0.5);
         Command outtakeWithSensor = new OuttakeWithSensor(m_intakeSubSystem);
         Command intakeWithSensor = new IntakeWithSensor(m_intakeSubSystem);
 
