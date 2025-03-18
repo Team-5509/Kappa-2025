@@ -21,6 +21,7 @@ public class ElevatorSubsystem extends SubsystemBase {
   public enum Setpoint {
     kFeederStation,
     kLevel1,
+    kLevel1AndAHalf,
     kLevel2,
     kLevel3,
     kLevel4;
@@ -132,6 +133,10 @@ public class ElevatorSubsystem extends SubsystemBase {
             case kLevel1:
             
               elevatorCurrentTarget = ElevatorSetpoints.kLevel1;
+              break;
+            case kLevel1AndAHalf:
+            
+              elevatorCurrentTarget = ElevatorSetpoints.kLevel1AndAHalf;
               break;
             case kLevel2:
               

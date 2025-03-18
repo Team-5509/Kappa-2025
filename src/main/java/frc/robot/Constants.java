@@ -34,10 +34,11 @@ public final class Constants {
 
     public static final class ElevatorSetpoints {
       // TODO fix these values to the actual Reef levels
-      public static final double kFeederStation = 5.5;
-      public static final double kLevel1 = 5.2;
-      public static final double kLevel2 = 15.5;
-      public static final double kLevel3 = 33;
+      public static final double kFeederStation = 5.3;
+      public static final double kLevel1 = 3;
+      public static final double kLevel1AndAHalf = 10;
+      public static final double kLevel2 = 14.5;
+      public static final double kLevel3 = 32;
       public static final int kLevel4 = 61;
       }
   }
@@ -85,7 +86,7 @@ public final class Constants {
   }
  
 
-  public static final double ROBOT_MASS = (135) * 0.453592; // 32lbs * kg per pound
+  public static final double ROBOT_MASS = (130) * 0.453592; // 32lbs * kg per pound
   public static final Matter CHASSIS = new Matter(new Translation3d(0, 0, Units.inchesToMeters(8)), ROBOT_MASS);
   public static final double LOOP_TIME = 0.13; // s, 20ms + 110ms sprk max velocity lag
   public static final double MAX_SPEED = Units.feetToMeters(40);
