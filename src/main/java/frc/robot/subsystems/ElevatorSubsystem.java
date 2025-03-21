@@ -4,6 +4,7 @@ import com.revrobotics.RelativeEncoder;
 import com.revrobotics.spark.SparkBase.ControlType;
 import com.revrobotics.spark.SparkBase.PersistMode;
 import com.revrobotics.spark.SparkBase.ResetMode;
+import com.revrobotics.spark.ClosedLoopSlot;
 import com.revrobotics.spark.SparkClosedLoopController;
 import com.revrobotics.spark.SparkLowLevel.MotorType;
 import com.revrobotics.spark.SparkMax;
@@ -34,12 +35,12 @@ public class ElevatorSubsystem extends SubsystemBase {
   // need to initialize the closed loop controller and encoder.
   private SparkMax elevatorFollowerMotor =
   new SparkMax(ElevatorSubsystemConstants.kElevatorFollowerMotorCanId, MotorType.kBrushless);
-  private SparkMax elevatorMotor =
+  private SparkMax elevatorMotor = 
       new SparkMax(ElevatorSubsystemConstants.kElevatorMotorCanId, MotorType.kBrushless);
   private SparkClosedLoopController elevatorClosedLoopController =
       elevatorMotor.getClosedLoopController();
-  private RelativeEncoder elevatorEncoder = elevatorMotor.getEncoder();
-
+  // private RelativeEncoder elevatorEncoder = elevatorMotor.getEncoder();
+    private RelativeEncoder elevatorEncoder = elevatorMotor.getEncoder();
   // Initialize intake SPARK. We will use open loop control for this so we don't need a closed loop
   // controller like above.
 
@@ -89,7 +90,7 @@ public class ElevatorSubsystem extends SubsystemBase {
    */
   public void moveToSetpoint() {
     elevatorClosedLoopController.setReference(
-        elevatorCurrentTarget, ControlType.kMAXMotionPositionControl);
+        elevatorCurrentTarget, ControlType.kMAXMotionPositionControl, ClosedLoopSlot.kSlot0, ElevatorSubsystemConstants.kArbFF);
   }
 
   /** Zero the elevator encoder when the limit switch is pressed. */

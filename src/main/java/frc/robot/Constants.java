@@ -30,7 +30,7 @@ public final class Constants {
     
     public static final int kElevatorMotorCanId = 13;
     public static final int kElevatorFollowerMotorCanId = 14;
-
+    public static final int kArbFF = 0;
 
     public static final class ElevatorSetpoints {
       // TODO fix these values to the actual Reef levels
@@ -40,6 +40,7 @@ public final class Constants {
       public static final double kLevel2 = 14.5;
       public static final double kLevel3 = 32;
       public static final int kLevel4 = 61;
+    
       }
   }
   public static final class IntakeSubsystemConstants {
@@ -90,6 +91,7 @@ public final class Constants {
   public static final Matter CHASSIS = new Matter(new Translation3d(0, 0, Units.inchesToMeters(8)), ROBOT_MASS);
   public static final double LOOP_TIME = 0.13; // s, 20ms + 110ms sprk max velocity lag
   public static final double MAX_SPEED = Units.feetToMeters(40);
+
 
   public static final class SimulationRobotConstants {
     public static final double kPixelsPerMeter = 20;

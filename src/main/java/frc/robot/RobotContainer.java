@@ -122,6 +122,27 @@ public class RobotContainer {
       .robotRelative(true)
       .allianceRelativeControl(false);
 
+      SwerveInputStream driveRobotOrientedStrafeLeftFinesse = SwerveInputStream.of(drivebase.getSwerveDrive(),
+      () -> driverXbox.getLeftY() * 0,
+      () -> -1)
+      .withControllerRotationAxis(() -> driverXbox.getRightX() * 0)
+      .deadband(OperatorConstants.DEADBAND)
+      .scaleTranslation(OperatorConstants.SPEED_MINIMUM_FACTOR)
+      .cubeRotationControllerAxis(true)
+      .cubeTranslationControllerAxis(true)
+      .robotRelative(true)
+      .allianceRelativeControl(false);
+
+      SwerveInputStream driveRobotOrientedStrafeRightFinesse = SwerveInputStream.of(drivebase.getSwerveDrive(),
+      () -> driverXbox.getLeftY() * 0,
+      () -> 1)
+      .withControllerRotationAxis(() -> driverXbox.getRightX() * 0)
+      .deadband(OperatorConstants.DEADBAND)
+      .scaleTranslation(OperatorConstants.SPEED_MINIMUM_FACTOR)
+      .cubeRotationControllerAxis(true)
+      .cubeTranslationControllerAxis(true)
+      .robotRelative(true)
+      .allianceRelativeControl(false);
   /**
    * Clone's the angular velocity input stream and converts it to a fieldRelative
    * input stream.
@@ -196,6 +217,9 @@ public class RobotContainer {
     Command driveFieldOrientedAnglularVelocitySim = drivebase.driveFieldOriented(driveAngularVelocitySim);
     Command driveSetpointGenSim = drivebase.driveWithSetpointGeneratorFieldRelative(
         driveDirectAngleSim);
+    Command driveRobotOrientedStrafeLeftFinneseCommand = drivebase.driveFieldOriented(driveRobotOrientedStrafeLeftFinesse);
+    Command driveRobotOrientedStrafeRightFinneseCommand = drivebase.driveFieldOriented(driveRobotOrientedStrafeRightFinesse);
+
         Command runHinge = new RunHinge(m_hingeSubSystem, () -> auxXbox.getRightY() *-1 );
         Command runHang = new RunHang(m_hangSubSystem, () -> driverXbox.getRightTriggerAxis() );
         Command runHangReverse = new RunHangReverse(m_hangSubSystem, () -> driverXbox.getLeftTriggerAxis() );
@@ -239,6 +263,10 @@ public class RobotContainer {
       // driverXbox.povUp().onTrue(m_hangSubSystem.setSetpointCommand(HangSubsystem.Setpoint.kLevel1));
       driverXbox.axisMagnitudeGreaterThan(3, 0.2).whileTrue(runHang);
       driverXbox.axisMagnitudeGreaterThan(2, 0.2).whileTrue(runHangReverse);
+      driverXbox.povLeft().whileTrue(driveRobotOrientedStrafeLeftFinneseCommand);
+      driverXbox.povRight().whileTrue(driveRobotOrientedStrafeRightFinneseCommand);
+
+      
      
 
       // Auxillary Controller 

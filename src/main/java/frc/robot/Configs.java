@@ -31,12 +31,11 @@ public final class Configs {
        * pressed.
        */
       elevatorConfig
+      //TODO change softLimit and Hard Limit
           .softLimit.forwardSoftLimit(61.15)
           .forwardSoftLimitEnabled(true)
           .reverseSoftLimit(0)
           .reverseSoftLimitEnabled(true);
-
-
           
       /*
        * Configure the closed loop controller. We want to make sure we set the
@@ -46,8 +45,8 @@ public final class Configs {
           .closedLoop
           .feedbackSensor(FeedbackSensor.kPrimaryEncoder)
           // Set PID values for position control
+          //TODO fix the P and D values
           .p(0.05)
-          
           .d(0.05)
           .outputRange(-1, 1)
           .maxMotion
