@@ -30,8 +30,8 @@ public final class Constants {
     
     public static final int kElevatorMotorCanId = 13;
     public static final int kElevatorFollowerMotorCanId = 14;
-    public static final int kArbFF = 0;
-
+    public static final double kArbFF = 0.3;
+    
     public static final class ElevatorSetpoints {
       // TODO fix these values to the actual Reef levels
       public static final double kFeederStation = 5.3;

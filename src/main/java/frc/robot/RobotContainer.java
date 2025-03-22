@@ -124,7 +124,7 @@ public class RobotContainer {
 
       SwerveInputStream driveRobotOrientedStrafeLeftFinesse = SwerveInputStream.of(drivebase.getSwerveDrive(),
       () -> driverXbox.getLeftY() * 0,
-      () -> -1)
+      () -> -0.6)
       .withControllerRotationAxis(() -> driverXbox.getRightX() * 0)
       .deadband(OperatorConstants.DEADBAND)
       .scaleTranslation(OperatorConstants.SPEED_MINIMUM_FACTOR)
@@ -135,7 +135,7 @@ public class RobotContainer {
 
       SwerveInputStream driveRobotOrientedStrafeRightFinesse = SwerveInputStream.of(drivebase.getSwerveDrive(),
       () -> driverXbox.getLeftY() * 0,
-      () -> 1)
+      () -> 0.6)
       .withControllerRotationAxis(() -> driverXbox.getRightX() * 0)
       .deadband(OperatorConstants.DEADBAND)
       .scaleTranslation(OperatorConstants.SPEED_MINIMUM_FACTOR)
@@ -263,8 +263,8 @@ public class RobotContainer {
       // driverXbox.povUp().onTrue(m_hangSubSystem.setSetpointCommand(HangSubsystem.Setpoint.kLevel1));
       driverXbox.axisMagnitudeGreaterThan(3, 0.2).whileTrue(runHang);
       driverXbox.axisMagnitudeGreaterThan(2, 0.2).whileTrue(runHangReverse);
-      driverXbox.povLeft().whileTrue(driveRobotOrientedStrafeLeftFinneseCommand);
-      driverXbox.povRight().whileTrue(driveRobotOrientedStrafeRightFinneseCommand);
+      driverXbox.povRight().whileTrue(driveRobotOrientedStrafeLeftFinneseCommand);
+      driverXbox.povLeft().whileTrue(driveRobotOrientedStrafeRightFinneseCommand);
 
       
      
