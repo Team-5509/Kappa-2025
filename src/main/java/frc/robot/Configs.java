@@ -71,7 +71,7 @@ public final class Configs {
     hingeConfig.idleMode(IdleMode.kCoast).smartCurrentLimit(40).voltageCompensation(12).inverted(true);
 
     hingeConfig
-          .softLimit.forwardSoftLimit(15)
+          .softLimit.forwardSoftLimit(25)
           .forwardSoftLimitEnabled(true)
           .reverseSoftLimit(0)
           .reverseSoftLimitEnabled(true);

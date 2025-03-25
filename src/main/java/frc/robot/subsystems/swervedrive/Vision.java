@@ -342,21 +342,21 @@ public class Vision
 /**
 * Right Camera
 */
-RIGHT_CAM("Banana",
-     new Rotation3d(0, 0, 0),
-     new Translation3d(Units.inchesToMeters(14.25),
-                       Units.inchesToMeters(12.25),
-                       Units.inchesToMeters(6.5)),
-     VecBuilder.fill(4, 4, 8), VecBuilder.fill(0.5, 0.5, 1));
-/**
-* Center Camera
-*/
-// CENTER_CAM("Cherry",
-//       new Rotation3d(0, 0, Math.toRadians(180)),
-//       new Translation3d(Units.inchesToMeters(-14.25),
-//                         Units.inchesToMeters(-12.25),
-//                         Units.inchesToMeters(6.5)),
-//       VecBuilder.fill(4, 4, 8), VecBuilder.fill(0.5, 0.5, 1));
+// RIGHT_CAM("Banana",
+//      new Rotation3d(0, 0, 0),
+//      new Translation3d(Units.inchesToMeters(14.25),
+//                        Units.inchesToMeters(12.25),
+//                        Units.inchesToMeters(6.5)),
+//      VecBuilder.fill(4, 4, 8), VecBuilder.fill(0.5, 0.5, 1));
+// /**
+// * Center Camera
+// */
+CENTER_CAM("Cherry",
+      new Rotation3d(0, 0, Math.toRadians(180)),
+      new Translation3d(Units.inchesToMeters(-14.25),
+                        Units.inchesToMeters(-12.25),
+                        Units.inchesToMeters(6.5)),
+      VecBuilder.fill(4, 4, 8), VecBuilder.fill(0.5, 0.5, 1));
       
    /**
     * Latency alert to use when high latency is detected.

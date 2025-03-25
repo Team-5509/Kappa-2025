@@ -11,13 +11,13 @@
               {
                 "type": "named",
                 "data": {
-                  "name": "AutoElevatorkLevel4"
+                  "name": "AutoElevatorTrough"
                 }
               },
               {
                 "type": "path",
                 "data": {
-                  "pathName": "StartPos 1 to ID20"
+                  "pathName": "StartPos 1 to ID20(trough)"
                 }
               }
             ]
@@ -42,7 +42,7 @@
               {
                 "type": "path",
                 "data": {
-                  "pathName": "ID20 to A Coral Station"
+                  "pathName": "ID20 to A Coral Station(trough)"
                 }
               },
               {

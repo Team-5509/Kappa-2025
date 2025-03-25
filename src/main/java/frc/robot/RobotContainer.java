@@ -116,7 +116,7 @@ public class RobotContainer {
       () -> driverXbox.getLeftX() * -1)
       .withControllerRotationAxis(() -> driverXbox.getRightX() * -1)
       .deadband(OperatorConstants.DEADBAND)
-      .scaleTranslation(OperatorConstants.SPEED_MAXIMUM_FACTOR)
+      .scaleTranslation(OperatorConstants.SPEED_MINIMUM_FACTOR)
       .cubeRotationControllerAxis(true)
       .cubeTranslationControllerAxis(true)
       .robotRelative(true)
