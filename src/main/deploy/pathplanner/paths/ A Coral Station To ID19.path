@@ -3,25 +3,25 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 1.1028688524590162,
-        "y": 6.93201844262295
+        "x": 0.8511270491803278,
+        "y": 7.159784836065573
       },
       "prevControl": null,
       "nextControl": {
-        "x": 1.2706967213114755,
-        "y": 6.740215163934426
+        "x": 1.018954918032787,
+        "y": 6.967981557377049
       },
       "isLocked": false,
       "linkedName": "Coral Station"
     },
     {
       "anchor": {
-        "x": 3.662436868686869,
-        "y": 5.10239898989899
+        "x": 3.6442622950819668,
+        "y": 5.061936475409836
       },
       "prevControl": {
-        "x": 3.398707360490148,
-        "y": 5.414079317767844
+        "x": 3.80574785544851,
+        "y": 4.871089904067557
       },
       "nextControl": null,
       "isLocked": false,
@@ -32,8 +32,8 @@
   "constraintZones": [
     {
       "name": "Constraints Zone",
-      "minWaypointRelativePos": 1.0,
-      "maxWaypointRelativePos": 0.7260208926875592,
+      "minWaypointRelativePos": 0.5,
+      "maxWaypointRelativePos": 0.35,
       "constraints": {
         "maxVelocity": 1.5,
         "maxAcceleration": 0.8,
@@ -56,7 +56,7 @@
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": -59.0362434679265
+    "rotation": -58.29857033049431
   },
   "reversed": false,
   "folder": "Left Paths",

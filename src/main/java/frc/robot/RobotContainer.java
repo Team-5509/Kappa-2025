@@ -220,9 +220,10 @@ public class RobotContainer {
     Command driveRobotOrientedStrafeLeftFinneseCommand = drivebase.driveFieldOriented(driveRobotOrientedStrafeLeftFinesse);
     Command driveRobotOrientedStrafeRightFinneseCommand = drivebase.driveFieldOriented(driveRobotOrientedStrafeRightFinesse);
 
-        Command runHinge = new RunHinge(m_hingeSubSystem, () -> auxXbox.getRightY() *-1 );
-        Command runHang = new RunHang(m_hangSubSystem, () -> driverXbox.getRightTriggerAxis() );
-        Command runHangReverse = new RunHangReverse(m_hangSubSystem, () -> driverXbox.getLeftTriggerAxis() );
+        Command runHingeReverse = new RunHinge(m_hingeSubSystem, () -> 0.5 );
+        Command runHingeForward = new RunHinge(m_hingeSubSystem, () -> -0.5 );
+        Command runHang = new RunHang(m_hangSubSystem, () -> driverXbox.getRightTriggerAxis() *-1 );
+        Command runHangReverse = new RunHangReverse(m_hangSubSystem, () -> driverXbox.getLeftTriggerAxis() *-1 );
         Command runOuttake = new RunOuttake(m_intakeSubSystem, () -> auxXbox.getRightY()*-1);
         Command runElevator = new RunElevator(m_elevatorSubSystem, () -> auxXbox.getLeftY() * -0.25);
         Command outtakeWithSensor = new OuttakeWithSensor(m_intakeSubSystem);
@@ -259,8 +260,8 @@ public class RobotContainer {
       driverXbox.x().whileTrue(Commands.runOnce(drivebase::lock, drivebase).repeatedly());
       driverXbox.leftBumper().whileTrue(driveRobotOrientedAngularVelocity.repeatedly());
       driverXbox.rightBumper().whileTrue(driveFieldOrientedAnglularVelocityFinnese);
-      // driverXbox.povDown().onTrue(m_hangSubSystem.setSetpointCommand(HangSubsystem.Setpoint.kLevel2));
-      // driverXbox.povUp().onTrue(m_hangSubSystem.setSetpointCommand(HangSubsystem.Setpoint.kLevel1));
+      driverXbox.povDown().whileTrue(runHingeReverse);
+      driverXbox.povUp().whileTrue(runHingeForward);
       driverXbox.axisMagnitudeGreaterThan(3, 0.2).whileTrue(runHang);
       driverXbox.axisMagnitudeGreaterThan(2, 0.2).whileTrue(runHangReverse);
       driverXbox.povRight().whileTrue(driveRobotOrientedStrafeLeftFinneseCommand);

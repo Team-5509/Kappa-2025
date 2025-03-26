@@ -3,39 +3,39 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 3.6442622950819668,
-        "y": 5.061936475409836
+        "x": 1.0309426229508196,
+        "y": 1.0700307377049172
       },
       "prevControl": null,
       "nextControl": {
-        "x": 3.134096105155642,
-        "y": 5.519428643755361
+        "x": 1.6931945747586186,
+        "y": 1.4983987157054603
       },
       "isLocked": false,
-      "linkedName": "ID 6"
+      "linkedName": "Coral Station Bottom"
     },
     {
       "anchor": {
-        "x": 0.8511270491803278,
-        "y": 7.159784836065573
+        "x": 3.9919057377049176,
+        "y": 2.84421106557377
       },
       "prevControl": {
-        "x": 1.2706967213114755,
-        "y": 6.812141393442623
+        "x": 3.0413990473132086,
+        "y": 2.205772746795178
       },
       "nextControl": null,
       "isLocked": false,
-      "linkedName": "Coral Station"
+      "linkedName": "Id17(2)"
     }
   ],
   "rotationTargets": [],
   "constraintZones": [
     {
       "name": "Constraints Zone",
-      "minWaypointRelativePos": 1.0,
-      "maxWaypointRelativePos": 0.7697056030389364,
+      "minWaypointRelativePos": 0.819088319088319,
+      "maxWaypointRelativePos": 1.0,
       "constraints": {
-        "maxVelocity": 1.0,
+        "maxVelocity": 1.5,
         "maxAcceleration": 0.8,
         "maxAngularVelocity": 270.0,
         "maxAngularAcceleration": 360.0,
@@ -56,13 +56,13 @@
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": -54.09027692082242
+    "rotation": 59.80837703904238
   },
   "reversed": false,
-  "folder": "Left Paths",
+  "folder": "Right Paths",
   "idealStartingState": {
     "velocity": 0,
-    "rotation": -58.29857033049431
+    "rotation": 53.68635458123665
   },
   "useDefaultConstraints": true
 }

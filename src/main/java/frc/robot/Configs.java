@@ -68,10 +68,10 @@ public final class Configs {
 
     static {
       // Configure basic settings of the arm motor
-    hingeConfig.idleMode(IdleMode.kCoast).smartCurrentLimit(40).voltageCompensation(12).inverted(true);
+    hingeConfig.idleMode(IdleMode.kCoast).smartCurrentLimit(40).voltageCompensation(12).inverted(false);
 
     hingeConfig
-          .softLimit.forwardSoftLimit(25)
+          .softLimit.forwardSoftLimit(35)
           .forwardSoftLimitEnabled(true)
           .reverseSoftLimit(0)
           .reverseSoftLimitEnabled(true);
