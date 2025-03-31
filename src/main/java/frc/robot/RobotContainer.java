@@ -220,8 +220,8 @@ public class RobotContainer {
     Command driveRobotOrientedStrafeLeftFinneseCommand = drivebase.driveFieldOriented(driveRobotOrientedStrafeLeftFinesse);
     Command driveRobotOrientedStrafeRightFinneseCommand = drivebase.driveFieldOriented(driveRobotOrientedStrafeRightFinesse);
 
-        Command runHingeReverse = new RunHinge(m_hingeSubSystem, () -> 0.5 );
-        Command runHingeForward = new RunHinge(m_hingeSubSystem, () -> -0.5 );
+        Command runHingeReverse = new RunHinge(m_hingeSubSystem, () -> 0.25 );
+        Command runHingeForward = new RunHinge(m_hingeSubSystem, () -> -0.25 );
         Command runHang = new RunHang(m_hangSubSystem, () -> driverXbox.getRightTriggerAxis() *-1 );
         Command runHangReverse = new RunHangReverse(m_hangSubSystem, () -> driverXbox.getLeftTriggerAxis() *-1 );
         Command runOuttake = new RunOuttake(m_intakeSubSystem, () -> auxXbox.getRightY()*-1);

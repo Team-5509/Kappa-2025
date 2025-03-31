@@ -3,25 +3,25 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 4.747131147540983,
-        "y": 5.38560450819672
+        "x": 5.058811475409836,
+        "y": 5.205788934426229
       },
       "prevControl": null,
       "nextControl": {
-        "x": 3.6802254098360656,
-        "y": 6.164805327868852
+        "x": 3.9919057377049185,
+        "y": 5.984989754098361
       },
       "isLocked": false,
       "linkedName": "Id20(trough)"
     },
     {
       "anchor": {
-        "x": 0.8511270491803278,
-        "y": 7.159784836065573
+        "x": 0.8631147540983605,
+        "y": 7.135809426229507
       },
       "prevControl": {
-        "x": 1.4984631147540983,
-        "y": 6.961987704918032
+        "x": 1.5104508196721311,
+        "y": 6.938012295081966
       },
       "nextControl": null,
       "isLocked": false,
@@ -32,8 +32,8 @@
   "constraintZones": [
     {
       "name": "Constraints Zone",
-      "minWaypointRelativePos": 1.0,
-      "maxWaypointRelativePos": 0.7754036087369418,
+      "minWaypointRelativePos": 0.8703703703703708,
+      "maxWaypointRelativePos": 1.0,
       "constraints": {
         "maxVelocity": 1.5,
         "maxAcceleration": 0.8,
@@ -47,8 +47,8 @@
   "pointTowardsZones": [],
   "eventMarkers": [],
   "globalConstraints": {
-    "maxVelocity": 3.0,
-    "maxAcceleration": 3.0,
+    "maxVelocity": 2.0,
+    "maxAcceleration": 2.8,
     "maxAngularVelocity": 270.0,
     "maxAngularAcceleration": 360.0,
     "nominalVoltage": 12.0,
@@ -62,7 +62,7 @@
   "folder": "Left Paths",
   "idealStartingState": {
     "velocity": 0,
-    "rotation": -120.11373315098241
+    "rotation": -119.29136217098423
   },
-  "useDefaultConstraints": true
+  "useDefaultConstraints": false
 }

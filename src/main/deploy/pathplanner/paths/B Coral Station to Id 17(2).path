@@ -3,25 +3,25 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 1.0309426229508196,
-        "y": 1.0700307377049172
+        "x": 0.9110655737704917,
+        "y": 1.022079918032788
       },
       "prevControl": null,
       "nextControl": {
-        "x": 1.6931945747586186,
-        "y": 1.4983987157054603
+        "x": 1.5733175255782905,
+        "y": 1.4504478960333311
       },
       "isLocked": false,
       "linkedName": "Coral Station Bottom"
     },
     {
       "anchor": {
-        "x": 3.9919057377049176,
-        "y": 2.84421106557377
+        "x": 4.039856557377049,
+        "y": 2.8801741803278684
       },
       "prevControl": {
-        "x": 3.0413990473132086,
-        "y": 2.205772746795178
+        "x": 3.08934986698534,
+        "y": 2.2417358615492766
       },
       "nextControl": null,
       "isLocked": false,
@@ -32,7 +32,7 @@
   "constraintZones": [
     {
       "name": "Constraints Zone",
-      "minWaypointRelativePos": 0.819088319088319,
+      "minWaypointRelativePos": 0.8969610636277301,
       "maxWaypointRelativePos": 1.0,
       "constraints": {
         "maxVelocity": 1.5,
@@ -47,8 +47,8 @@
   "pointTowardsZones": [],
   "eventMarkers": [],
   "globalConstraints": {
-    "maxVelocity": 3.0,
-    "maxAcceleration": 3.0,
+    "maxVelocity": 2.5,
+    "maxAcceleration": 2.7,
     "maxAngularVelocity": 270.0,
     "maxAngularAcceleration": 360.0,
     "nominalVoltage": 12.0,

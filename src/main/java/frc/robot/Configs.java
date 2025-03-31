@@ -99,7 +99,7 @@ public final class Configs {
 
     static {
       // Configure basic settings of the arm motor
-    hangConfig.idleMode(IdleMode.kCoast).smartCurrentLimit(40).voltageCompensation(12).inverted(true
+    hangConfig.idleMode(IdleMode.kBrake).smartCurrentLimit(40).voltageCompensation(12).inverted(true
     );
 
       /*
