@@ -26,6 +26,12 @@
         {
           "type": "named",
           "data": {
+            "name": "DriveToPoseCLeftPose"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
             "name": "AutoOuttake"
           }
         },
