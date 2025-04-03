@@ -11,22 +11,9 @@
           }
         },
         {
-          "type": "parallel",
+          "type": "path",
           "data": {
-            "commands": [
-              {
-                "type": "path",
-                "data": {
-                  "pathName": "Center to ID 21"
-                }
-              },
-              {
-                "type": "named",
-                "data": {
-                  "name": "AutoElevatorkLevel4"
-                }
-              }
-            ]
+            "pathName": "Center to ID 21"
           }
         },
         {
@@ -38,7 +25,13 @@
         {
           "type": "named",
           "data": {
-            "name": "DLeftDriveToPose"
+            "name": "AutoElevatorkLevel4"
+          }
+        },
+        {
+          "type": "wait",
+          "data": {
+            "waitTime": 1.0
           }
         },
         {

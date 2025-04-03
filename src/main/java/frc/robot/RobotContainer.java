@@ -204,6 +204,13 @@ public class RobotContainer {
     NamedCommands.registerCommand("AutoElevatorkLevel4", new AutoElevatorkLevel4(m_elevatorSubSystem));
     NamedCommands.registerCommand( "AutoIntake", new IntakeWithSensor(m_intakeSubSystem));
     NamedCommands.registerCommand( "AutoOuttake", new OuttakeWithSensor(m_intakeSubSystem));
+    NamedCommands.registerCommand( "CLeftDriveToPose", drivebase.driveToPose( new Pose2d(new Translation2d(5.311, 5.098), Rotation2d.fromDegrees(-156.631))));
+    NamedCommands.registerCommand( "BLeftDriveToPose", drivebase.driveToPose( new Pose2d(new Translation2d(3.937, 5.203), Rotation2d.fromDegrees(-35.272))));
+    NamedCommands.registerCommand( "BRightDriveToPose", drivebase.driveToPose( new Pose2d(new Translation2d(3.623, 5.135), Rotation2d.fromDegrees(-41.186))));
+    NamedCommands.registerCommand( "ELeftDriveToPose", drivebase.driveToPose( new Pose2d(new Translation2d(5.031, 2.826), Rotation2d.fromDegrees(156.864))));
+    NamedCommands.registerCommand( "FLeftDriveToPose", drivebase.driveToPose( new Pose2d(new Translation2d(3.665, 2.894), Rotation2d.fromDegrees(33.889))));
+    NamedCommands.registerCommand( "FRightDriveToPose", drivebase.driveToPose( new Pose2d(new Translation2d(3.895, 2.685), Rotation2d.fromDegrees(33.889))));
+    NamedCommands.registerCommand( "DLeftDriveToPose", drivebase.driveToPose( new Pose2d(new Translation2d(5.864, 4.151), Rotation2d.fromDegrees(166.675))));
 
 
     

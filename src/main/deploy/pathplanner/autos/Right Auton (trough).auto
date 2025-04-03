@@ -61,7 +61,7 @@
               {
                 "type": "named",
                 "data": {
-                  "name": "AutoElevatorkLevel4"
+                  "name": "AutoElevatorTrough"
                 }
               },
               {
@@ -111,7 +111,7 @@
               {
                 "type": "named",
                 "data": {
-                  "name": "AutoElevatorkLevel4"
+                  "name": "AutoElevatorTrough"
                 }
               },
               {

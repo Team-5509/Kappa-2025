@@ -17,7 +17,7 @@
               {
                 "type": "path",
                 "data": {
-                  "pathName": "StartPos2 to Id 22"
+                  "pathName": "StartPos 1 to ID20"
                 }
               }
             ]
@@ -42,7 +42,7 @@
               {
                 "type": "path",
                 "data": {
-                  "pathName": "Id 22 to B Coral Station"
+                  "pathName": "ID20 to A Coral Station"
                 }
               },
               {
@@ -61,13 +61,13 @@
               {
                 "type": "named",
                 "data": {
-                  "name": "AutoElevatorkLevel4"
+                  "name": "AutoElevatorTrough"
                 }
               },
               {
                 "type": "path",
                 "data": {
-                  "pathName": "B Coral Station to Id 17"
+                  "pathName": " A Coral Station To ID19"
                 }
               }
             ]
@@ -92,7 +92,7 @@
               {
                 "type": "path",
                 "data": {
-                  "pathName": "Id17 to B Coral Station"
+                  "pathName": "ID19 to A CoralStation"
                 }
               },
               {
@@ -111,13 +111,13 @@
               {
                 "type": "named",
                 "data": {
-                  "name": "AutoElevatorkLevel4"
+                  "name": "AutoElevatorTrough"
                 }
               },
               {
                 "type": "path",
                 "data": {
-                  "pathName": "B Coral Station to Id 17(2)"
+                  "pathName": "A Coral Station To ID19(Pt2)"
                 }
               }
             ]
@@ -133,6 +133,6 @@
     }
   },
   "resetOdom": true,
-  "folder": "Right Autons",
+  "folder": "Left Autons",
   "choreoAuto": false
 }

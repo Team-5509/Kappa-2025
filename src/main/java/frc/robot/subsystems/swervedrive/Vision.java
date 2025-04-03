@@ -1,5 +1,6 @@
 package frc.robot.subsystems.swervedrive;
 
+import static edu.wpi.first.units.Units.Inches;
 import static edu.wpi.first.units.Units.Microseconds;
 import static edu.wpi.first.units.Units.Milliseconds;
 import static edu.wpi.first.units.Units.Seconds;
@@ -335,9 +336,9 @@ public class Vision
     */
     LEFT_CAM("Apple",
     new Rotation3d(0, 0, 0),
-    new Translation3d(Units.inchesToMeters(-8),
-                      Units.inchesToMeters(11.25),
-                      Units.inchesToMeters(13.5)),
+    new Translation3d(Units.inchesToMeters(-9.875),
+                      Units.inchesToMeters(13),
+                      Units.inchesToMeters(12)),
     VecBuilder.fill(4, 4, 8), VecBuilder.fill(0.5, 0.5, 1)),
 /**
 * Right Camera
@@ -351,11 +352,11 @@ public class Vision
 // /**
 // * Center Camera
 // */
-CENTER_CAM("Cherry",
-      new Rotation3d(0, 0, Math.toRadians(180)),
-      new Translation3d(Units.inchesToMeters(8),
-                        Units.inchesToMeters(11.25),
-                        Units.inchesToMeters(13.5)),
+    CENTER_CAM("Cherry",
+      new Rotation3d(0, 0, 0),
+      new Translation3d(Units.inchesToMeters(7.875),
+                        Units.inchesToMeters(13),
+                        Units.inchesToMeters(12)),
       VecBuilder.fill(4, 4, 8), VecBuilder.fill(0.5, 0.5, 1));
       
    /**
