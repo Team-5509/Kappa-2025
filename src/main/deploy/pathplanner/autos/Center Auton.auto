@@ -5,57 +5,46 @@
     "data": {
       "commands": [
         {
-          "type": "named",
-          "data": {
-            "name": "AutoElevatorkLevel4"
-          }
-        },
-        {
           "type": "wait",
           "data": {
             "waitTime": 3.0
           }
         },
         {
-          "type": "path",
+          "type": "parallel",
           "data": {
-            "pathName": "Center to ID 21"
+            "commands": [
+              {
+                "type": "path",
+                "data": {
+                  "pathName": "Center to ID 21"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "AutoElevatorkLevel4"
+                }
+              }
+            ]
           }
         },
         {
           "type": "wait",
           "data": {
             "waitTime": 1.0
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "DLeftDriveToPose"
           }
         },
         {
           "type": "named",
           "data": {
             "name": "AutoOuttake"
-          }
-        },
-        {
-          "type": "wait",
-          "data": {
-            "waitTime": 1.0
-          }
-        },
-        {
-          "type": "path",
-          "data": {
-            "pathName": "back up"
-          }
-        },
-        {
-          "type": "wait",
-          "data": {
-            "waitTime": 1.0
-          }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": "AutoElevatorCoral"
           }
         }
       ]

@@ -26,6 +26,12 @@
         {
           "type": "named",
           "data": {
+            "name": "ELeftDriveToPose"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
             "name": "AutoOuttake"
           }
         },
@@ -76,6 +82,12 @@
         {
           "type": "named",
           "data": {
+            "name": "FLeftDriveToPose"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
             "name": "AutoOuttake"
           }
         },
@@ -121,6 +133,12 @@
                 }
               }
             ]
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "FRightDriveToPose"
           }
         },
         {

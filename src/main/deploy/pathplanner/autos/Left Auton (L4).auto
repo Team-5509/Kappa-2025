@@ -82,6 +82,12 @@
         {
           "type": "named",
           "data": {
+            "name": "BRightDriveToPose"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
             "name": "AutoOuttake"
           }
         },
@@ -127,6 +133,12 @@
                 }
               }
             ]
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "BLeftDriveToPose"
           }
         },
         {
