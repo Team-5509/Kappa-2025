@@ -143,6 +143,28 @@ public class RobotContainer {
       .cubeTranslationControllerAxis(true)
       .robotRelative(true)
       .allianceRelativeControl(false);
+
+      SwerveInputStream driveRobotOrientedStrafeUpFinesse = SwerveInputStream.of(drivebase.getSwerveDrive(),
+      () -> 0.6,
+      () -> driverXbox.getRightY() * 0)
+      .withControllerRotationAxis(() -> driverXbox.getRightX() * 0)
+      .deadband(OperatorConstants.DEADBAND)
+      .scaleTranslation(OperatorConstants.SPEED_MINIMUM_FACTOR)
+      .cubeRotationControllerAxis(true)
+      .cubeTranslationControllerAxis(true)
+      .robotRelative(true)
+      .allianceRelativeControl(false);
+
+      SwerveInputStream driveRobotOrientedStrafeDownFinesse = SwerveInputStream.of(drivebase.getSwerveDrive(),
+      () -> -0.6,
+      () -> driverXbox.getRightY()*0)
+      .withControllerRotationAxis(() -> driverXbox.getRightX() * 0)
+      .deadband(OperatorConstants.DEADBAND)
+      .scaleTranslation(OperatorConstants.SPEED_MINIMUM_FACTOR)
+      .cubeRotationControllerAxis(true)
+      .cubeTranslationControllerAxis(true)
+      .robotRelative(true)
+      .allianceRelativeControl(false);
   /**
    * Clone's the angular velocity input stream and converts it to a fieldRelative
    * input stream.
@@ -219,6 +241,9 @@ public class RobotContainer {
         driveDirectAngleSim);
     Command driveRobotOrientedStrafeLeftFinneseCommand = drivebase.driveFieldOriented(driveRobotOrientedStrafeLeftFinesse);
     Command driveRobotOrientedStrafeRightFinneseCommand = drivebase.driveFieldOriented(driveRobotOrientedStrafeRightFinesse);
+    Command driveRobotOrientedStrafeUpFinneseCommand = drivebase.driveFieldOriented(driveRobotOrientedStrafeUpFinesse);
+    Command driveRobotOrientedStrafeDownFinneseCommand = drivebase.driveFieldOriented(driveRobotOrientedStrafeDownFinesse);
+
 
         Command runHingeReverse = new RunHinge(m_hingeSubSystem, () -> 0.25 );
         Command runHingeForward = new RunHinge(m_hingeSubSystem, () -> -0.25 );
@@ -260,13 +285,12 @@ public class RobotContainer {
       driverXbox.x().whileTrue(Commands.runOnce(drivebase::lock, drivebase).repeatedly());
       driverXbox.leftBumper().whileTrue(driveRobotOrientedAngularVelocity.repeatedly());
       driverXbox.rightBumper().whileTrue(driveFieldOrientedAnglularVelocityFinnese);
-      driverXbox.povDown().whileTrue(runHingeReverse);
-      driverXbox.povUp().whileTrue(runHingeForward);
       driverXbox.axisMagnitudeGreaterThan(3, 0.2).whileTrue(runHang);
       driverXbox.axisMagnitudeGreaterThan(2, 0.2).whileTrue(runHangReverse);
       driverXbox.povRight().whileTrue(driveRobotOrientedStrafeLeftFinneseCommand);
       driverXbox.povLeft().whileTrue(driveRobotOrientedStrafeRightFinneseCommand);
-
+      driverXbox.povUp().whileTrue(driveRobotOrientedStrafeUpFinneseCommand);
+      driverXbox.povDown().whileTrue(driveRobotOrientedStrafeDownFinneseCommand);
       
      
 
@@ -275,10 +299,10 @@ public class RobotContainer {
       auxXbox.b().onTrue(m_elevatorSubSystem.setSetpointCommand(Setpoint.kLevel2));
       auxXbox.y().onTrue(m_elevatorSubSystem.setSetpointCommand(Setpoint.kLevel3));
       auxXbox.x().onTrue(m_elevatorSubSystem.setSetpointCommand(Setpoint.kLevel4));
-      auxXbox.povUp().onTrue(m_hingeSubSystem.setSetpointCommand(HingeSubsystem.Setpoint.kLevel4));
-      auxXbox.povDown().onTrue(m_hingeSubSystem.setSetpointCommand(HingeSubsystem.Setpoint.kLevel1));
       auxXbox.rightBumper().onTrue(outtakeWithSensor);
       auxXbox.leftBumper().onTrue(intakeWithSensor);
+      auxXbox.povDown().whileTrue(runHingeReverse);
+      auxXbox.povUp().whileTrue(runHingeForward);
       // auxXbox.start().onTrue(m_hingeSubSystem.setSetpointCommand(HingeSubsystem.Setpoint.kLevel4));
       auxXbox.axisMagnitudeGreaterThan(1, 0.2).whileTrue(runElevator);
       auxXbox.axisMagnitudeGreaterThan(5, 0.2).whileTrue(runOuttake);
