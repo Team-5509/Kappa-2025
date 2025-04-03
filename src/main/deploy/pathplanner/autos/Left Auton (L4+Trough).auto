@@ -17,10 +17,16 @@
               {
                 "type": "path",
                 "data": {
-                  "pathName": "StartPos 1 to ID20(trough)"
+                  "pathName": "StartPos 1 to ID20"
                 }
               }
             ]
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "DriveToPoseCLeftPose"
           }
         },
         {
@@ -42,7 +48,7 @@
               {
                 "type": "path",
                 "data": {
-                  "pathName": "ID20 to A Coral Station(trough)"
+                  "pathName": "ID20 to A Coral Station"
                 }
               },
               {
@@ -71,6 +77,12 @@
                 }
               }
             ]
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "BRightDriveToPose"
           }
         },
         {
@@ -121,6 +133,12 @@
                 }
               }
             ]
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "BLeftDriveToPose"
           }
         },
         {
