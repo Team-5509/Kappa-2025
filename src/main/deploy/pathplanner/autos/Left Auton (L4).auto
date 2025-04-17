@@ -30,6 +30,12 @@
           }
         },
         {
+          "type": "wait",
+          "data": {
+            "waitTime": 0.5
+          }
+        },
+        {
           "type": "parallel",
           "data": {
             "commands": [
@@ -80,6 +86,12 @@
           }
         },
         {
+          "type": "wait",
+          "data": {
+            "waitTime": 0.5
+          }
+        },
+        {
           "type": "parallel",
           "data": {
             "commands": [
@@ -92,7 +104,7 @@
               {
                 "type": "path",
                 "data": {
-                  "pathName": "ID19 to A CoralStation"
+                  "pathName": "ID19 to A CoralStation(end)"
                 }
               },
               {
@@ -102,31 +114,6 @@
                 }
               }
             ]
-          }
-        },
-        {
-          "type": "parallel",
-          "data": {
-            "commands": [
-              {
-                "type": "named",
-                "data": {
-                  "name": "AutoElevatorkLevel4"
-                }
-              },
-              {
-                "type": "path",
-                "data": {
-                  "pathName": "A Coral Station To ID19(Pt2)"
-                }
-              }
-            ]
-          }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": "AutoOuttake"
           }
         }
       ]

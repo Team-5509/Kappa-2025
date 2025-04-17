@@ -17,7 +17,7 @@
               {
                 "type": "path",
                 "data": {
-                  "pathName": "StartPos2 to Id 22"
+                  "pathName": "StartPos2 to Id 22(trough)"
                 }
               }
             ]
@@ -27,6 +27,12 @@
           "type": "named",
           "data": {
             "name": "AutoOuttake"
+          }
+        },
+        {
+          "type": "wait",
+          "data": {
+            "waitTime": 0.5
           }
         },
         {
@@ -42,7 +48,7 @@
               {
                 "type": "path",
                 "data": {
-                  "pathName": "Id 22 to B Coral Station"
+                  "pathName": "Id 22 to B Coral Station(trough)"
                 }
               },
               {
@@ -67,7 +73,7 @@
               {
                 "type": "path",
                 "data": {
-                  "pathName": "B Coral Station to Id 17"
+                  "pathName": "B Coral Station to Id 17(trough)"
                 }
               }
             ]
@@ -77,6 +83,12 @@
           "type": "named",
           "data": {
             "name": "AutoOuttake"
+          }
+        },
+        {
+          "type": "wait",
+          "data": {
+            "waitTime": 0.5
           }
         },
         {
@@ -92,7 +104,7 @@
               {
                 "type": "path",
                 "data": {
-                  "pathName": "Id17 to B Coral Station"
+                  "pathName": "id17 to B Coral Station(tr)"
                 }
               },
               {
@@ -102,31 +114,6 @@
                 }
               }
             ]
-          }
-        },
-        {
-          "type": "parallel",
-          "data": {
-            "commands": [
-              {
-                "type": "named",
-                "data": {
-                  "name": "AutoElevatorTrough"
-                }
-              },
-              {
-                "type": "path",
-                "data": {
-                  "pathName": "B Coral Station to Id 17(2)"
-                }
-              }
-            ]
-          }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": "AutoOuttake"
           }
         }
       ]

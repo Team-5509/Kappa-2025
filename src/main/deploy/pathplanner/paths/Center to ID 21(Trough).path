@@ -16,16 +16,16 @@
     },
     {
       "anchor": {
-        "x": 5.754098360655737,
-        "y": 4.0055
+        "x": 5.814036885245901,
+        "y": 4.43857581967213
       },
       "prevControl": {
-        "x": 6.113729508196721,
-        "y": 3.9590676229508195
+        "x": 6.173668032786885,
+        "y": 4.39214344262295
       },
       "nextControl": null,
       "isLocked": false,
-      "linkedName": null
+      "linkedName": "Center Trough backup point"
     }
   ],
   "rotationTargets": [],
