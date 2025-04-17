@@ -16,16 +16,16 @@
     },
     {
       "anchor": {
-        "x": 3.937231503579953,
-        "y": 5.302505966587112
+        "x": 3.512397540983606,
+        "y": 5.025973360655737
       },
       "prevControl": {
-        "x": 2.9369877049180326,
-        "y": 5.877100409836065
+        "x": 2.5121537423216855,
+        "y": 5.60056780390469
       },
       "nextControl": null,
       "isLocked": false,
-      "linkedName": "Id19(pt2)"
+      "linkedName": "BRightTrough"
     }
   ],
   "rotationTargets": [],

@@ -17,7 +17,7 @@
               {
                 "type": "path",
                 "data": {
-                  "pathName": "StartPos 1 to ID20"
+                  "pathName": "StartPos 1 to ID20(trough)"
                 }
               }
             ]
@@ -27,6 +27,12 @@
           "type": "named",
           "data": {
             "name": "AutoOuttake"
+          }
+        },
+        {
+          "type": "wait",
+          "data": {
+            "waitTime": 0.5
           }
         },
         {
@@ -42,7 +48,7 @@
               {
                 "type": "path",
                 "data": {
-                  "pathName": "ID20 to A Coral Station"
+                  "pathName": "ID20 to A Coral Station(trough)"
                 }
               },
               {
@@ -61,7 +67,7 @@
               {
                 "type": "named",
                 "data": {
-                  "name": "AutoElevatorkLevel4"
+                  "name": "AutoElevatorTrough"
                 }
               },
               {
@@ -80,6 +86,12 @@
           }
         },
         {
+          "type": "wait",
+          "data": {
+            "waitTime": 0.5
+          }
+        },
+        {
           "type": "parallel",
           "data": {
             "commands": [
@@ -92,7 +104,7 @@
               {
                 "type": "path",
                 "data": {
-                  "pathName": "ID19 to A CoralStation"
+                  "pathName": "ID19 to A CoralStation(end)"
                 }
               },
               {
@@ -102,31 +114,6 @@
                 }
               }
             ]
-          }
-        },
-        {
-          "type": "parallel",
-          "data": {
-            "commands": [
-              {
-                "type": "named",
-                "data": {
-                  "name": "AutoElevatorkLevel4"
-                }
-              },
-              {
-                "type": "path",
-                "data": {
-                  "pathName": "A Coral Station To ID19(Pt2)"
-                }
-              }
-            ]
-          }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": "AutoOuttake"
           }
         }
       ]

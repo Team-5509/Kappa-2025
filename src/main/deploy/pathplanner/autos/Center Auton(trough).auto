@@ -5,6 +5,12 @@
     "data": {
       "commands": [
         {
+          "type": "wait",
+          "data": {
+            "waitTime": 4.0
+          }
+        },
+        {
           "type": "path",
           "data": {
             "pathName": "Center to ID 21(Trough)"
@@ -20,6 +26,18 @@
           "type": "named",
           "data": {
             "name": "AutoOuttake"
+          }
+        },
+        {
+          "type": "wait",
+          "data": {
+            "waitTime": 1.0
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "Copy of back up"
           }
         }
       ]

@@ -3,16 +3,16 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 5.876,
-        "y": 4.175
+        "x": 5.814036885245901,
+        "y": 4.43857581967213
       },
       "prevControl": null,
       "nextControl": {
-        "x": 6.876,
-        "y": 4.175
+        "x": 6.063088915625682,
+        "y": 4.416825275685631
       },
       "isLocked": false,
-      "linkedName": "Center"
+      "linkedName": "Center Trough backup point"
     },
     {
       "anchor": {
@@ -20,8 +20,8 @@
         "y": 4.162858606557377
       },
       "prevControl": {
-        "x": 5.485348360655738,
-        "y": 4.162858606557377
+        "x": 6.255562103151224,
+        "y": 4.064378781912585
       },
       "nextControl": null,
       "isLocked": false,

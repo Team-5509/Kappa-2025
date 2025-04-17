@@ -336,9 +336,9 @@ public class Vision
     */
     LEFT_CAM("Apple",
     new Rotation3d(0, 0, 0),
-    new Translation3d(Units.inchesToMeters(-9.875),
-                      Units.inchesToMeters(13),
-                      Units.inchesToMeters(12)),
+    new Translation3d(Units.inchesToMeters(12),
+                      Units.inchesToMeters(-7.875),
+                      Units.inchesToMeters(13)),
     VecBuilder.fill(4, 4, 8), VecBuilder.fill(0.5, 0.5, 1)),
 /**
 * Right Camera
@@ -354,9 +354,9 @@ public class Vision
 // */
     CENTER_CAM("Cherry",
       new Rotation3d(0, 0, 0),
-      new Translation3d(Units.inchesToMeters(7.875),
-                        Units.inchesToMeters(13),
-                        Units.inchesToMeters(12)),
+      new Translation3d(Units.inchesToMeters(12),
+                        Units.inchesToMeters(9.875),
+                        Units.inchesToMeters(13)),
       VecBuilder.fill(4, 4, 8), VecBuilder.fill(0.5, 0.5, 1));
       
    /**
