@@ -322,23 +322,19 @@ public class Vision {
         .findFirst(); // OptionalInt.empty() if list was empty
   }
 
-  public static void scanLeft() {
-    PhotonCamera camera = new PhotonCamera("Cherry");
-    AprilTagFieldLayout layout = AprilTagFieldLayout.loadField(AprilTagFields.k2025Reefscape);
-    PhotonPipelineResult latest = camera.getLatestResult();
+  public void scanLeft() {
+    PhotonPipelineResult latest = Cameras.CHERRY.camera.getLatestResult();
     if (latest.hasTargets()) {
       int bigId = getLargestTagId(latest).orElse(-1);
       SmartDashboard.putNumber("Coral/Elevator/BiggestVisibleIdLeft", bigId);
+      // distance in meters from the robot to the april tag
+      double distance = getDistanceFromAprilTag(bigId);
+      SmartDashboard.putNumber("Coral/Elevator/DistanceToBiggestLeft", distance);
+      
+
     }
   }
-  public static void scanRight() {
-    PhotonCamera camera = new PhotonCamera("Apple");
-    AprilTagFieldLayout layout = AprilTagFieldLayout.loadField(AprilTagFields.k2025Reefscape);
-    PhotonPipelineResult latest = camera.getLatestResult();
-    if (latest.hasTargets()) {
-      int bigId = getLargestTagId(latest).orElse(-1);
-    }
-  }
+
   /**
    * Camera Enum to select each camera
    */
@@ -346,7 +342,7 @@ public class Vision {
     /**
      * Left Camera
      */
-    LEFT_CAM("Apple",
+    APPLE("Apple",
         new Rotation3d(0, 0, 0),
         new Translation3d(Units.inchesToMeters(12),
             Units.inchesToMeters(-7.875),
@@ -364,7 +360,7 @@ public class Vision {
     // /**
     // * Center Camera
     // */
-    CENTER_CAM("Cherry",
+    CHERRY("Cherry",
         new Rotation3d(0, 0, 0),
         new Translation3d(Units.inchesToMeters(12),
             Units.inchesToMeters(9.875),
