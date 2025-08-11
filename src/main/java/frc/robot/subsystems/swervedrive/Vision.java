@@ -30,6 +30,7 @@ import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
+import java.util.OptionalDouble;
 import java.util.OptionalInt;
 import java.util.function.Supplier;
 import org.photonvision.EstimatedRobotPose;
@@ -278,6 +279,18 @@ public class Vision {
     }
   }
 
+  public static OptionalDouble cameraDistanceToTag(PhotonPipelineResult result, int tagId) {
+  if (!result.hasTargets()) return OptionalDouble.empty();
+  for (PhotonTrackedTarget t : result.getTargets()) {
+    if (t.getFiducialId() == tagId) {
+      // camera -> tag translation vector
+      var camToTag = t.getBestCameraToTarget().getTranslation();
+      return OptionalDouble.of(camToTag.getNorm()); // meters
+    }
+  }
+  return OptionalDouble.empty();
+}
+
   /**
    * Update the {@link Field2d} to include tracked targets/
    */
@@ -328,7 +341,7 @@ public class Vision {
       int bigId = getLargestTagId(latest).orElse(-1);
       SmartDashboard.putNumber("Coral/Elevator/BiggestVisibleIdLeft", bigId);
       // distance in meters from the robot to the april tag
-      double distance = getDistanceFromAprilTag(bigId);
+      double distance = cameraDistanceToTag(latest, bigId).orElse(-1);
       SmartDashboard.putNumber("Coral/Elevator/DistanceToBiggestLeft", distance);
 
       
