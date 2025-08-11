@@ -176,7 +176,7 @@ public class RobotContainer {
       .headingWhile(true);
 
   SwerveInputStream driveAngularVelocitySim = SwerveInputStream.of(drivebase.getSwerveDrive(),
-      () -> -driverXbox.getLeftY(),
+          () -> -driverXbox.getLeftY(),
       () -> -driverXbox.getLeftX())
       .withControllerRotationAxis(() -> driverXbox.getRawAxis(2))
       .deadband(OperatorConstants.DEADBAND)
@@ -253,7 +253,7 @@ public class RobotContainer {
     Command driveRobotOrientedStrafeUpFinneseCommand = drivebase.driveFieldOriented(driveRobotOrientedStrafeUpFinesse);
     Command driveRobotOrientedStrafeDownFinneseCommand = drivebase.driveFieldOriented(driveRobotOrientedStrafeDownFinesse);
 
-        Command testLargestId = new LeftAlignReef(drivebase, new Vision(drivebase::getPose,null));
+        Command testLargestId = new LeftAlignReef(drivebase);
         Command runHingeReverse = new RunHinge(m_hingeSubSystem, () -> 0.25 );
         Command runHingeForward = new RunHinge(m_hingeSubSystem, () -> -0.25 );
         Command runHang = new RunHang(m_hangSubSystem, () -> driverXbox.getRightTriggerAxis() *-1 );

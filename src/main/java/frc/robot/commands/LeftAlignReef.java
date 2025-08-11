@@ -12,19 +12,17 @@ import edu.wpi.first.wpilibj2.command.Command;
 public class LeftAlignReef extends Command {
   @SuppressWarnings({ "PMD.UnusedPrivateField", "PMD.SingularField" })
   private final SwerveSubsystem m_drive;
-  private final Vision m_vision;
+
 
   /**
    * Creates a new ExampleCommand.
    *
    * @param subsystem The subsystem used by this command.
    */
-  public LeftAlignReef(SwerveSubsystem subsystem, Vision vision) {
+  public LeftAlignReef(SwerveSubsystem subsystem) {
     m_drive = subsystem;
-    m_vision = vision;
-
     
-      SmartDashboard.putNumber("Coral/Elevator/BiggestVisibleIdLeft", -1 );
+    SmartDashboard.putNumber("Coral/Elevator/BiggestVisibleIdLeft", -1 );
 
     // Use addRequirements() here to declare subsystem dependencies.
     addRequirements(subsystem);
@@ -33,7 +31,7 @@ public class LeftAlignReef extends Command {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    m_vision.scanLeft();
+    m_drive.vision.scanLeft();
     if (m_drive.isRedAlliance()) {
       int detectedId = 0;
       if (detectedId >= 6 && detectedId <= 11) {
