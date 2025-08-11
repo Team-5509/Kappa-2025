@@ -22,6 +22,7 @@ import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.subsystems.ElevatorSubsystem;
 import frc.robot.subsystems.ElevatorSubsystem.Setpoint;
 import frc.robot.subsystems.HingeSubsystem;
+import frc.robot.subsystems.swervedrive.*;
 import frc.robot.subsystems.HangSubsystem;
 import frc.robot.subsystems.IntakeSubsystem;
 import frc.robot.Constants.OperatorConstants;
@@ -35,6 +36,7 @@ import frc.robot.commands.AutoElevatorkLevel1AndAHalf;
 import frc.robot.commands.AutoElevatorkLevel2;
 import frc.robot.commands.AutoElevatorkLevel3;
 import frc.robot.commands.AutoElevatorkLevel4;
+import frc.robot.commands.LeftAlignReef;
 import frc.robot.commands.ExampleCommand;
 import frc.robot.commands.IntakeWithSensor;
 import frc.robot.commands.OuttakeWithSensor;
@@ -251,7 +253,7 @@ public class RobotContainer {
     Command driveRobotOrientedStrafeUpFinneseCommand = drivebase.driveFieldOriented(driveRobotOrientedStrafeUpFinesse);
     Command driveRobotOrientedStrafeDownFinneseCommand = drivebase.driveFieldOriented(driveRobotOrientedStrafeDownFinesse);
 
-
+        Command testLargestId = new LeftAlignReef(drivebase, new Vision(drivebase::getPose,null));
         Command runHingeReverse = new RunHinge(m_hingeSubSystem, () -> 0.25 );
         Command runHingeForward = new RunHinge(m_hingeSubSystem, () -> -0.25 );
         Command runHang = new RunHang(m_hangSubSystem, () -> driverXbox.getRightTriggerAxis() *-1 );
@@ -285,10 +287,10 @@ public class RobotContainer {
       driverXbox.rightBumper().onTrue(Commands.none());
     } else {
       driverXbox.start().onTrue((Commands.runOnce(drivebase::zeroGyro)));
-      
-      driverXbox.b().whileTrue(
-          drivebase.driveToPose(
-              new Pose2d(new Translation2d(4, 4), Rotation2d.fromDegrees(0))));
+      driverXbox.b().onTrue(testLargestId);
+      // driverXbox.b().whileTrue(
+      //     drivebase.driveToPose(
+      //         new Pose2d(new Translation2d(4, 4), Rotation2d.fromDegrees(0))));
       driverXbox.x().whileTrue(Commands.runOnce(drivebase::lock, drivebase).repeatedly());
       driverXbox.leftBumper().whileTrue(driveRobotOrientedAngularVelocity.repeatedly());
       driverXbox.rightBumper().whileTrue(driveFieldOrientedAnglularVelocityFinnese);
