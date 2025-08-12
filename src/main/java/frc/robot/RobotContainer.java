@@ -287,7 +287,7 @@ public class RobotContainer {
       driverXbox.rightBumper().onTrue(Commands.none());
     } else {
       driverXbox.start().onTrue((Commands.runOnce(drivebase::zeroGyro)));
-      driverXbox.b().onTrue(testLargestId);
+      driverXbox.b().whileTrue(testLargestId);
       // driverXbox.b().whileTrue(
       //     drivebase.driveToPose(
       //         new Pose2d(new Translation2d(4, 4), Rotation2d.fromDegrees(0))));
@@ -300,8 +300,11 @@ public class RobotContainer {
       driverXbox.povLeft().whileTrue(driveRobotOrientedStrafeRightFinneseCommand);
       driverXbox.povUp().whileTrue(driveRobotOrientedStrafeUpFinneseCommand);
       driverXbox.povDown().whileTrue(driveRobotOrientedStrafeDownFinneseCommand);
+      driverXbox.a().whileTrue(Commands.runOnce(() -> drivebase.driveToPose(new Pose2d(0.0254*(546.87+39), 0.0254*(158.50), Rotation2d.fromDegrees(180)))));
       
      
+
+      
 
       // Auxillary Controller 
       auxXbox.a().onTrue(m_elevatorSubSystem.setSetpointCommand(Setpoint.kLevel1));
