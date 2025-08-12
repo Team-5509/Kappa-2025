@@ -330,8 +330,9 @@ public class Vision {
       // distance in meters from the robot to the april tag
       double distance = getDistanceFromAprilTag(bigId);
       SmartDashboard.putNumber("Coral/Elevator/DistanceToBiggestLeft", distance);
-      
 
+      
+      SmartDashboard.putNumber("Coral/Elevator/coolNumber", latest.getBestTarget().getBestCameraToTarget().getTranslation().getNorm());
     }
   }
 

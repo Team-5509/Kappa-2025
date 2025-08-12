@@ -30,14 +30,14 @@ import edu.wpi.first.math.trajectory.Trajectory;
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine.Config;
 import frc.robot.Constants;
-
-
+import frc.robot.RobotContainer;
 import frc.robot.subsystems.swervedrive.Vision.Cameras;
 import java.io.File;
 import java.io.IOException;
@@ -86,7 +86,7 @@ public class SwerveSubsystem extends SubsystemBase
   public SwerveSubsystem(File directory)
   {
     // Configure the Telemetry before creating the SwerveDrive to avoid unnecessary objects being created.
-    SwerveDriveTelemetry.verbosity = TelemetryVerbosity.NONE;
+    SwerveDriveTelemetry.verbosity = TelemetryVerbosity.HIGH;
     try
     {
       swerveDrive = new SwerveParser(directory).createSwerveDrive(Constants.MAX_SPEED,
@@ -147,6 +147,13 @@ public class SwerveSubsystem extends SubsystemBase
     {
       swerveDrive.updateOdometry();
      vision.updatePoseEstimation(swerveDrive);
+   
+     SmartDashboard.putNumber("Coral/Elevator/Robot X", getPose().getX());
+     SmartDashboard.putNumber("Coral/Elevator/Robot Y", getPose().getY());
+     SmartDashboard.putNumber("Coral/Elevator/Robot Heading", getPose().getRotation().getDegrees());
+
+
+
     }
   }
 
