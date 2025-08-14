@@ -300,11 +300,11 @@ public class RobotContainer {
       driverXbox.povLeft().whileTrue(driveRobotOrientedStrafeRightFinneseCommand);
       driverXbox.povUp().whileTrue(driveRobotOrientedStrafeUpFinneseCommand);
       driverXbox.povDown().whileTrue(driveRobotOrientedStrafeDownFinneseCommand);
-      driverXbox.a().whileTrue(Commands.runOnce(() -> drivebase.driveToPose(new Pose2d(0.0254*(546.87+39), 0.0254*(158.50), Rotation2d.fromDegrees(180)))));
+      driverXbox.a().onTrue(drivebase.driveToPose(new Pose2d(14.68, 4.143, Rotation2d.fromDegrees(180))));
       
-     
+      
 
-      
+
 
       // Auxillary Controller 
       auxXbox.a().onTrue(m_elevatorSubSystem.setSetpointCommand(Setpoint.kLevel1));
