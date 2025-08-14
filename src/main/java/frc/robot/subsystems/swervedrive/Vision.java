@@ -570,6 +570,11 @@ public class Vision {
         updateEstimationStdDevs(visionEst, change.getTargets());
       }
       estimatedRobotPose = visionEst;
+    if (!visionEst.isEmpty()){
+
+      SmartDashboard.putNumber("Coral/Elevator/vision est x", visionEst.get().estimatedPose.getX());
+      SmartDashboard.putNumber("Coral/Elevator/vision est y", visionEst.get().estimatedPose.getY());
+    }
     }
 
     /**
