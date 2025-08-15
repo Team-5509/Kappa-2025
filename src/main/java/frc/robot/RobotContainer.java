@@ -253,7 +253,8 @@ public class RobotContainer {
     Command driveRobotOrientedStrafeUpFinneseCommand = drivebase.driveFieldOriented(driveRobotOrientedStrafeUpFinesse);
     Command driveRobotOrientedStrafeDownFinneseCommand = drivebase.driveFieldOriented(driveRobotOrientedStrafeDownFinesse);
 
-        Command testLargestId = new LeftAlignReef(drivebase);
+        Command snapToReef = new LeftAlignReef(drivebase);
+        LeftAlignReef snapToReef_1 = new LeftAlignReef(drivebase);
         Command runHingeReverse = new RunHinge(m_hingeSubSystem, () -> 0.25 );
         Command runHingeForward = new RunHinge(m_hingeSubSystem, () -> -0.25 );
         Command runHang = new RunHang(m_hangSubSystem, () -> driverXbox.getRightTriggerAxis() *-1 );
@@ -287,7 +288,7 @@ public class RobotContainer {
       driverXbox.rightBumper().onTrue(Commands.none());
     } else {
       driverXbox.start().onTrue((Commands.runOnce(drivebase::zeroGyro)));
-      driverXbox.b().whileTrue(testLargestId);
+      driverXbox.b().whileTrue(snapToReef);
       // driverXbox.b().whileTrue(
       //     drivebase.driveToPose(
       //         new Pose2d(new Translation2d(4, 4), Rotation2d.fromDegrees(0))));
@@ -300,7 +301,7 @@ public class RobotContainer {
       driverXbox.povLeft().whileTrue(driveRobotOrientedStrafeRightFinneseCommand);
       driverXbox.povUp().whileTrue(driveRobotOrientedStrafeUpFinneseCommand);
       driverXbox.povDown().whileTrue(driveRobotOrientedStrafeDownFinneseCommand);
-      driverXbox.a().onTrue(drivebase.driveToPose(new Pose2d(14.68, 4.143, Rotation2d.fromDegrees(180))));
+      driverXbox.a().whileTrue(snapToReef_1.drive3FtAway());
       
       
 
