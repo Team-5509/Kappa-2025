@@ -739,4 +739,35 @@ public class SwerveSubsystem extends SubsystemBase
   {
     return swerveDrive;
   }
+
+
+/** Force-set odometry to full vision pose (X, Y, and heading). */
+public Command forceOdometryToVisionPose(Vision.VisionAgg which) {
+  return Commands.runOnce(() -> {
+    if (vision == null) {
+      DriverStation.reportWarning("Vision not initialized", false);
+      return;
+    }
+    var opt = vision.getPose2d(which);
+    if (opt.isPresent()) {
+      Pose2d vis = opt.get();
+      resetOdometry(vis); // use vision heading too
+      SmartDashboard.putString("Vision/ForcedFullPose", vis.toString());
+    } else {
+      DriverStation.reportWarning("No vision pose available to force full pose", false);
+    }
+  }, this);
+}
+
+/** Wait (up to timeoutSec) for a vision pose, then force XY. Handy if you press early. */
+public Command forcePoseWhenReady(Vision.VisionAgg which, double timeoutSec) {
+  return Commands.waitUntil(() -> vision != null && vision.getPose2d(which).isPresent())
+      .andThen(forceOdometryToVisionPose(which))
+      .withTimeout(timeoutSec)
+      .finallyDo(interrupted -> {
+        if (interrupted) DriverStation.reportWarning("Vision force-XY timed out", false);
+      });
+}
+
+
 }

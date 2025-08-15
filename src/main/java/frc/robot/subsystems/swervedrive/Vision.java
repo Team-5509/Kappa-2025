@@ -667,5 +667,150 @@ public class Vision {
     }
 
   }
+ // ===================== Aggregated getters (paste inside Vision)
+  // =====================
+
+  /**
+   * Helper to collect (camera, estimate) pairs in one pass. Call once per loop.
+   */
+  private static final class CamEst {
+    final Cameras cam;
+    final EstimatedRobotPose est;
+
+    CamEst(Cameras c, EstimatedRobotPose e) {
+      this.cam = c;
+      this.est = e;
+    }
+  }
+
+  /** Return all current camera estimates available right now. */
+  public List<EstimatedRobotPose> getAllCameraEstimates() {
+    List<EstimatedRobotPose> out = new ArrayList<>();
+    for (Cameras c : Cameras.values()) {
+      getEstimatedGlobalPose(c).ifPresent(out::add);
+    }
+    return out;
+  }
+
+  /**
+   * Return the "best" single-camera pose (heuristic: multi-tag > low ambiguity >
+   * low stddev > newest).
+   */
+  public Optional<Pose2d> getBestPose2d() {
+    List<CamEst> list = new ArrayList<>();
+    for (Cameras c : Cameras.values()) {
+      var estOpt = getEstimatedGlobalPose(c);
+      estOpt.ifPresent(e -> list.add(new CamEst(c, e)));
+    }
+    if (list.isEmpty())
+      return Optional.empty();
+
+    CamEst best = list.stream().max((a, b) -> {
+      // 1) Prefer multi-tag
+      int aTags = a.est.targetsUsed.size();
+      int bTags = b.est.targetsUsed.size();
+      if ((aTags > 1) != (bTags > 1))
+        return (aTags > 1) ? 1 : -1;
+      if (aTags != bTags)
+        return Integer.compare(aTags, bTags);
+
+      // 2) Lower minimum ambiguity is better
+      double aAmb = minAmbiguity(a.est);
+      double bAmb = minAmbiguity(b.est);
+      if (aAmb != bAmb)
+        return Double.compare(bAmb, aAmb); // lower is better
+
+      // 3) Smaller linear std-devs (x,y) is better
+      double aVar = linearVariance(a.cam);
+      double bVar = linearVariance(b.cam);
+      if (aVar != bVar)
+        return Double.compare(bVar, aVar); // smaller is better
+
+      // 4) Newer timestamp is better
+      return Double.compare(a.est.timestampSeconds, b.est.timestampSeconds);
+    }).get();
+
+    return Optional.of(best.est.estimatedPose.toPose2d());
+  }
+
+  /**
+   * Average of all available camera estimates using inverse-variance weights
+   * (x,y).
+   */
+  public Optional<Pose2d> getAveragePose2d() {
+    List<CamEst> list = new ArrayList<>();
+    for (Cameras c : Cameras.values()) {
+      var estOpt = getEstimatedGlobalPose(c);
+      estOpt.ifPresent(e -> list.add(new CamEst(c, e)));
+    }
+    if (list.isEmpty())
+      return Optional.empty();
+
+    // Current time for gentle time-decay (newer frames weigh slightly more)
+    double nowSec = Microseconds.of(NetworkTablesJNI.now()).in(Seconds);
+    final double HALF_LIFE_SEC = 0.6; // tweak if you like
+
+    double sumW = 0, sumX = 0, sumY = 0, sumSin = 0, sumCos = 0;
+    for (CamEst ce : list) {
+      double w = 1.0 / (linearVariance(ce.cam) + 1e-9); // inverse-variance
+      double age = Math.max(0, nowSec - ce.est.timestampSeconds);
+      double timeFactor = Math.pow(0.5, age / HALF_LIFE_SEC);
+      w *= timeFactor;
+
+      Pose2d p = ce.est.estimatedPose.toPose2d();
+      sumW += w;
+      sumX += w * p.getX();
+      sumY += w * p.getY();
+
+      double th = p.getRotation().getRadians();
+      sumSin += w * Math.sin(th);
+      sumCos += w * Math.cos(th);
+    }
+    if (sumW <= 0)
+      return Optional.empty();
+
+    double x = sumX / sumW;
+    double y = sumY / sumW;
+    double theta = Math.atan2(sumSin, sumCos);
+    return Optional.of(new Pose2d(x, y, new Rotation2d(theta)));
+  }
+
+  // -------------------- helpers --------------------
+
+  /** Small metric from the current camera stddevs: σx² + σy². */
+  private static double linearVariance(Cameras cam) {
+    // curStdDevs is set during the last poseEstimator.update(...)
+    double sx = cam.curStdDevs.get(0, 0);
+    double sy = cam.curStdDevs.get(1, 0);
+    // guard for NaN/Inf
+    if (!Double.isFinite(sx) || !Double.isFinite(sy))
+      return 1e6;
+    return sx * sx + sy * sy;
+  }
+
+  /** Minimum non-negative ambiguity over targets; defaults to 1 when unknown. */
+  private static double minAmbiguity(EstimatedRobotPose est) {
+    double best = 1.0;
+    for (var t : est.targetsUsed) {
+      double a = t.getPoseAmbiguity();
+      if (a >= 0.0)
+        best = Math.min(best, a);
+    }
+    return best;
+  }
+
+  public enum VisionAgg { BEST, AVG }
+
+  /** One-call getter: choose BEST or AVG across all cameras. */
+  public Optional<Pose2d> getPose2d(VisionAgg which) {
+    return switch (which) {
+      case BEST -> getBestPose2d();
+      case AVG  -> getAveragePose2d();
+    };
+  }
+
+  public Optional<Pose2d> getPose2d() {
+    return getPose2d(VisionAgg.BEST);
+  }
 
 }
