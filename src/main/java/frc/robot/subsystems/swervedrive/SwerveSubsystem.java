@@ -148,9 +148,7 @@ public class SwerveSubsystem extends SubsystemBase
       swerveDrive.updateOdometry();
      vision.updatePoseEstimation(swerveDrive);
    
-     SmartDashboard.putNumber("Coral/Elevator/Robot X", getPose().getX());
-     SmartDashboard.putNumber("Coral/Elevator/Robot Y", getPose().getY());
-     SmartDashboard.putNumber("Coral/Elevator/Robot Heading", getPose().getRotation().getDegrees());
+    SmartDashboard.putString("Coral/Elevator/Robot Pose", "X: " + getPose().getX() + ", Y: " + getPose().getY() + ", Heading: " + getPose().getRotation().getDegrees() + "°");
 
 
 
