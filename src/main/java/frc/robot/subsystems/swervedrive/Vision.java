@@ -9,6 +9,7 @@ import edu.wpi.first.apriltag.AprilTagFieldLayout;
 import edu.wpi.first.apriltag.AprilTagFields;
 import edu.wpi.first.math.Matrix;
 import edu.wpi.first.math.VecBuilder;
+import edu.wpi.first.math.estimator.PoseEstimator;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Pose3d;
 import edu.wpi.first.math.geometry.Rotation2d;
@@ -22,6 +23,7 @@ import edu.wpi.first.math.util.Units;
 import edu.wpi.first.networktables.NetworkTablesJNI;
 import edu.wpi.first.wpilibj.Alert;
 import edu.wpi.first.wpilibj.Alert.AlertType;
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Robot;
@@ -92,16 +94,23 @@ public class Vision {
     this.currentPose = currentPose;
     this.field2d = field;
 
+    DriverStation.getAlliance().ifPresent(alliance -> fieldLayout.setOrigin(
+        alliance == DriverStation.Alliance.Blue
+            ? AprilTagFieldLayout.OriginPosition.kBlueAllianceWallRightSide
+            : AprilTagFieldLayout.OriginPosition.kRedAllianceWallRightSide));
+
     if (Robot.isSimulation()) {
       visionSim = new VisionSystemSim("Vision");
       visionSim.addAprilTags(fieldLayout);
 
       for (Cameras c : Cameras.values()) {
+        c.setCurrentPoseSupplier(this.currentPose);
         c.addToVisionSim(visionSim);
       }
 
       openSimCameraViews();
     }
+
   }
 
   /**
@@ -280,16 +289,17 @@ public class Vision {
   }
 
   public static OptionalDouble cameraDistanceToTag(PhotonPipelineResult result, int tagId) {
-  if (!result.hasTargets()) return OptionalDouble.empty();
-  for (PhotonTrackedTarget t : result.getTargets()) {
-    if (t.getFiducialId() == tagId) {
-      // camera -> tag translation vector
-      var camToTag = t.getBestCameraToTarget().getTranslation();
-      return OptionalDouble.of(camToTag.getNorm()); // meters
+    if (!result.hasTargets())
+      return OptionalDouble.empty();
+    for (PhotonTrackedTarget t : result.getTargets()) {
+      if (t.getFiducialId() == tagId) {
+        // camera -> tag translation vector
+        var camToTag = t.getBestCameraToTarget().getTranslation();
+        return OptionalDouble.of(camToTag.getNorm()); // meters
+      }
     }
+    return OptionalDouble.empty();
   }
-  return OptionalDouble.empty();
-}
 
   /**
    * Update the {@link Field2d} to include tracked targets/
@@ -344,8 +354,8 @@ public class Vision {
       double distance = cameraDistanceToTag(latest, bigId).orElse(-1);
       SmartDashboard.putNumber("Coral/Elevator/DistanceToBiggestLeft", distance);
 
-      
-      SmartDashboard.putNumber("Coral/Elevator/coolNumber", latest.getBestTarget().getBestCameraToTarget().getTranslation().getNorm());
+      SmartDashboard.putNumber("Coral/Elevator/coolNumber",
+          latest.getBestTarget().getBestCameraToTarget().getTranslation().getNorm());
     }
   }
 
@@ -490,6 +500,12 @@ public class Vision {
       }
     }
 
+    private Supplier<Pose2d> currentPoseSupplier = () -> new Pose2d();
+
+    public void setCurrentPoseSupplier(Supplier<Pose2d> supplier) {
+      this.currentPoseSupplier = supplier;
+    }
+
     /**
      * Get the result with the least ambiguity from the best tracked target within
      * the Cache. This may not be the most
@@ -577,17 +593,21 @@ public class Vision {
      *         estimation.
      */
     private void updateEstimatedGlobalPose() {
+      poseEstimator.setReferencePose(currentPoseSupplier.get());
+
       Optional<EstimatedRobotPose> visionEst = Optional.empty();
       for (var change : resultsList) {
         visionEst = poseEstimator.update(change);
         updateEstimationStdDevs(visionEst, change.getTargets());
       }
       estimatedRobotPose = visionEst;
-    if (!visionEst.isEmpty()){
+      // if (!visionEst.isEmpty()){
 
-      SmartDashboard.putNumber("Coral/Elevator/vision est x", visionEst.get().estimatedPose.getX());
-      SmartDashboard.putNumber("Coral/Elevator/vision est y", visionEst.get().estimatedPose.getY());
-    }
+      // SmartDashboard.putNumber("Coral/Elevator/vision est x",
+      // visionEst.get().estimatedPose.getX());
+      // SmartDashboard.putNumber("Coral/Elevator/vision est y",
+      // visionEst.get().estimatedPose.getY());
+      // }
     }
 
     /**
