@@ -24,12 +24,15 @@ import frc.robot.subsystems.ElevatorSubsystem.Setpoint;
 import frc.robot.subsystems.HingeSubsystem;
 import frc.robot.subsystems.swervedrive.*;
 import frc.robot.subsystems.HangSubsystem;
+import frc.robot.subsystems.Lights;
 import frc.robot.subsystems.IntakeSubsystem;
 import frc.robot.Constants.OperatorConstants;
 import frc.robot.Constants.HangSubsystemConstants;
 import frc.robot.Constants.HangSubsystemConstants.HangSetpoints;
 import frc.robot.subsystems.swervedrive.SwerveSubsystem;
 import frc.robot.Constants.IntakeSubsystemConstants.IntakeSetpoints;
+import frc.robot.commands.IntakeCoralGold;
+
 import frc.robot.commands.AutoElevatorCoral;
 import frc.robot.commands.AutoElevatorTrough;
 import frc.robot.commands.AutoElevatorkLevel1AndAHalf;
@@ -38,6 +41,8 @@ import frc.robot.commands.AutoElevatorkLevel3;
 import frc.robot.commands.AutoElevatorkLevel4;
 import frc.robot.commands.LeftAlignReef;
 import frc.robot.commands.ExampleCommand;
+import frc.robot.commands.IntakeCoralBlue;
+import frc.robot.commands.IntakeCoralGold;
 import frc.robot.commands.IntakeWithSensor;
 import frc.robot.commands.OuttakeWithSensor;
 import frc.robot.commands.RunOuttake;
@@ -63,6 +68,7 @@ public class RobotContainer {
   private final HingeSubsystem m_hingeSubSystem = new HingeSubsystem();
   private final HangSubsystem m_hangSubSystem = new HangSubsystem();
   private final IntakeSubsystem m_intakeSubSystem = new IntakeSubsystem();
+  private final Lights m_lights = new Lights();
   
   private final SendableChooser<Command> autoChooser;
   // Replace with CommandPS4Controller or CommandJoystick if needed
@@ -262,6 +268,8 @@ public class RobotContainer {
         Command runElevator = new RunElevator(m_elevatorSubSystem, () -> auxXbox.getLeftY() * -0.25);
         Command outtakeWithSensor = new OuttakeWithSensor(m_intakeSubSystem);
         Command intakeWithSensor = new IntakeWithSensor(m_intakeSubSystem);
+        Command intakeCoralGold = new IntakeCoralGold(m_lights);
+        Command intakeCoralBlue = new IntakeCoralBlue(m_lights);
 
 
     if (RobotBase.isSimulation()) {
@@ -309,7 +317,7 @@ public class RobotContainer {
       auxXbox.y().onTrue(m_elevatorSubSystem.setSetpointCommand(Setpoint.kLevel3));
       auxXbox.x().onTrue(m_elevatorSubSystem.setSetpointCommand(Setpoint.kLevel4));
       auxXbox.rightBumper().onTrue(outtakeWithSensor);
-      auxXbox.leftBumper().onTrue(intakeWithSensor);
+      auxXbox.leftBumper().onTrue(intakeCoralGold.andThen(intakeWithSensor).andThen(intakeCoralBlue));
       auxXbox.povDown().whileTrue(runHingeReverse);
       auxXbox.povUp().whileTrue(runHingeForward);
       // auxXbox.start().onTrue(m_hingeSubSystem.setSetpointCommand(HingeSubsystem.Setpoint.kLevel4));

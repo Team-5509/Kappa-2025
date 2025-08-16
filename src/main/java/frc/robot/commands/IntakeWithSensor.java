@@ -8,7 +8,7 @@ import frc.robot.Constants.IntakeSubsystemConstants;
 import frc.robot.subsystems.ExampleSubsystem;
 
 import java.util.Queue;
-
+import frc.robot.subsystems.Lights.*;
 import edu.wpi.first.wpilibj.motorcontrol.Spark;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.subsystems.IntakeSubsystem;
@@ -67,6 +67,7 @@ intakeFlag = true;
       m_intakeSubsystem.setIntakePower(0.4);
       return false;
     } else if (!inner_is_visible && outer_is_visible) {
+      
       return true;
     }
     return false;
