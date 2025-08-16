@@ -546,11 +546,12 @@ public class Vision {
       double mostRecentTimestamp = resultsList.isEmpty() ? 0.0 : resultsList.get(0).getTimestampSeconds();
       double currentTimestamp = Microseconds.of(NetworkTablesJNI.now()).in(Seconds);
       double debounceTime = Milliseconds.of(15).in(Seconds);
+      boolean passThroughPhotonPipeline = false;
       for (PhotonPipelineResult result : resultsList) {
         mostRecentTimestamp = Math.max(mostRecentTimestamp, result.getTimestampSeconds());
       }
-      if ((resultsList.isEmpty() || (currentTimestamp - mostRecentTimestamp >= debounceTime)) &&
-          (currentTimestamp - lastReadTimestamp) >= debounceTime) {
+      // if ((resultsList.isEmpty() || (currentTimestamp - mostRecentTimestamp >= debounceTime)) &&
+      //     (currentTimestamp - lastReadTimestamp) >= debounceTime) {
         resultsList = Robot.isReal() ? camera.getAllUnreadResults() : cameraSim.getCamera().getAllUnreadResults();
         lastReadTimestamp = currentTimestamp;
         resultsList.sort((PhotonPipelineResult a, PhotonPipelineResult b) -> {
@@ -558,8 +559,11 @@ public class Vision {
         });
         if (!resultsList.isEmpty()) {
           updateEstimatedGlobalPose();
-        }
+          passThroughPhotonPipeline = true;
+      //  } 
       }
+      SmartDashboard.putBoolean("resultsNotEmpty", passThroughPhotonPipeline);
+
     }
 
     /**
