@@ -9,6 +9,7 @@ import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
+import static frc.robot.util.Math.*;
 
 /** An example command that uses an example subsystem. */
 public class LeftAlignReef extends Command {
@@ -54,8 +55,8 @@ public static String prettyDouble(double value){
     double y = CENTER_Y + OFFSET * Math.sin(angle);
     double finalAngle = Math.toRadians(-180) + angle;
     // }
-    x = x*0.0254;
-    y = y*0.0254;
+    x = in2m(x);
+    y = in2m(y);
     SmartDashboard.putString("driveToPose", "x"+ prettyDouble(x) + "y" + prettyDouble(y) + "r" + prettyDouble(Math.toDegrees(finalAngle)));
 
     Rotation2d finalRotation = new Rotation2d(finalAngle);
