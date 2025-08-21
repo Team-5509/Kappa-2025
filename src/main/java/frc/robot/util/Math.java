@@ -30,6 +30,15 @@ public class Math {
         return inchesToMeters(inches);
     }
 
+    /**
+     * Converts meters to inches.
+     * This is an alias for metersToInches.
+     * @param meters
+     * @return the distance in inches
+     */
+    public static double m2in(double meters) {
+        return inchesToMeters(meters);
+    }
 
     
 }
