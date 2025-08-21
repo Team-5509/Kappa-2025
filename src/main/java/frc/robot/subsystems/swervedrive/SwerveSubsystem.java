@@ -19,6 +19,10 @@ import com.pathplanner.lib.util.swerve.SwerveSetpoint;
 import com.pathplanner.lib.util.swerve.SwerveSetpointGenerator;
 import edu.wpi.first.apriltag.AprilTagFieldLayout;
 import edu.wpi.first.apriltag.AprilTagFields;
+import edu.wpi.first.math.MathUtil;
+import edu.wpi.first.math.controller.HolonomicDriveController;
+import edu.wpi.first.math.controller.PIDController;
+import edu.wpi.first.math.controller.ProfiledPIDController;
 import edu.wpi.first.math.controller.SimpleMotorFeedforward;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Pose3d;
@@ -27,6 +31,7 @@ import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.trajectory.Trajectory;
+import edu.wpi.first.math.trajectory.TrapezoidProfile;
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
@@ -286,6 +291,40 @@ public class SwerveSubsystem extends SubsystemBase {
         edu.wpi.first.units.Units.MetersPerSecond.of(0) // Goal end velocity in meters/sec
     );
   }
+
+/**
+ * Nudge the robot to a precise position using a holonomic drive controller.
+ * @param goal
+ * @return
+ */
+public Command nudgeToPose(Pose2d goal) {
+  var x = new PIDController(5.0, 0.0, 0.0);
+  var y = new PIDController(5.0, 0.0, 0.0);
+  var theta = new ProfiledPIDController(
+      5.0, 0.0, 0.0,
+      new TrapezoidProfile.Constraints(Math.toRadians(540), Math.toRadians(720)));
+  theta.enableContinuousInput(-Math.PI, Math.PI);
+
+  var hdc = new HolonomicDriveController(x, y, theta);
+  hdc.setTolerance(new Pose2d(0.02, 0.02, Rotation2d.fromDegrees(1.0))); // 2 cm & 1 deg tolerance
+
+
+  return run(() -> {
+      var current = getPose();
+      double dist = current.getTranslation().getDistance(goal.getTranslation());
+      // Approach speed: scale with distance, clamp to overcome stiction but stay gentle
+      double vRef = MathUtil.clamp(dist * 1.2, 0.06, 0.5); // tune these
+
+      var speeds = hdc.calculate(
+          current,
+          goal,                 
+          vRef,                 
+          goal.getRotation());  
+      setChassisSpeeds(speeds); 
+    })
+    .until(hdc::atReference)     
+    .withTimeout(1.0);           
+}
 
   /**
    * Drive with {@link SwerveSetpointGenerator} from 254, implemented by
