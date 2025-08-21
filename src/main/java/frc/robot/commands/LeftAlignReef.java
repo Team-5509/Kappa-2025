@@ -30,7 +30,7 @@ public class LeftAlignReef extends Command {
   }
 
   public Command drive3FtAway() {
-    return m_drive.driveToPose(computeLocation(10
+    return m_drive.driveToPose(computeLocation(11
     ));
   }
 public static String prettyDouble(double value, int precision){
@@ -42,7 +42,7 @@ public static String prettyDouble(double value){
   public Pose2d computeLocation(int id) {
     final double CENTER_X = 514.13;
     final double CENTER_Y = 158.5;
-    final double OFFSET = 32.714 + 12*2;
+    final double OFFSET = 32.714 + 12*2 + 36/2;
     // for (int i = 0; i < 6; i++){
     int i = id - 7;
     if (id == 6) {
