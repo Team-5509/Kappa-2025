@@ -29,20 +29,38 @@ public class LeftAlignReef extends Command {
     addRequirements(subsystem);
   }
 
-  public Command drive3FtAway() {
-    return m_drive.driveToPose(computeLocation(11
-    ));
+  private double inchesToMeters(double inches) {
+    return inches * 0.0254;
   }
-public static String prettyDouble(double value, int precision){
-  return Math.round(value*Math.pow(10, precision))/Math.pow(10, precision)+"";
-} 
-public static String prettyDouble(double value){
-  return prettyDouble(value,2);
-}
+
+  public Command drive3FtAway() {
+    Pose2d customPose = computeLocation(11);
+    //Pose2d customPose = new Pose2d(inchesToMeters(494.38),inchesToMeters(111.36), Rotation2d.fromDegrees(60));
+    //Pose2d customPose = new Pose2d(12.527, 2.763, Rotation2d.fromDegrees(60));
+
+    return m_drive.driveToPose(customPose);
+  }
+
+  public Command driveToFinal() {
+    //Pose2d customPose = computeLocation(11);
+    //Pose2d customPose = new Pose2d(inchesToMeters(494.38),inchesToMeters(111.36), Rotation2d.fromDegrees(60));
+    Pose2d customPose = new Pose2d(12.5, 2.723, Rotation2d.fromDegrees(60));
+
+    return m_drive.nudgeToPose(customPose);
+  }
+
+  public static String prettyDouble(double value, int precision) {
+    return Math.round(value * Math.pow(10, precision)) / Math.pow(10, precision) + "";
+  }
+
+  public static String prettyDouble(double value) {
+    return prettyDouble(value, 2);
+  }
+
   public Pose2d computeLocation(int id) {
     final double CENTER_X = 514.13;
     final double CENTER_Y = 158.5;
-    final double OFFSET = 32.714 + 12*2 + 36/2;
+    final double OFFSET = 32.714 + 12 * 2 + 36 / 2;
     // for (int i = 0; i < 6; i++){
     int i = id - 7;
     if (id == 6) {
@@ -54,9 +72,10 @@ public static String prettyDouble(double value){
     double y = CENTER_Y + OFFSET * Math.sin(angle);
     double finalAngle = Math.toRadians(-180) + angle;
     // }
-    x = x*0.0254;
-    y = y*0.0254;
-    SmartDashboard.putString("driveToPose", "x"+ prettyDouble(x) + "y" + prettyDouble(y) + "r" + prettyDouble(Math.toDegrees(finalAngle)));
+    x = x * 0.0254;
+    y = y * 0.0254;
+    SmartDashboard.putString("driveToPose",
+        "x" + prettyDouble(x) + "y" + prettyDouble(y) + "r" + prettyDouble(Math.toDegrees(finalAngle)));
 
     Rotation2d finalRotation = new Rotation2d(finalAngle);
     return new Pose2d(x, y, finalRotation);

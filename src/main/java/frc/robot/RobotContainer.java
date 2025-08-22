@@ -302,7 +302,8 @@ public class RobotContainer {
       driverXbox.povUp().whileTrue(driveRobotOrientedStrafeUpFinneseCommand);
       driverXbox.povDown().whileTrue(driveRobotOrientedStrafeDownFinneseCommand);
       driverXbox.a().whileTrue(snapToReef_1.drive3FtAway());
-      driverXbox.x().whileTrue(drivebase.driveToPose(new Pose2d(10.8, 1.5,  Rotation2d.fromDegrees(90))));
+      driverXbox.x().whileTrue(snapToReef_1.driveToFinal());
+      //driverXbox.x().whileTrue(drivebase.driveToPose(new Pose2d(10.8, 1.5,  Rotation2d.fromDegrees(90))));
       driverXbox.y().whileTrue(drivebase.driveToPose(new Pose2d(12.8, 1.5,  Rotation2d.fromDegrees(90))));
       
       

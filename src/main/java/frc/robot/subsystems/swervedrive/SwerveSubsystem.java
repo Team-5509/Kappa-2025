@@ -63,6 +63,7 @@ import swervelib.parser.SwerveParser;
 import swervelib.telemetry.SwerveDriveTelemetry;
 import swervelib.telemetry.SwerveDriveTelemetry.TelemetryVerbosity;
 
+
 public class SwerveSubsystem extends SubsystemBase {
 
   /**
@@ -138,6 +139,14 @@ public class SwerveSubsystem extends SubsystemBase {
         Constants.MAX_SPEED,
         new Pose2d(new Translation2d(Meter.of(2), Meter.of(0)),
             Rotation2d.fromDegrees(0)));
+  }
+
+  public static String prettyDouble(double value, int precision) {
+    return Math.round(value * Math.pow(10, precision)) / Math.pow(10, precision) + "";
+  }
+
+  public static String prettyDouble(double value) {
+    return prettyDouble(value, 2);
   }
 
   /**
@@ -283,6 +292,8 @@ public class SwerveSubsystem extends SubsystemBase {
     PathConstraints constraints = new PathConstraints(
         swerveDrive.getMaximumChassisVelocity(), 4.0,
         swerveDrive.getMaximumChassisAngularVelocity(), Units.degreesToRadians(720));
+        SmartDashboard.putString("driveToPose",
+        "x" + prettyDouble(pose.getX()) + "y" + prettyDouble(pose.getY()) + "r" + prettyDouble(pose.getRotation().getDegrees()));
 
     // Since AutoBuilder is configured, we can use it to build pathfinding commands
     return AutoBuilder.pathfindToPose(
