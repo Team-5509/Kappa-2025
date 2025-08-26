@@ -32,21 +32,33 @@ public class LeftAlignReef extends Command {
   private double inchesToMeters(double inches) {
     return inches * 0.0254;
   }
-
+ public Pose2d altComputeLocation(double length, double m, double degrees){
+  double xc = 13.059;
+  double yc = 4.0259;
+  double xr = xc + length * Math.cos(Math.toRadians(degrees))- m * Math.sin(Math.toRadians(degrees));
+  double yr = yc + length * Math.sin(Math.toRadians(degrees))+ m * Math.cos(Math.toRadians(degrees));
+  return new Pose2d(xr , yr , Rotation2d.fromDegrees(degrees-180));
+ }
   public Command drive3FtAway() {
-    Pose2d customPose = computeLocation(11);
+    //Pose2d customPose = computeLocation(11);
+    double totalLongset = (LONGSET + 12*3) * 0.0254;
+    Pose2d customPose = altComputeLocation(totalLongset, 0, 300);
     //Pose2d customPose = new Pose2d(inchesToMeters(494.38),inchesToMeters(111.36), Rotation2d.fromDegrees(60));
     //Pose2d customPose = new Pose2d(12.527, 2.763, Rotation2d.fromDegrees(60));
 
     return m_drive.driveToPose(customPose);
   }
+private final double LONGSET = 50.72; //sum of center of coral to tag + half of length of robot(in inches)
 
   public Command driveToFinal() {
+    double totalLongset = (LONGSET + 4) * 0.0254;
+
     //Pose2d customPose = computeLocation(11);
     //Pose2d customPose = new Pose2d(inchesToMeters(494.38),inchesToMeters(111.36), Rotation2d.fromDegrees(60));
-    Pose2d customPose = new Pose2d(12.5, 2.723, Rotation2d.fromDegrees(60));
+    // Pose2d customPose = new Pose2d(12.5, 2.723, Rotation2d.fromDegrees(60));
+    Pose2d customPose = altComputeLocation(totalLongset, 0.164338, 300);
 
-    return m_drive.nudgeToPose(customPose);
+    return m_drive.nudgeToPose(customPose).andThen(m_drive.nudgeToPose(customPose));
   }
 
   public static String prettyDouble(double value, int precision) {
