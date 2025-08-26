@@ -39,7 +39,7 @@ public class LeftAlignReef extends Command {
  }
   public Command drive3FtAway() {
     //Pose2d customPose = computeLocation(11);
-    double totalLongset = (LONGSET + 12*3) * 0.0254;
+    double totalLongset = in2m(LONGSET + 12*3);
     Pose2d customPose = altComputeLocation(totalLongset, 0, 300);
     //Pose2d customPose = new Pose2d(inchesToMeters(494.38),inchesToMeters(111.36), Rotation2d.fromDegrees(60));
     //Pose2d customPose = new Pose2d(12.527, 2.763, Rotation2d.fromDegrees(60));
@@ -49,7 +49,7 @@ public class LeftAlignReef extends Command {
 private final double LONGSET = 50.72; //sum of center of coral to tag + half of length of robot(in inches)
 
   public Command driveToFinal() {
-    double totalLongset = (LONGSET + 7) * 0.0254;
+    double totalLongset = in2m(LONGSET + 7);
 
     //Pose2d customPose = computeLocation(11);
     //Pose2d customPose = new Pose2d(inchesToMeters(494.38),inchesToMeters(111.36), Rotation2d.fromDegrees(60));
