@@ -30,13 +30,19 @@ public class LeftAlignReef extends Command {
   }
 
   public Command drive3FtAway() {
-    return m_drive.driveToPose(computeLocation(8));
+    return m_drive.driveToPose(computeLocation(11
+    ));
   }
-
+public static String prettyDouble(double value, int precision){
+  return Math.round(value*Math.pow(10, precision))/Math.pow(10, precision)+"";
+} 
+public static String prettyDouble(double value){
+  return prettyDouble(value,2);
+}
   public Pose2d computeLocation(int id) {
     final double CENTER_X = 514.13;
     final double CENTER_Y = 158.5;
-    final double OFFSET = 32.714 + 36;
+    final double OFFSET = 32.714 + 12*2 + 36/2;
     // for (int i = 0; i < 6; i++){
     int i = id - 7;
     if (id == 6) {
@@ -44,9 +50,14 @@ public class LeftAlignReef extends Command {
     }
     double angle = Math.toRadians(i * 60);
     double x = CENTER_X + OFFSET * Math.cos(angle);
-    double y = CENTER_Y + OFFSET * Math.cos(angle);
-    double finalAngle = -180 + angle;
+
+    double y = CENTER_Y + OFFSET * Math.sin(angle);
+    double finalAngle = Math.toRadians(-180) + angle;
     // }
+    x = x*0.0254;
+    y = y*0.0254;
+    SmartDashboard.putString("driveToPose", "x"+ prettyDouble(x) + "y" + prettyDouble(y) + "r" + prettyDouble(Math.toDegrees(finalAngle)));
+
     Rotation2d finalRotation = new Rotation2d(finalAngle);
     return new Pose2d(x, y, finalRotation);
   }
