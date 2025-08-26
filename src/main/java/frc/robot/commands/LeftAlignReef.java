@@ -51,7 +51,7 @@ public class LeftAlignReef extends Command {
 private final double LONGSET = 50.72; //sum of center of coral to tag + half of length of robot(in inches)
 
   public Command driveToFinal() {
-    double totalLongset = (LONGSET + 4) * 0.0254;
+    double totalLongset = (LONGSET + 7) * 0.0254;
 
     //Pose2d customPose = computeLocation(11);
     //Pose2d customPose = new Pose2d(inchesToMeters(494.38),inchesToMeters(111.36), Rotation2d.fromDegrees(60));
