@@ -30,9 +30,6 @@ public class LeftAlignReef extends Command {
     addRequirements(subsystem);
   }
 
-  private double inchesToMeters(double inches) {
-    return inches * 0.0254;
-  }
  public Pose2d altComputeLocation(double length, double m, double degrees){
   double xc = 13.059;
   double yc = 4.0259;
