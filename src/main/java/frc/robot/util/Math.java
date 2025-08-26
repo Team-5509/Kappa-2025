@@ -1,5 +1,8 @@
 package frc.robot.util;
 
+/**
+ * Utility class for mathematical conversions.
+ */
 public class Math {
 
     /**
@@ -37,7 +40,7 @@ public class Math {
      * @return the distance in inches
      */
     public static double m2in(double meters) {
-        return inchesToMeters(meters);
+        return metersToInches(meters);
     }
 
     
