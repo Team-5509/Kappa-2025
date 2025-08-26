@@ -305,7 +305,9 @@ public class RobotContainer {
       driverXbox.x().whileTrue(snapToReef_1.driveToFinal());
       //driverXbox.x().whileTrue(drivebase.driveToPose(new Pose2d(10.8, 1.5,  Rotation2d.fromDegrees(90))));
       driverXbox.y().whileTrue(snapToReef_1.drive3FtAway().andThen(snapToReef_1.driveToFinal()
-      .alongWith(m_elevatorSubSystem.setSetpointCommand(Setpoint.kLevel3).andThen(Commands.waitSeconds(2)))).andThen(outtakeWithSensor));
+      .alongWith(m_elevatorSubSystem.setSetpointCommand(Setpoint.kLevel3)
+      // .andThen(Commands.waitSeconds(2))
+      )).andThen(outtakeWithSensor));
 
 
       //.alongWith(m_elevatorSubSystem.setSetpointCommand(Setpoint.kLevel3)).andThen(Commands.waitSeconds(2)).andThen(outtakeWithSensor));
