@@ -319,6 +319,8 @@ public Command nudgeToPose(Pose2d goal) {
   var hdc = new HolonomicDriveController(x, y, theta);
   hdc.setTolerance(new Pose2d(0.02, 0.02, Rotation2d.fromDegrees(1.0))); // 2 cm & 1 deg tolerance
 
+  final double MAXLINEARSPEED = 0.5;
+  final double MAXANGULARSPEED = Math.toRadians(180);
 
   return run(() -> {
       var current = getPose();
@@ -330,12 +332,21 @@ public Command nudgeToPose(Pose2d goal) {
           current,
           goal,                 
           vRef,                 
-          goal.getRotation());  
+          goal.getRotation()); 
+          double linearVel = Math.hypot(speeds.vxMetersPerSecond, speeds.vyMetersPerSecond); 
+          if (linearVel > MAXLINEARSPEED){
+            double scale = MAXLINEARSPEED/linearVel;
+            speeds.vxMetersPerSecond *= scale;
+            speeds.vyMetersPerSecond *= scale;
+          }
+speeds.omegaRadiansPerSecond = MathUtil.clamp(speeds.omegaRadiansPerSecond, -MAXANGULARSPEED, MAXANGULARSPEED);
       setChassisSpeeds(speeds); 
     })
     .until(hdc::atReference)     
     .withTimeout(1.0);           
 }
+
+
 
   /**
    * Drive with {@link SwerveSetpointGenerator} from 254, implemented by
