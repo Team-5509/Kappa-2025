@@ -263,6 +263,7 @@ public class RobotContainer {
         Command runOuttake = new RunOuttake(m_intakeSubSystem, () -> auxXbox.getRightY()*-1);
         Command runElevator = new RunElevator(m_elevatorSubSystem, () -> auxXbox.getLeftY() * -0.25);
         Command outtakeWithSensor = new OuttakeWithSensor(m_intakeSubSystem);
+        Command outtakeWithSensor2 = new OuttakeWithSensor(m_intakeSubSystem);
         Command intakeWithSensor = new IntakeWithSensor(m_intakeSubSystem);
 
 
@@ -293,7 +294,7 @@ public class RobotContainer {
       // driverXbox.b().whileTrue(
       //     drivebase.driveToPose(
       //         new Pose2d(new Translation2d(4, 4), Rotation2d.fromDegrees(0))));
-      driverXbox.x().whileTrue(Commands.runOnce(drivebase::lock, drivebase).repeatedly());
+      //driverXbox.x().whileTrue(Commands.runOnce(drivebase::lock, drivebase).repeatedly());
       driverXbox.leftBumper().whileTrue(driveRobotOrientedAngularVelocity.repeatedly());
       driverXbox.rightBumper().whileTrue(driveFieldOrientedAnglularVelocityFinnese);
       driverXbox.axisMagnitudeGreaterThan(3, 0.2).whileTrue(runHang);
@@ -303,6 +304,16 @@ public class RobotContainer {
       driverXbox.povUp().whileTrue(driveRobotOrientedStrafeUpFinneseCommand);
       driverXbox.povDown().whileTrue(driveRobotOrientedStrafeDownFinneseCommand);
       driverXbox.a().whileTrue(snapToReef_1.drive3FtAway());
+      driverXbox.x().whileTrue(snapToReef_1.driveToFinal());
+      //driverXbox.x().whileTrue(drivebase.driveToPose(new Pose2d(10.8, 1.5,  Rotation2d.fromDegrees(90))));
+      driverXbox.y().whileTrue(snapToReef_1.drive3FtAway()
+      .andThen(snapToReef_1.driveToFinal()
+      .alongWith(m_elevatorSubSystem.setSetpointCommand(Setpoint.kLevel3)
+       .andThen(Commands.waitSeconds(0.25))
+      )).andThen(outtakeWithSensor2));
+
+
+      //.alongWith(m_elevatorSubSystem.setSetpointCommand(Setpoint.kLevel3)).andThen(Commands.waitSeconds(2)).andThen(outtakeWithSensor));
       
       
 
