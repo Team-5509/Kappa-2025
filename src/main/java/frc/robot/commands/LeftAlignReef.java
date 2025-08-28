@@ -57,10 +57,13 @@ public class LeftAlignReef extends Command {
   public Command drive3FtAway() {
     //Pose2d customPose = computeLocation(11);
     double totalLongset = (LONGSET + 12*3) * 0.0254;
+    Pose2d t = m_drive.getPose();
+    SmartDashboard.putString("I am here", "x:" + t.getX() + "y:" + t.getY() + "R:"+ t.getRotation().getDegrees());
+
     Pose2d customPose = altComputeLocation(totalLongset, 0, getReefSector.getReefSector(m_drive.getPose()));
     //Pose2d customPose = new Pose2d(inchesToMeters(494.38),inchesToMeters(111.36), Rotation2d.fromDegrees(60));
     //Pose2d customPose = new Pose2d(12.527, 2.763, Rotation2d.fromDegrees(60));
-
+    SmartDashboard.putString("I am going here", "x:" + customPose.getX() + "y:" + customPose.getY() + "R:"+ customPose.getRotation().getDegrees());
     return m_drive.driveToPose(customPose).until(() -> {
       Pose2d currentPose = m_drive.getPose();
       double distance = currentPose.getTranslation().getDistance(customPose.getTranslation());
