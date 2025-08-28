@@ -46,12 +46,17 @@ public class LeftAlignReef extends Command {
     //Pose2d customPose = new Pose2d(inchesToMeters(494.38),inchesToMeters(111.36), Rotation2d.fromDegrees(60));
     //Pose2d customPose = new Pose2d(12.527, 2.763, Rotation2d.fromDegrees(60));
 
-    return m_drive.driveToPose(customPose);
+    return m_drive.driveToPose(customPose).until(() -> {
+      Pose2d currentPose = m_drive.getPose();
+      double distance = currentPose.getTranslation().getDistance(customPose.getTranslation());
+      double angleError = Math.abs(currentPose.getRotation().minus(customPose.getRotation()).getRadians());
+      return distance < 0.5 && angleError < Math.toRadians(10);
+    });
   }
 private final double LONGSET = 50.72; //sum of center of coral to tag + half of length of robot(in inches)
 
   public Command driveToFinal() {
-    double totalLongset = (LONGSET + 7) * 0.0254;
+    double totalLongset = (LONGSET + 6) * 0.0254;
 
     //Pose2d customPose = computeLocation(11);
     //Pose2d customPose = new Pose2d(inchesToMeters(494.38),inchesToMeters(111.36), Rotation2d.fromDegrees(60));
