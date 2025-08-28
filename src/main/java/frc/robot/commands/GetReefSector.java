@@ -3,6 +3,7 @@ package frc.robot.commands;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Robot;
 
 public class GetReefSector{
@@ -25,7 +26,7 @@ public class GetReefSector{
         }
 
         double reefRelativeAngle = Math.toDegrees(Math.atan2(reefRelativePose.getY(), reefRelativePose.getX()));
-        
+        SmartDashboard.putNumber("reefRelativeAngle:", reefRelativeAngle);
         if(0 <= reefRelativeAngle || reefRelativeAngle <= 30){
             return 0.0;
         } else if(30 < reefRelativeAngle || reefRelativeAngle <= 90){
