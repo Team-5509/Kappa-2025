@@ -7,6 +7,8 @@ package frc.robot.commands;
 import frc.robot.subsystems.swervedrive.*;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.math.geometry.Translation2d;
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import static frc.robot.util.Math.*;
@@ -15,6 +17,7 @@ import static frc.robot.util.Math.*;
 public class LeftAlignReef extends Command {
   @SuppressWarnings({ "PMD.UnusedPrivateField", "PMD.SingularField" })
   private final SwerveSubsystem m_drive;
+  public GetReefSector getReefSector = new GetReefSector();
 
   /**
    * Creates a new ExampleCommand.
@@ -31,30 +34,55 @@ public class LeftAlignReef extends Command {
   }
 
  public Pose2d altComputeLocation(double length, double m, double degrees){
-  double xc = 13.059;
-  double yc = 4.0259;
+    Double centerXRed = 13.059;
+    Double centerXBlue = 4.489;
+    double xc = 13.059;
+    double yc = 4.0259;
+
+    var alliance = DriverStation.getAlliance();
+      if(!alliance.isPresent()){
+          return null;
+      } else if(alliance.get() == DriverStation.Alliance.Red){
+        xc = centerXRed;
+      } else {
+        xc = centerXBlue;
+      }
+  
   double xr = xc + length * Math.cos(Math.toRadians(degrees))- m * Math.sin(Math.toRadians(degrees));
   double yr = yc + length * Math.sin(Math.toRadians(degrees))+ m * Math.cos(Math.toRadians(degrees));
   return new Pose2d(xr , yr , Rotation2d.fromDegrees(degrees-180));
  }
   public Command drive3FtAway() {
     //Pose2d customPose = computeLocation(11);
+
     double totalLongset = in2m(LONGSET + 12*3);
     Pose2d customPose = altComputeLocation(totalLongset, 0, 300);
+
+    Pose2d t = m_drive.getPose();
+    SmartDashboard.putString("I am here", "x:" + t.getX() + "y:" + t.getY() + "R:"+ t.getRotation().getDegrees());
+
+    Pose2d customPose = altComputeLocation(totalLongset, 0, getReefSector.getReefSector(m_drive.getPose()));
+
     //Pose2d customPose = new Pose2d(inchesToMeters(494.38),inchesToMeters(111.36), Rotation2d.fromDegrees(60));
     //Pose2d customPose = new Pose2d(12.527, 2.763, Rotation2d.fromDegrees(60));
-
-    return m_drive.driveToPose(customPose);
+    SmartDashboard.putString("I am going here", "x:" + customPose.getX() + "y:" + customPose.getY() + "R:"+ customPose.getRotation().getDegrees());
+    return m_drive.driveToPose(customPose).until(() -> {
+      Pose2d currentPose = m_drive.getPose();
+      double distance = currentPose.getTranslation().getDistance(customPose.getTranslation());
+      double angleError = Math.abs(currentPose.getRotation().minus(customPose.getRotation()).getRadians());
+      return distance < 0.5 && angleError < Math.toRadians(10);
+    });
   }
 private final double LONGSET = 50.72; //sum of center of coral to tag + half of length of robot(in inches)
 
   public Command driveToFinal() {
+
     double totalLongset = in2m(LONGSET + 7);
 
     //Pose2d customPose = computeLocation(11);
     //Pose2d customPose = new Pose2d(inchesToMeters(494.38),inchesToMeters(111.36), Rotation2d.fromDegrees(60));
     // Pose2d customPose = new Pose2d(12.5, 2.723, Rotation2d.fromDegrees(60));
-    Pose2d customPose = altComputeLocation(totalLongset, 0.164338, 300);
+    Pose2d customPose = altComputeLocation(totalLongset, 0.164338, getReefSector.getReefSector(m_drive.getPose()));
 
     return m_drive.nudgeToPose(customPose).andThen(m_drive.nudgeToPose(customPose));
   }

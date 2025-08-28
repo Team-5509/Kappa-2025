@@ -319,14 +319,14 @@ public Command nudgeToPose(Pose2d goal) {
   var hdc = new HolonomicDriveController(x, y, theta);
   hdc.setTolerance(new Pose2d(0.02, 0.02, Rotation2d.fromDegrees(1.0))); // 2 cm & 1 deg tolerance
 
-  final double MAXLINEARSPEED = 0.5;
+  final double MAXLINEARSPEED = .85;
   final double MAXANGULARSPEED = Math.toRadians(180);
 
   return run(() -> {
       var current = getPose();
       double dist = current.getTranslation().getDistance(goal.getTranslation());
       // Approach speed: scale with distance, clamp to overcome stiction but stay gentle
-      double vRef = MathUtil.clamp(dist * 1.2, 0.06, 0.5); // tune these
+      double vRef = MathUtil.clamp(dist * 1.2, 0.06, MAXLINEARSPEED); // tune these
 
       var speeds = hdc.calculate(
           current,
