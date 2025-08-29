@@ -38,7 +38,6 @@ import frc.robot.commands.AutoElevatorkLevel3;
 import frc.robot.commands.AutoElevatorkLevel4;
 import frc.robot.commands.ReefScoreCommand;
 import frc.robot.commands.ExampleCommand;
-import frc.robot.commands.GetReefSector;
 import frc.robot.commands.IntakeWithSensor;
 import frc.robot.commands.OuttakeWithSensor;
 import frc.robot.commands.RunOuttake;
@@ -67,7 +66,6 @@ public class RobotContainer {
   private final HangSubsystem m_hangSubSystem = new HangSubsystem();
   private final IntakeSubsystem m_intakeSubSystem = new IntakeSubsystem();
 
-  private final GetReefSector getReefSector = new GetReefSector();
 
   private final ScoreSelection sel = new ScoreSelection();
 
@@ -318,12 +316,10 @@ public class RobotContainer {
       driverXbox.povUp().whileTrue(driveRobotOrientedStrafeUpFinneseCommand);
       driverXbox.povDown().whileTrue(driveRobotOrientedStrafeDownFinneseCommand);
 
-      driverXbox.a().whileTrue(ReefScoreCommand.scoreL3Right(drivebase, m_elevatorSubSystem, outtakeWithSensor2,
-          () -> getReefSector.getReefSector(drivebase.getPose())));
+      driverXbox.a().whileTrue(ReefScoreCommand.scoreL3Right(drivebase, m_elevatorSubSystem, outtakeWithSensor2));
 
       driverXbox.b().onTrue(Commands.runOnce(() -> {
         sel.nextCycleLevel();
-        getReefSector.getReefSector(drivebase.getPose());
       }));
      
       // driverXbox.y().onTrue(Commands.runOnce(() -> {
@@ -340,14 +336,17 @@ public class RobotContainer {
       }));
 
       driverXbox.x().whileTrue(
-          Commands.defer(
-              () -> ReefScoreCommand.score(
-                  drivebase, m_elevatorSubSystem, outtakeWithSensor3,
-                  () -> getReefSector.getReefSector(drivebase.getPose()),
-                  sel.level(), sel.side() 
-              ),
-              Set.of(drivebase)
-          ));
+        Commands.defer(
+            () -> {
+                var level = sel.level();
+                var side  = sel.side();
+                return ReefScoreCommand.score(
+                    drivebase, m_elevatorSubSystem, outtakeWithSensor3, level, side
+                );
+            },
+            Set.of(drivebase, m_elevatorSubSystem)
+        )
+    );
 
       // Auxillary Controller
       auxXbox.a().onTrue(m_elevatorSubSystem.setSetpointCommand(Setpoint.kLevel1));
@@ -423,6 +422,17 @@ public class RobotContainer {
 
     public synchronized void selectSide(ReefScoreCommand.ReefSector side){
       this.side = side; 
+    }
+
+    public synchronized void selectLevel(ElevatorSubsystem.Setpoint level){
+      for (int i = 0; i < levels.length; i++) {
+        if (levels[i] == level) {
+          idx = i;
+          SmartDashboard.putString("Score/Level", levels[idx].name());
+          return;
+        }
+      }
+      throw new IllegalArgumentException("Unknown level " + level);
     }
 
     public synchronized ElevatorSubsystem.Setpoint level() {
