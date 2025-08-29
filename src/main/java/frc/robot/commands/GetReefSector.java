@@ -8,9 +8,9 @@ import frc.robot.Robot;
 
 public class GetReefSector{
     public Double getReefSector(Pose2d currentPose){
-        Double centerXRed = 514.13;
-        Double centerXBlue = 176.75;
-        Double centerY = 158.5;
+        Double centerXRed = 514.13 * 0.0254;
+        Double centerXBlue = 176.75 * 0.0254;
+        Double centerY = 158.5 * 0.0254;
 
         Translation2d reefRelativePose = null;
 
@@ -26,6 +26,7 @@ public class GetReefSector{
         }
 
         double reefRelativeAngle = Math.toDegrees(Math.atan2(reefRelativePose.getY(), reefRelativePose.getX()));
+        reefRelativeAngle = ((reefRelativeAngle%360) + 360)%360;
         SmartDashboard.putNumber("reefRelativeAngle:", reefRelativeAngle);
         if(0 <= reefRelativeAngle || reefRelativeAngle <= 30){
             return 0.0;
