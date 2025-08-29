@@ -6,6 +6,7 @@ import java.util.function.DoubleSupplier;
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -78,7 +79,9 @@ public class ReefScoreCommand extends SequentialCommandGroup {
       Pose2d current = m_drive.getPose();
       printPose("Current_Pose_from_3ft_away", current);
 
-      double sectorDeg = m_reefSectorDegrees.getAsDouble();
+      // double sectorDeg = m_reefSectorDegrees.getAsDouble();
+      double sectorDeg = getReefSector(current);
+      SmartDashboard.putNumber("SectorAngleDrive3ft", sectorDeg);
       Pose2d target = altComputeLocation(totalLongsetMeters, /* m= */0.0, sectorDeg, current);
       printPose("Target_Pose_from_3ft_away", target);
 
@@ -100,7 +103,9 @@ public class ReefScoreCommand extends SequentialCommandGroup {
       if (m_sector == ReefSector.LEFT) {
         mOffset *= -1;
       }
-      double sectorDeg = m_reefSectorDegrees.getAsDouble();
+      Pose2d current = m_drive.getPose();
+
+      double sectorDeg = getReefSector(current);
 
       Pose2d target = altComputeLocation(totalLongsetMeters, mOffset, sectorDeg, m_drive.getPose());
 
@@ -141,6 +146,46 @@ public class ReefScoreCommand extends SequentialCommandGroup {
   public static String prettyDouble(double value) {
     return prettyDouble(value, 2);
   }
+public Double getReefSector(Pose2d currentPose){
+        Double centerXRed = 514.13 * 0.0254;
+        Double centerXBlue = 176.75 * 0.0254;
+        Double centerY = 158.5 * 0.0254;
+
+        Translation2d reefRelativePose = null;
+        
+        var alliance = DriverStation.getAlliance();
+        // return currentPose.getRotation().getDegrees();       
+        if(!alliance.isPresent()){
+            return null;
+
+        } else if(alliance.get() == DriverStation.Alliance.Red){
+            reefRelativePose = new Translation2d(currentPose.getX() - centerXRed, currentPose.getY() - centerY);
+        
+        } else {
+            reefRelativePose = new Translation2d(currentPose.getX() - centerXBlue, currentPose.getY() - centerY);
+        }
+
+        double reefRelativeAngle = Math.toDegrees(Math.atan2(reefRelativePose.getY(), reefRelativePose.getX()));
+        reefRelativeAngle = ((reefRelativeAngle%360) + 360)%360;
+        SmartDashboard.putNumber("reefRelativeAngle:", reefRelativeAngle);
+        if(0 <= reefRelativeAngle && reefRelativeAngle <= 30){
+            return 0.0;
+        } else if(30 < reefRelativeAngle && reefRelativeAngle <= 90){
+            return 60.0;
+        } else if(90 < reefRelativeAngle && reefRelativeAngle <= 150){
+            return 120.0;
+        } else if(150 < reefRelativeAngle && reefRelativeAngle <= 210){
+            return 180.0;
+        } else if(210 < reefRelativeAngle && reefRelativeAngle <= 270){
+            return 240.0;
+        } else if(270 < reefRelativeAngle && reefRelativeAngle <= 330){
+            return 300.0;
+        } else if(330 < reefRelativeAngle && reefRelativeAngle <= 360){
+            return 0.0;
+        } else {
+            return null;
+        }
+    }
 
   public static Command score(
       SwerveSubsystem drive,

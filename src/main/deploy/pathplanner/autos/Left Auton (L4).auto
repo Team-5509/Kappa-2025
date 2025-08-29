@@ -119,7 +119,7 @@
       ]
     }
   },
-  "resetOdom": true,
+  "resetOdom": false,
   "folder": "Left Autons",
   "choreoAuto": false
 }

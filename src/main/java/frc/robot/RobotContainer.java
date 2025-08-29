@@ -75,6 +75,7 @@ public class RobotContainer {
   // Replace with CommandPS4Controller or CommandJoystick if needed
   final CommandXboxController driverXbox = new CommandXboxController(0);
   final CommandXboxController auxXbox = new CommandXboxController(1);
+  final CommandXboxController selXbox = new CommandXboxController(2);
   // The robot's subsystems and commands are defined here...
   private final SwerveSubsystem drivebase = new SwerveSubsystem(new File(Filesystem.getDeployDirectory(),
       "swerve/neo"));
@@ -214,7 +215,7 @@ public class RobotContainer {
     NamedCommands.registerCommand("AutoElevatorkLevel3", new AutoElevatorkLevel3(m_elevatorSubSystem));
     NamedCommands.registerCommand("AutoElevatorkLevel4", new AutoElevatorkLevel4(m_elevatorSubSystem));
     NamedCommands.registerCommand("AutoIntake", new IntakeWithSensor(m_intakeSubSystem));
-    NamedCommands.registerCommand("AutoOuttake", new OuttakeWithSensor(m_intakeSubSystem));
+    NamedCommands.registerCommand("AutoOuttake", new OuttakeWithSensor(m_intakeSubSystem , 0.32));
     NamedCommands.registerCommand("CLeftDriveToPose",
         drivebase.driveToPose(new Pose2d(new Translation2d(5.311, 5.098), Rotation2d.fromDegrees(-156.631))));
     NamedCommands.registerCommand("BLeftDriveToPose",
@@ -281,6 +282,7 @@ public class RobotContainer {
     Command runElevator = new RunElevator(m_elevatorSubSystem, () -> auxXbox.getLeftY() * -0.25);
     Command outtakeWithSensor = new OuttakeWithSensor(m_intakeSubSystem);
     Command outtakeWithSensor2 = new OuttakeWithSensor(m_intakeSubSystem);
+    Command outtakeWithSensor3 = new OuttakeWithSensor(m_intakeSubSystem);
     Command intakeWithSensor = new IntakeWithSensor(m_intakeSubSystem);
 
     if (RobotBase.isSimulation()) {
@@ -316,18 +318,31 @@ public class RobotContainer {
       driverXbox.povUp().whileTrue(driveRobotOrientedStrafeUpFinneseCommand);
       driverXbox.povDown().whileTrue(driveRobotOrientedStrafeDownFinneseCommand);
 
-      driverXbox.a().whileTrue(ReefScoreCommand.scoreL4Left(drivebase, m_elevatorSubSystem, outtakeWithSensor2,
+      driverXbox.a().whileTrue(ReefScoreCommand.scoreL3Right(drivebase, m_elevatorSubSystem, outtakeWithSensor2,
           () -> getReefSector.getReefSector(drivebase.getPose())));
 
       driverXbox.b().onTrue(Commands.runOnce(() -> {
         sel.nextCycleLevel();
         getReefSector.getReefSector(drivebase.getPose());
       }));
+     
+      // driverXbox.y().onTrue(Commands.runOnce(() -> {
+      //   sel.toggleSide();
+      //   getReefSector.getReefSector(drivebase.getPose());
+      // }));
+
+      selXbox.a().onTrue(Commands.runOnce(() -> {
+        sel.selectSide(ReefScoreCommand.ReefSector.LEFT);
+      }));
+      
+      selXbox.b().onTrue(Commands.runOnce(() -> {
+        sel.selectSide(ReefScoreCommand.ReefSector.RIGHT);
+      }));
 
       driverXbox.x().whileTrue(
           Commands.defer(
               () -> ReefScoreCommand.score(
-                  drivebase, m_elevatorSubSystem, outtakeWithSensor2,
+                  drivebase, m_elevatorSubSystem, outtakeWithSensor3,
                   () -> getReefSector.getReefSector(drivebase.getPose()),
                   sel.level(), sel.side() 
               ),
@@ -404,6 +419,10 @@ public class RobotContainer {
           ? ReefScoreCommand.ReefSector.RIGHT
           : ReefScoreCommand.ReefSector.LEFT;
       SmartDashboard.putString("Score/Side", side.name());
+    }
+
+    public synchronized void selectSide(ReefScoreCommand.ReefSector side){
+      this.side = side; 
     }
 
     public synchronized ElevatorSubsystem.Setpoint level() {
