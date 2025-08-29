@@ -322,6 +322,7 @@ public class RobotContainer {
         sel.nextCycleLevel();
       }));
      
+      driverXbox.y().whileTrue(Commands.runOnce(drivebase::lock, drivebase).repeatedly());
       // driverXbox.y().onTrue(Commands.runOnce(() -> {
       //   sel.toggleSide();
       //   getReefSector.getReefSector(drivebase.getPose());
