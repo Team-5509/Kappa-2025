@@ -4,6 +4,8 @@
 
 package frc.robot;
 
+import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.Timer;
@@ -164,6 +166,10 @@ public class Robot extends TimedRobot
   @Override
   public void simulationInit()
   {
+     Pose2d start = new Pose2d(7.0, 3.0, Rotation2d.fromDegrees(180));
+      m_robotContainer.drivebase.resetOdometry(start);
+      
+
   }
 
   /**

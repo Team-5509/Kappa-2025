@@ -128,7 +128,7 @@ public class CoralPickupCommand extends SequentialCommandGroup {
     double xr = xc_m + l_m * Math.cos(thetaRad) - m_m * Math.sin(thetaRad);
     double yr = yc_m + l_m * Math.sin(thetaRad) + m_m * Math.cos(thetaRad);
     // Face the tag center:
-    return new Pose2d(xr, yr, Rotation2d.fromDegrees(tag.rotDeg - 180.0));
+    return new Pose2d(xr, yr, Rotation2d.fromDegrees(tag.rotDeg));
   }
 
   public static CoralPickupCommand create(
