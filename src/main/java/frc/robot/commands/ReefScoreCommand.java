@@ -72,7 +72,7 @@ public class ReefScoreCommand extends SequentialCommandGroup {
    */
   private Command drive3FtAway() {
     return Commands.defer(() -> {
-      double totalLongsetMeters = (LONGSET_IN + 12 * 3) * 0.0254;
+      double totalLongsetMeters = Units.inchesToMeters(LONGSET_IN + 12 * 3);
       Pose2d current = m_drive.getPose();
       printPose("Current_Pose_from_3ft_away", current);
 
@@ -95,7 +95,7 @@ public class ReefScoreCommand extends SequentialCommandGroup {
   private Command driveToFinal() {
     return Commands.defer(() -> {
 
-      double totalLongsetMeters = (LONGSET_IN + 6) * 0.0254;
+      double totalLongsetMeters = Units.inchesToMeters(LONGSET_IN + 6);
       double mOffset = 0.164338;
       if (m_sector == ReefSector.LEFT) {
         mOffset *= -1;
@@ -145,9 +145,9 @@ public class ReefScoreCommand extends SequentialCommandGroup {
   }
 
   public Double getReefSector(Pose2d currentPose) {
-    Double centerXRed = 514.13 * 0.0254;
-    Double centerXBlue = 176.75 * 0.0254;
-    Double centerY = 158.5 * 0.0254;
+    Double centerXRed = Units.inchesToMeters(514.13);
+    Double centerXBlue = Units.inchesToMeters(176.75);
+    Double centerY = Units.inchesToMeters(158.5);
 
     Translation2d reefRelativePose = null;
 

@@ -36,6 +36,7 @@ import frc.robot.commands.AutoElevatorkLevel1AndAHalf;
 import frc.robot.commands.AutoElevatorkLevel2;
 import frc.robot.commands.AutoElevatorkLevel3;
 import frc.robot.commands.AutoElevatorkLevel4;
+import frc.robot.commands.CoralPickupCommand;
 import frc.robot.commands.ReefScoreCommand;
 import frc.robot.commands.ExampleCommand;
 import frc.robot.commands.IntakeWithSensor;
@@ -316,26 +317,18 @@ public class RobotContainer {
       driverXbox.povUp().whileTrue(driveRobotOrientedStrafeUpFinneseCommand);
       driverXbox.povDown().whileTrue(driveRobotOrientedStrafeDownFinneseCommand);
 
-      driverXbox.a().whileTrue(ReefScoreCommand.scoreL3Right(drivebase, m_elevatorSubSystem, outtakeWithSensor2));
+      driverXbox.y().whileTrue(ReefScoreCommand.scoreL3Right(drivebase, m_elevatorSubSystem, outtakeWithSensor2));
 
-      driverXbox.b().onTrue(Commands.runOnce(() -> {
-        sel.nextCycleLevel();
-      }));
+      // driverXbox.b().onTrue(Commands.runOnce(() -> {
+      //   sel.nextCycleLevel();
+      // }));
      
       // driverXbox.y().onTrue(Commands.runOnce(() -> {
       //   sel.toggleSide();
       //   getReefSector.getReefSector(drivebase.getPose());
       // }));
 
-      selXbox.a().onTrue(Commands.runOnce(() -> {
-        sel.selectSide(ReefScoreCommand.ReefSector.LEFT);
-      }));
-      
-      selXbox.b().onTrue(Commands.runOnce(() -> {
-        sel.selectSide(ReefScoreCommand.ReefSector.RIGHT);
-      }));
-
-      driverXbox.x().whileTrue(
+      driverXbox.a().whileTrue(
         Commands.defer(
             () -> {
                 var level = sel.level();
@@ -347,6 +340,30 @@ public class RobotContainer {
             Set.of(drivebase, m_elevatorSubSystem)
         )
     );
+
+      driverXbox.x().whileTrue(
+        Commands.defer(
+            () -> CoralPickupCommand.pickupLeft(drivebase, m_elevatorSubSystem),
+            Set.of(drivebase, m_elevatorSubSystem)
+        )
+      );
+
+      driverXbox.b().whileTrue(
+        Commands.defer(
+            () -> CoralPickupCommand.pickupRight(drivebase, m_elevatorSubSystem),
+            Set.of(drivebase, m_elevatorSubSystem)
+        )
+      );
+
+      selXbox.a().onTrue(Commands.runOnce(() -> {
+        sel.selectSide(ReefScoreCommand.ReefSector.LEFT);
+      }));
+      
+      selXbox.b().onTrue(Commands.runOnce(() -> {
+        sel.selectSide(ReefScoreCommand.ReefSector.RIGHT);
+      }));
+
+
 
       // Auxillary Controller
       auxXbox.a().onTrue(m_elevatorSubSystem.setSetpointCommand(Setpoint.kLevel1));
