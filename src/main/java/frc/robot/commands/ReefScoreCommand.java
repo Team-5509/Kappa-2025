@@ -25,7 +25,7 @@ import frc.robot.subsystems.ElevatorSubsystem.Setpoint;
  */
 public class ReefScoreCommand extends SequentialCommandGroup {
 
-  public enum ReefSector {
+  public enum ReefSide {
     LEFT,
     RIGHT
   }
@@ -33,7 +33,7 @@ public class ReefScoreCommand extends SequentialCommandGroup {
   private final SwerveSubsystem m_drive;
   private final ElevatorSubsystem m_elevator;
   private final Command m_outtakeWithSensor2;
-  private final ReefSector m_sector;
+  private final ReefSide m_sector;
   private final Setpoint m_elevatorSetpoint;
 
   private static final double LONGSET_IN = 50.72;
@@ -49,7 +49,7 @@ public class ReefScoreCommand extends SequentialCommandGroup {
       SwerveSubsystem drive,
       ElevatorSubsystem elevator,
       Command outtakeWithSensor2,
-      ReefSector sectorChoice,
+      ReefSide sectorChoice,
       Setpoint elevatorSetpoint) {
 
     this.m_drive = drive;
@@ -61,26 +61,25 @@ public class ReefScoreCommand extends SequentialCommandGroup {
     addRequirements(drive);
 
     addCommands(
-        drive3FtAway(),
+        driveParent()
+        ,
         Commands.parallel(driveToFinal(), m_elevator.setSetpointCommand(m_elevatorSetpoint)),
         Commands.waitSeconds(0.25),
-        m_outtakeWithSensor2);
+        m_outtakeWithSensor2.asProxy()
+        );
   }
 
   /**
    * Step 1: coarse approach ~3 ft beyond LONGSET, then transition into the fine
    */
-  private Command drive3FtAway() {
+  private Command driveParent() {
     return Commands.defer(() -> {
       double totalLongsetMeters = Units.inchesToMeters(LONGSET_IN + 12 * 3);
       Pose2d current = m_drive.getPose();
       printPose("Current_Pose_from_3ft_away", current);
 
-      // double sectorDeg = m_reefSectorDegrees.getAsDouble();
       double sectorDeg = getReefSector(current);
-      SmartDashboard.putNumber("SectorAngleDrive3ft", sectorDeg);
       Pose2d target = altComputeLocation(totalLongsetMeters, /* m= */0.0, sectorDeg, current);
-      printPose("Target_Pose_from_3ft_away", target);
 
       return m_drive.driveToPose(target).until(() -> {
         Pose2d pose = m_drive.getPose();
@@ -97,7 +96,7 @@ public class ReefScoreCommand extends SequentialCommandGroup {
 
       double totalLongsetMeters = Units.inchesToMeters(LONGSET_IN + 6);
       double mOffset = 0.164338;
-      if (m_sector == ReefSector.LEFT) {
+      if (m_sector == ReefSide.LEFT) {
         mOffset *= -1;
       }
       Pose2d current = m_drive.getPose();
@@ -190,7 +189,7 @@ public class ReefScoreCommand extends SequentialCommandGroup {
       ElevatorSubsystem elevator,
       Command outtakeWithSensor2,
       Setpoint setpoint,
-      ReefSector sector) {
+      ReefSide sector) {
     return new ReefScoreCommand(
         drive, elevator, outtakeWithSensor2, sector, setpoint);
   }
@@ -199,38 +198,38 @@ public class ReefScoreCommand extends SequentialCommandGroup {
   public static Command scoreL2Left(
       SwerveSubsystem drive, ElevatorSubsystem elevator, Command outtakeWithSensor2) {
     return score(drive, elevator, outtakeWithSensor2,
-        Setpoint.kLevel2, ReefSector.LEFT);
+        Setpoint.kLevel2, ReefSide.LEFT);
   }
 
   public static Command scoreL2Right(
       SwerveSubsystem drive, ElevatorSubsystem elevator, Command outtakeWithSensor2) {
     return score(drive, elevator, outtakeWithSensor2,
-        Setpoint.kLevel2, ReefSector.RIGHT);
+        Setpoint.kLevel2, ReefSide.RIGHT);
   }
 
   // L3
   public static Command scoreL3Left(
       SwerveSubsystem drive, ElevatorSubsystem elevator, Command outtakeWithSensor2) {
     return score(drive, elevator, outtakeWithSensor2,
-        Setpoint.kLevel3, ReefSector.LEFT);
+        Setpoint.kLevel3, ReefSide.LEFT);
   }
 
   public static Command scoreL3Right(
       SwerveSubsystem drive, ElevatorSubsystem elevator, Command outtakeWithSensor2) {
     return score(drive, elevator, outtakeWithSensor2,
-        Setpoint.kLevel3, ReefSector.RIGHT);
+        Setpoint.kLevel3, ReefSide.RIGHT);
   }
 
   // L4
   public static Command scoreL4Left(
       SwerveSubsystem drive, ElevatorSubsystem elevator, Command outtakeWithSensor2) {
     return score(drive, elevator, outtakeWithSensor2,
-        Setpoint.kLevel4, ReefSector.LEFT);
+        Setpoint.kLevel4, ReefSide.LEFT);
   }
 
   public static Command scoreL4Right(
       SwerveSubsystem drive, ElevatorSubsystem elevator, Command outtakeWithSensor2) {
     return score(drive, elevator, outtakeWithSensor2,
-        Setpoint.kLevel4, ReefSector.RIGHT);
+        Setpoint.kLevel4, ReefSide.RIGHT);
   }
 }

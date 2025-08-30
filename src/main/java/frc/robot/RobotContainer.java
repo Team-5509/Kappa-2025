@@ -6,6 +6,8 @@ package frc.robot;
 
 import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.auto.NamedCommands;
+
+import edu.wpi.first.math.Pair;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
@@ -48,6 +50,7 @@ import frc.robot.commands.RunHang;
 import frc.robot.commands.RunHangReverse;
 import frc.robot.Constants.IntakeSubsystemConstants;
 import java.io.File;
+import java.util.HashMap;
 import java.util.Set;
 
 import swervelib.SwerveInputStream;
@@ -76,7 +79,7 @@ public class RobotContainer {
   final CommandXboxController auxXbox = new CommandXboxController(1);
   final CommandXboxController selXbox = new CommandXboxController(2);
   // The robot's subsystems and commands are defined here...
-  private final SwerveSubsystem drivebase = new SwerveSubsystem(new File(Filesystem.getDeployDirectory(),
+  public final SwerveSubsystem drivebase = new SwerveSubsystem(new File(Filesystem.getDeployDirectory(),
       "swerve/neo"));
 
   /**
@@ -280,9 +283,9 @@ public class RobotContainer {
     Command runOuttake = new RunOuttake(m_intakeSubSystem, () -> auxXbox.getRightY() * -1);
     Command runElevator = new RunElevator(m_elevatorSubSystem, () -> auxXbox.getLeftY() * -0.25);
     Command outtakeWithSensor = new OuttakeWithSensor(m_intakeSubSystem);
-    Command outtakeWithSensor2 = new OuttakeWithSensor(m_intakeSubSystem);
-    Command outtakeWithSensor3 = new OuttakeWithSensor(m_intakeSubSystem);
     Command intakeWithSensor = new IntakeWithSensor(m_intakeSubSystem);
+
+    // sel.generateAllCommands(drivebase, m_elevatorSubSystem, outtakeWithSensor3);
 
     if (RobotBase.isSimulation()) {
       drivebase.setDefaultCommand(driveFieldOrientedDirectAngleSim);
@@ -292,7 +295,7 @@ public class RobotContainer {
     }
 
     if (Robot.isSimulation()) {
-      driverXbox.start().onTrue(Commands.runOnce(() -> drivebase.resetOdometry(new Pose2d(3, 3, new Rotation2d()))));
+      driverXbox.start().onTrue(Commands.runOnce(() -> drivebase.resetOdometry(new Pose2d(10, 8, new Rotation2d()))));
       driverXbox.button(1).whileTrue(drivebase.sysIdDriveMotorCommand());
 
     }
@@ -317,17 +320,16 @@ public class RobotContainer {
       driverXbox.povUp().whileTrue(driveRobotOrientedStrafeUpFinneseCommand);
       driverXbox.povDown().whileTrue(driveRobotOrientedStrafeDownFinneseCommand);
 
-      driverXbox.y().whileTrue(ReefScoreCommand.scoreL3Right(drivebase, m_elevatorSubSystem, outtakeWithSensor2));
+      // driverXbox.y().whileTrue(ReefScoreCommand.scoreL3Right(drivebase, m_elevatorSubSystem, outtakeWithSensor));
 
       // driverXbox.b().onTrue(Commands.runOnce(() -> {
       //   sel.nextCycleLevel();
       // }));
      
-      driverXbox.y().whileTrue(Commands.runOnce(drivebase::lock, drivebase).repeatedly());
-      // driverXbox.y().onTrue(Commands.runOnce(() -> {
-      //   sel.toggleSide();
-      //   getReefSector.getReefSector(drivebase.getPose());
-      // }));
+      // driverXbox.y().whileTrue(Commands.runOnce(drivebase::lock, drivebase).repeatedly());
+      driverXbox.y().onTrue(Commands.runOnce(() -> {
+        sel.toggleSide();
+      }));
 
       driverXbox.a().whileTrue(
         Commands.defer(
@@ -335,7 +337,7 @@ public class RobotContainer {
                 var level = sel.level();
                 var side  = sel.side();
                 return ReefScoreCommand.score(
-                    drivebase, m_elevatorSubSystem, outtakeWithSensor3, level, side
+                    drivebase, m_elevatorSubSystem, outtakeWithSensor, level, side
                 );
             },
             Set.of(drivebase, m_elevatorSubSystem)
@@ -357,11 +359,11 @@ public class RobotContainer {
       );
 
       selXbox.a().onTrue(Commands.runOnce(() -> {
-        sel.selectSide(ReefScoreCommand.ReefSector.LEFT);
+        sel.selectSide(ReefScoreCommand.ReefSide.LEFT);
       }));
       
       selXbox.b().onTrue(Commands.runOnce(() -> {
-        sel.selectSide(ReefScoreCommand.ReefSector.RIGHT);
+        sel.selectSide(ReefScoreCommand.ReefSide.RIGHT);
       }));
 
 
@@ -406,7 +408,25 @@ public class RobotContainer {
         ElevatorSubsystem.Setpoint.kLevel4
     };
     private int idx = 1;
-    private ReefScoreCommand.ReefSector side = ReefScoreCommand.ReefSector.RIGHT;
+    private ReefScoreCommand.ReefSide side = ReefScoreCommand.ReefSide.RIGHT;
+    // how to create a hashmap of levels to commands
+    
+    // HashMap<Pair<ElevatorSubsystem.Setpoint, ReefScoreCommand.ReefSide>, Command> commandMap = new HashMap<>();
+
+
+    // public void generateAllCommands(SwerveSubsystem drivebase, ElevatorSubsystem elevator,
+    //     Command outtakeWithSensor) {
+    //   for (ElevatorSubsystem.Setpoint level : levels) {
+    //     for (ReefScoreCommand.ReefSide side : ReefScoreCommand.ReefSide.values()) {
+    //       commandMap.put(new Pair<>(level, side),
+    //           ReefScoreCommand.score(drivebase, elevator, outtakeWithSensor, level, side));
+    //     }
+    //   }
+    // }
+
+    // public Command getCommand(ElevatorSubsystem.Setpoint level, ReefScoreCommand.ReefSide side) {
+    //   return commandMap.get(new Pair<>(level, side));
+    // }
 
     public synchronized void cycleLevel(int dir) {
       idx = Math.floorMod(idx + dir, levels.length);
@@ -418,7 +438,7 @@ public class RobotContainer {
     }
 
     public synchronized void selectLevelandSide(ElevatorSubsystem.Setpoint level,
-        ReefScoreCommand.ReefSector side) {
+        ReefScoreCommand.ReefSide side) {
       for (int i = 0; i < levels.length; i++) {
         if (levels[i] == level) {
           idx = i;
@@ -432,13 +452,13 @@ public class RobotContainer {
     }
 
     public synchronized void toggleSide() {
-      side = (side == ReefScoreCommand.ReefSector.LEFT)
-          ? ReefScoreCommand.ReefSector.RIGHT
-          : ReefScoreCommand.ReefSector.LEFT;
+      side = (side == ReefScoreCommand.ReefSide.LEFT)
+          ? ReefScoreCommand.ReefSide.RIGHT
+          : ReefScoreCommand.ReefSide.LEFT;
       SmartDashboard.putString("Score/Side", side.name());
     }
 
-    public synchronized void selectSide(ReefScoreCommand.ReefSector side){
+    public synchronized void selectSide(ReefScoreCommand.ReefSide side){
       this.side = side; 
     }
 
@@ -457,9 +477,11 @@ public class RobotContainer {
       return levels[idx];
     }
 
-    public synchronized ReefScoreCommand.ReefSector side() {
+    public synchronized ReefScoreCommand.ReefSide side() {
       return side;
     }
+
+    //build a generate function that returns 
   }
 
 }
