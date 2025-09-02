@@ -4,6 +4,8 @@
 
 package frc.robot.commands;
 
+import static frc.robot.commands.PrettyDouble.prettyDouble;
+
 import frc.robot.subsystems.swervedrive.*;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
@@ -84,13 +86,7 @@ private final double LONGSET = 50.72; //sum of center of coral to tag + half of 
     return m_drive.nudgeToPose(customPose).andThen(m_drive.nudgeToPose(customPose));
   }
 
-  public static String prettyDouble(double value, int precision) {
-    return Math.round(value * Math.pow(10, precision)) / Math.pow(10, precision) + "";
-  }
-
-  public static String prettyDouble(double value) {
-    return prettyDouble(value, 2);
-  }
+  
 
   public Pose2d computeLocation(int id) {
     final double CENTER_X = 514.13;
