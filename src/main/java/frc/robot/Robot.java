@@ -4,6 +4,18 @@
 
 package frc.robot;
 
+import java.nio.file.Files;
+import java.nio.file.Path;
+
+import edu.wpi.first.wpilibj.RobotBase;
+import org.littletonrobotics.junction.Logger;
+import org.littletonrobotics.junction.LoggedRobot;                 // <-- correct class
+import org.littletonrobotics.junction.LogFileUtil;
+import org.littletonrobotics.junction.networktables.NT4Publisher;
+import org.littletonrobotics.junction.wpilog.WPILOGReader;
+import org.littletonrobotics.junction.wpilog.WPILOGWriter;
+
+
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.DriverStation;
@@ -18,7 +30,7 @@ import edu.wpi.first.wpilibj2.command.CommandScheduler;
  * described in the TimedRobot documentation. If you change the name of this class or the package after creating this
  * project, you must also update the build.gradle file in the project.
  */
-public class Robot extends TimedRobot
+public class Robot extends LoggedRobot
 {
 
   private static Robot   instance;
@@ -31,6 +43,36 @@ public class Robot extends TimedRobot
   public Robot()
   {
     instance = this;
+
+    Logger.recordMetadata("ProjectName", "Kappa-2025");
+
+    if (RobotBase.isReal()) {
+      // ---- REAL ROBOT ----
+      Logger.addDataReceiver(new WPILOGWriter());  // writes to /U/logs when USB is present
+      Logger.addDataReceiver(new NT4Publisher());  // live view in AdvantageScope
+    } else {
+      // ---- DESKTOP SIM ----
+
+      Logger.addDataReceiver(new NT4Publisher());
+      boolean wantReplay = Boolean.parseBoolean(
+          System.getenv().getOrDefault("AK_REPLAY", "false"));
+      String replayPath = System.getenv("AKIT_LOG_PATH"); // only use if explicitly provided
+
+      if (wantReplay && replayPath != null && !replayPath.isBlank()
+          && Files.exists(Path.of(replayPath))) {
+        // --- Replay sim (deterministic, fast) ---
+        setUseTiming(false);
+        Logger.setReplaySource(new WPILOGReader(replayPath));
+        Logger.addDataReceiver(new WPILOGWriter(replayPath.replace(".wpilog", "_sim.wpilog")));
+      } else {
+        // --- Live sim (no replay) ---
+        Logger.addDataReceiver(new NT4Publisher());        // live to AdvantageScope
+        Logger.addDataReceiver(new WPILOGWriter("build/ak-logs")); // local logs while simming
+        // keep normal timing in live sim
+      }
+    }
+
+    Logger.start(); // Start logging after receivers are added
   }
 
   public static Robot getInstance()
