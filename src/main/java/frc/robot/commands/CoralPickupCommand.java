@@ -41,8 +41,7 @@ public class CoralPickupCommand extends SequentialCommandGroup {
   }
 
   private static final Map<Integer, TagAnchor> TAGS = Map.of(
-      1, new TagAnchor(657.37, 25.80, 126, Alliance.Red),
-      2, new TagAnchor(657.37, 291.20, 234, Alliance.Red),
+// FIXME: find actual tag locations for 1 and 2
       12, new TagAnchor(33.51, 25.80, 54, Alliance.Blue),
       13, new TagAnchor(33.51, 291.20, 306, Alliance.Blue));
 
@@ -79,7 +78,7 @@ public class CoralPickupCommand extends SequentialCommandGroup {
         return Commands.none();
 
       double lCoarse_in = m_lInches;
-      Pose2d target = offsetFromTag(tag, lCoarse_in, m_mInches);
+      Pose2d target = altComputeLocation(tag, lCoarse_in, m_mInches);
 
       return m_drive.driveToPose(target).until(() -> {
         Pose2d pose = m_drive.getPose();
@@ -94,7 +93,7 @@ public class CoralPickupCommand extends SequentialCommandGroup {
     return Commands.defer(() -> {
       TagAnchor tag = getCheckedAnchor(m_id);
 
-      Pose2d target = offsetFromTag(tag, m_lInches, m_mInches);
+      Pose2d target = altComputeLocation(tag, m_lInches, m_mInches);
       return m_drive.nudgeToPose(target).andThen(m_drive.nudgeToPose(target));
     }, Set.of(m_drive));
   }
@@ -118,7 +117,7 @@ public class CoralPickupCommand extends SequentialCommandGroup {
     return tag;
   }
 
-  private static Pose2d offsetFromTag(TagAnchor tag, double lInches, double mInches) {
+  private static Pose2d altComputeLocation(TagAnchor tag, double lInches, double mInches) {
     double thetaRad = Math.toRadians(tag.rotDeg);
     double xc_m = Units.inchesToMeters(tag.xc_in);
     double yc_m = Units.inchesToMeters(tag.yc_in);
@@ -152,14 +151,16 @@ public class CoralPickupCommand extends SequentialCommandGroup {
         id, ElevatorSubsystem.Setpoint.kFeederStation, 50.0, 0.0);
   }
 
+  /**
+   * FIXME 
+   * @param drive
+   * @param elevator
+   * @return
+   */
   public static CoralPickupCommand pickupRight(
       SwerveSubsystem drive,
       ElevatorSubsystem elevator) {
-
-    Optional<Alliance> alliance = DriverStation.getAlliance();
-    int id = (alliance.orElse(Alliance.Red) == Alliance.Red) ? 2 : 14;
-
-    return new CoralPickupCommand(drive, elevator,
-        id, ElevatorSubsystem.Setpoint.kFeederStation, 50.0, 0.0);
+        return null;
   }
+
 }
