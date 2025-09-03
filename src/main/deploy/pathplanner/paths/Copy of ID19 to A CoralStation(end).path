@@ -8,24 +8,24 @@
       },
       "prevControl": null,
       "nextControl": {
-        "x": 4.013077340662779,
-        "y": 6.918929242145626
+        "x": 2.6372950819672134,
+        "y": 5.853125
       },
       "isLocked": false,
       "linkedName": "BRightTrough"
     },
     {
       "anchor": {
-        "x": 1.750204918032787,
-        "y": 6.752202868852459
+        "x": 1.1268442622950818,
+        "y": 7.23171106557377
       },
       "prevControl": {
-        "x": 2.169774590163935,
-        "y": 6.4045594262295085
+        "x": 1.54641393442623,
+        "y": 6.88406762295082
       },
       "nextControl": null,
       "isLocked": false,
-      "linkedName": null
+      "linkedName": "Coral Station"
     }
   ],
   "rotationTargets": [],

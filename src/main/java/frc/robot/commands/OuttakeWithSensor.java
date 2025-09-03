@@ -20,7 +20,7 @@ import frc.robot.Constants.IntakeSubsystemConstants;
 public class OuttakeWithSensor extends Command {
   @SuppressWarnings({"PMD.UnusedPrivateField", "PMD.SingularField"})
   private final IntakeSubsystem m_intakeSubsystem;
-
+  private double m_speed = IntakeSetpoints.kForward;
   /**
    * Creates a new ExampleCommand.
    *
@@ -32,10 +32,18 @@ public class OuttakeWithSensor extends Command {
     addRequirements(subsystem);
   }
 
+  public OuttakeWithSensor(IntakeSubsystem subsystem, double speed) {
+    m_intakeSubsystem = subsystem;
+    m_speed = speed;
+    // Use addRequirements() here to declare subsystem dependencies.
+    addRequirements(subsystem);
+
+  }
+
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    m_intakeSubsystem.setIntakePower((IntakeSetpoints.kForward));
+    m_intakeSubsystem.setIntakePower((m_speed));
 
   }
 
