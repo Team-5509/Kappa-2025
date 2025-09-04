@@ -32,9 +32,35 @@ public class LeftAlignReef extends Command {
     addRequirements(subsystem);
   }
 
+    // Called when the command is initially scheduled.
+    @Override
+    public void initialize() {
+    }
+      
+    // Called every time the scheduler runs while the command is scheduled.
+    @Override
+    public void execute() {
+    }
+  
+    // Called once the command ends or is interrupted.
+    @Override
+    public void end(boolean interrupted) {
+    }
+  
+    // Returns true when the command should end.
+    @Override
+    public boolean isFinished() {
+      return false;
+    }
+
+
+
+
+
   private double inchesToMeters(double inches) {
     return inches * 0.0254;
   }
+
  public Pose2d altComputeLocation(double length, double m, double degrees){
     Double centerXRed = 13.059;
     Double centerXBlue = 4.489;
@@ -54,6 +80,7 @@ public class LeftAlignReef extends Command {
   double yr = yc + length * Math.sin(Math.toRadians(degrees))+ m * Math.cos(Math.toRadians(degrees));
   return new Pose2d(xr , yr , Rotation2d.fromDegrees(degrees-180));
  }
+ 
   public Command drive3FtAway() {
     //Pose2d customPose = computeLocation(11);
     double totalLongset = (LONGSET + 12*3) * 0.0254;
@@ -63,6 +90,7 @@ public class LeftAlignReef extends Command {
 
     return m_drive.driveToPose(customPose);
   }
+
 private final double LONGSET = 50.72; //sum of center of coral to tag + half of length of robot(in inches)
 
   public Command driveToFinal() {
@@ -108,36 +136,4 @@ private final double LONGSET = 50.72; //sum of center of coral to tag + half of 
     return new Pose2d(x, y, finalRotation);
   }
 
-  // Called when the command is initially scheduled.
-  @Override
-  public void initialize() {
-    m_drive.vision.scanLeft();
-    if (m_drive.isRedAlliance()) {
-      int detectedId = 0;
-      if (detectedId >= 6 && detectedId <= 11) {
-
-      }
-    } else {
-      int detectedId = 0;
-      if (detectedId >= 17 && detectedId <= 22) {
-
-      }
-    }
-  }
-
-  // Called every time the scheduler runs while the command is scheduled.
-  @Override
-  public void execute() {
-  }
-
-  // Called once the command ends or is interrupted.
-  @Override
-  public void end(boolean interrupted) {
-  }
-
-  // Returns true when the command should end.
-  @Override
-  public boolean isFinished() {
-    return false;
-  }
 }
