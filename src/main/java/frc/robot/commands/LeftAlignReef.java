@@ -84,17 +84,25 @@ public class LeftAlignReef extends Command {
   public Command drive3FtAway() {
     //Pose2d customPose = computeLocation(11);
     double totalLongset = (LONGSET + 12*3) * 0.0254;
+    Pose2d t = m_drive.getPose();
+    SmartDashboard.putString("I am here", "x:" + t.getX() + "y:" + t.getY() + "R:"+ t.getRotation().getDegrees());
+
     Pose2d customPose = altComputeLocation(totalLongset, 0, getReefSector.getReefSector(m_drive.getPose()));
     //Pose2d customPose = new Pose2d(inchesToMeters(494.38),inchesToMeters(111.36), Rotation2d.fromDegrees(60));
     //Pose2d customPose = new Pose2d(12.527, 2.763, Rotation2d.fromDegrees(60));
-
-    return m_drive.driveToPose(customPose);
+    SmartDashboard.putString("I am going here", "x:" + customPose.getX() + "y:" + customPose.getY() + "R:"+ customPose.getRotation().getDegrees());
+    return m_drive.driveToPose(customPose).until(() -> {
+      Pose2d currentPose = m_drive.getPose();
+      double distance = currentPose.getTranslation().getDistance(customPose.getTranslation());
+      double angleError = Math.abs(currentPose.getRotation().minus(customPose.getRotation()).getRadians());
+      return distance < 0.5 && angleError < Math.toRadians(10);
+    });
   }
 
 private final double LONGSET = 50.72; //sum of center of coral to tag + half of length of robot(in inches)
 
   public Command driveToFinal() {
-    double totalLongset = (LONGSET + 7) * 0.0254;
+    double totalLongset = (LONGSET + 6) * 0.0254;
 
     //Pose2d customPose = computeLocation(11);
     //Pose2d customPose = new Pose2d(inchesToMeters(494.38),inchesToMeters(111.36), Rotation2d.fromDegrees(60));

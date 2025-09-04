@@ -29,6 +29,7 @@ import frc.robot.Constants.OperatorConstants;
 import frc.robot.Constants.HangSubsystemConstants;
 import frc.robot.Constants.HangSubsystemConstants.HangSetpoints;
 import frc.robot.subsystems.swervedrive.SwerveSubsystem;
+import frc.robot.subsystems.swervedrive.Vision.VisionAgg;
 import frc.robot.Constants.IntakeSubsystemConstants.IntakeSetpoints;
 import frc.robot.commands.AutoElevatorCoral;
 import frc.robot.commands.AutoElevatorTrough;
@@ -262,6 +263,7 @@ public class RobotContainer {
         Command runOuttake = new RunOuttake(m_intakeSubSystem, () -> auxXbox.getRightY()*-1);
         Command runElevator = new RunElevator(m_elevatorSubSystem, () -> auxXbox.getLeftY() * -0.25);
         Command outtakeWithSensor = new OuttakeWithSensor(m_intakeSubSystem);
+        Command outtakeWithSensor2 = new OuttakeWithSensor(m_intakeSubSystem);
         Command intakeWithSensor = new IntakeWithSensor(m_intakeSubSystem);
 
 
@@ -304,10 +306,11 @@ public class RobotContainer {
       driverXbox.a().whileTrue(snapToReef_1.drive3FtAway());
       driverXbox.x().whileTrue(snapToReef_1.driveToFinal());
       //driverXbox.x().whileTrue(drivebase.driveToPose(new Pose2d(10.8, 1.5,  Rotation2d.fromDegrees(90))));
-      driverXbox.y().whileTrue(snapToReef_1.drive3FtAway().andThen(snapToReef_1.driveToFinal()
+      driverXbox.y().whileTrue(snapToReef_1.drive3FtAway()
+      .andThen(snapToReef_1.driveToFinal()
       .alongWith(m_elevatorSubSystem.setSetpointCommand(Setpoint.kLevel3)
-      // .andThen(Commands.waitSeconds(2))
-      )).andThen(outtakeWithSensor));
+       .andThen(Commands.waitSeconds(0.25))
+      )).andThen(outtakeWithSensor2));
 
 
       //.alongWith(m_elevatorSubSystem.setSetpointCommand(Setpoint.kLevel3)).andThen(Commands.waitSeconds(2)).andThen(outtakeWithSensor));
@@ -326,6 +329,7 @@ public class RobotContainer {
       auxXbox.povDown().whileTrue(runHingeReverse);
       auxXbox.povUp().whileTrue(runHingeForward);
       // auxXbox.start().onTrue(m_hingeSubSystem.setSetpointCommand(HingeSubsystem.Setpoint.kLevel4));
+      auxXbox.start().onTrue(drivebase.forcePoseWhenReady(VisionAgg.BEST, 50));
       auxXbox.axisMagnitudeGreaterThan(1, 0.2).whileTrue(runElevator);
       auxXbox.axisMagnitudeGreaterThan(5, 0.2).whileTrue(runOuttake);
       auxXbox.axisMagnitudeGreaterThan(3, 0.2).onTrue(m_elevatorSubSystem.setSetpointCommand(Setpoint.kFeederStation));

@@ -161,7 +161,10 @@ public class SwerveSubsystem extends SubsystemBase {
     // When vision is enabled we must manually update odometry in SwerveDrive
     if (visionDriveTest) {
       swerveDrive.updateOdometry();
-      vision.updatePoseEstimation(swerveDrive);
+     vision.updatePoseEstimation(swerveDrive);
+   
+    SmartDashboard.putString("Coral/Elevator/Robot Pose", "X: " + getPose().getX() + ", Y: " + getPose().getY() + ", Heading: " + getPose().getRotation().getDegrees() + "°");
+
 
       // SmartDashboard.putNumber("Coral/Elevator/Robot X", getPose().getX());
       // SmartDashboard.putNumber("Coral/Elevator/Robot Y", getPose().getY());
@@ -319,14 +322,14 @@ public Command nudgeToPose(Pose2d goal) {
   var hdc = new HolonomicDriveController(x, y, theta);
   hdc.setTolerance(new Pose2d(0.02, 0.02, Rotation2d.fromDegrees(1.0))); // 2 cm & 1 deg tolerance
 
-  final double MAXLINEARSPEED = 0.5;
+  final double MAXLINEARSPEED = .85;
   final double MAXANGULARSPEED = Math.toRadians(180);
 
   return run(() -> {
       var current = getPose();
       double dist = current.getTranslation().getDistance(goal.getTranslation());
       // Approach speed: scale with distance, clamp to overcome stiction but stay gentle
-      double vRef = MathUtil.clamp(dist * 1.2, 0.06, 0.5); // tune these
+      double vRef = MathUtil.clamp(dist * 1.2, 0.06, MAXLINEARSPEED); // tune these
 
       var speeds = hdc.calculate(
           current,
@@ -793,4 +796,35 @@ speeds.omegaRadiansPerSecond = MathUtil.clamp(speeds.omegaRadiansPerSecond, -MAX
   public SwerveDrive getSwerveDrive() {
     return swerveDrive;
   }
+
+
+/** Force-set odometry to full vision pose (X, Y, and heading). */
+public Command forceOdometryToVisionPose(Vision.VisionAgg which) {
+  return Commands.runOnce(() -> {
+    if (vision == null) {
+      DriverStation.reportWarning("Vision not initialized", false);
+      return;
+    }
+    var opt = vision.getPose2d(which);
+    if (opt.isPresent()) {
+      Pose2d vis = opt.get();
+      resetOdometry(vis); // use vision heading too
+      SmartDashboard.putString("Vision/ForcedFullPose", vis.toString());
+    } else {
+      DriverStation.reportWarning("No vision pose available to force full pose", false);
+    }
+  }, this);
+}
+
+/** Wait (up to timeoutSec) for a vision pose, then force XY. Handy if you press early. */
+public Command forcePoseWhenReady(Vision.VisionAgg which, double timeoutSec) {
+  return Commands.waitUntil(() -> vision != null && vision.getPose2d(which).isPresent())
+      .andThen(forceOdometryToVisionPose(which))
+      .withTimeout(timeoutSec)
+      .finallyDo(interrupted -> {
+        if (interrupted) DriverStation.reportWarning("Vision force-XY timed out", false);
+      });
+}
+
+
 }
