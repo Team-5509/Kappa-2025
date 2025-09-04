@@ -337,7 +337,7 @@ public class RobotContainer {
                 var level = sel.level();
                 var side  = sel.side();
                 return ReefScoreCommand.score(
-                    drivebase, m_elevatorSubSystem, outtakeWithSensor, level, side
+                    drivebase, m_elevatorSubSystem, outtakeWithSensor.asProxy(), level, side
                 );
             },
             Set.of(drivebase, m_elevatorSubSystem)
@@ -361,11 +361,22 @@ public class RobotContainer {
 
       //selectXbox
       selXbox.a().onTrue(Commands.runOnce(() -> {
+        SmartDashboard.putString("testingAsel","pressed");
         sel.selectSide(ReefScoreCommand.ReefSide.LEFT);
       }));
       
       selXbox.b().onTrue(Commands.runOnce(() -> {
         sel.selectSide(ReefScoreCommand.ReefSide.RIGHT);
+      }));
+
+      selXbox.povUp().onTrue(Commands.runOnce(() -> {
+        sel.selectLevel(Setpoint.kLevel4);
+      }));
+      selXbox.povLeft().onTrue(Commands.runOnce(() -> {
+        sel.selectLevel(Setpoint.kLevel2);
+      }));
+      selXbox.povDown().onTrue(Commands.runOnce(() -> {
+        sel.selectLevel(Setpoint.kLevel3);
       }));
 
 
@@ -375,7 +386,7 @@ public class RobotContainer {
       auxXbox.b().onTrue(m_elevatorSubSystem.setSetpointCommand(Setpoint.kLevel2));
       auxXbox.y().onTrue(m_elevatorSubSystem.setSetpointCommand(Setpoint.kLevel3));
       auxXbox.x().onTrue(m_elevatorSubSystem.setSetpointCommand(Setpoint.kLevel4));
-      auxXbox.rightBumper().onTrue(outtakeWithSensor);
+      auxXbox.rightBumper().onTrue(outtakeWithSensor.asProxy());
       auxXbox.leftBumper().onTrue(intakeWithSensor);
       auxXbox.povDown().whileTrue(runHingeReverse);
       auxXbox.povUp().whileTrue(runHingeForward);

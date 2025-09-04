@@ -65,7 +65,7 @@ public class ReefScoreCommand extends SequentialCommandGroup {
         ,
         Commands.parallel(driveToFinal(), m_elevator.setSetpointCommand(m_elevatorSetpoint)),
         Commands.waitSeconds(0.25),
-        m_outtakeWithSensor2.asProxy()
+        m_outtakeWithSensor2
         );
   }
 
