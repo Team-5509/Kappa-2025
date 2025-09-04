@@ -351,13 +351,15 @@ public class RobotContainer {
         )
       );
 
-      driverXbox.b().whileTrue(
+      driverXbox.y().whileTrue(
         Commands.defer(
             () -> CoralPickupCommand.pickupRight(drivebase, m_elevatorSubSystem),
             Set.of(drivebase, m_elevatorSubSystem)
         )
       );
+      driverXbox.back().whileTrue(Commands.runOnce(drivebase::lock, drivebase).repeatedly());
 
+      //selectXbox
       selXbox.a().onTrue(Commands.runOnce(() -> {
         sel.selectSide(ReefScoreCommand.ReefSide.LEFT);
       }));
@@ -381,6 +383,7 @@ public class RobotContainer {
       auxXbox.axisMagnitudeGreaterThan(1, 0.2).whileTrue(runElevator);
       auxXbox.axisMagnitudeGreaterThan(5, 0.2).whileTrue(runOuttake);
       auxXbox.axisMagnitudeGreaterThan(3, 0.2).onTrue(m_elevatorSubSystem.setSetpointCommand(Setpoint.kFeederStation));
+      // auxXbox.axisMagnitudeGreaterThan(2, 0.2).onTrue(nextCycleLevel());
 
     }
 
