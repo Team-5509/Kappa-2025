@@ -41,7 +41,8 @@ public class CoralPickupCommand extends SequentialCommandGroup {
   }
 
   private static final Map<Integer, TagAnchor> TAGS = Map.of(
-// FIXME: find actual tag locations for 1 and 2
+      1, new TagAnchor(657.37, 25.80, 126, Alliance.Red),
+      2, new TagAnchor(657.37, 291.20, 234, Alliance.Red),
       12, new TagAnchor(33.51, 25.80, 54, Alliance.Blue),
       13, new TagAnchor(33.51, 291.20, 306, Alliance.Blue));
 
@@ -84,7 +85,7 @@ public class CoralPickupCommand extends SequentialCommandGroup {
         Pose2d pose = m_drive.getPose();
         double dist = pose.getTranslation().getDistance(target.getTranslation());
         double angleErr = Math.abs(pose.getRotation().minus(target.getRotation()).getRadians());
-        return dist < 0.5 && angleErr < Math.toRadians(10);
+        return dist < 0.5 && angleErr < Math.toRadians(50);
       });
     }, Set.of(m_drive));
   }
@@ -146,9 +147,9 @@ public class CoralPickupCommand extends SequentialCommandGroup {
 
     Optional<Alliance> alliance = DriverStation.getAlliance();
     int id = (alliance.orElse(Alliance.Red) == Alliance.Red) ? 1 : 13;
-
+  
     return new CoralPickupCommand(drive, elevator,
-        id, ElevatorSubsystem.Setpoint.kFeederStation, 50.0, 0.0);
+        id, ElevatorSubsystem.Setpoint.kFeederStation, 30.0, 0.0);
   }
 
   /**
@@ -160,7 +161,13 @@ public class CoralPickupCommand extends SequentialCommandGroup {
   public static CoralPickupCommand pickupRight(
       SwerveSubsystem drive,
       ElevatorSubsystem elevator) {
-        return null;
+
+        Optional<Alliance> alliance = DriverStation.getAlliance();
+        int id = (alliance.orElse(Alliance.Red) == Alliance.Red) ? 2 : 12;
+
+
+        return new CoralPickupCommand(drive, elevator, 
+        id, ElevatorSubsystem.Setpoint.kFeederStation , 30.0, 0.0);
   }
 
 }
