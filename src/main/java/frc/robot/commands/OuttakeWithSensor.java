@@ -40,6 +40,14 @@ public class OuttakeWithSensor extends Command {
 
   }
 
+  public void setSpeed(double speed) {
+    m_speed = speed;
+  }
+
+  public void resetSpeed(){
+    m_speed = IntakeSetpoints.kForward;
+  }
+
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {

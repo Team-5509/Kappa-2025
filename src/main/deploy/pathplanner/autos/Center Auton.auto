@@ -39,6 +39,12 @@
           "data": {
             "name": "AutoOuttake"
           }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "back up"
+          }
         }
       ]
     }

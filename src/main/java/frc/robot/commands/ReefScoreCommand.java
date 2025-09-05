@@ -16,7 +16,7 @@ import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import frc.robot.subsystems.swervedrive.SwerveSubsystem;
 import frc.robot.subsystems.ElevatorSubsystem;
 import frc.robot.subsystems.ElevatorSubsystem.Setpoint;
-
+import frc.robot.commands.OuttakeWithSensor;
 /**
  * Drives to reef:
  * - first a coarse 3-ft approach,
@@ -60,13 +60,27 @@ public class ReefScoreCommand extends SequentialCommandGroup {
 
     addRequirements(drive);
 
+    Command shouldIShoot = Commands.none();
+    if (elevatorSetpoint.kLevel4 != elevatorSetpoint)
+    {
+      shouldIShoot = m_outtakeWithSensor2;
+      }
+//     if (elevatorSetpoint.kLevel4 == elevatorSetpoint)
+// {
+
+//   ((OuttakeWithSensor) m_outtakeWithSensor2).setSpeed(0.35);
+// }
+
+    
     addCommands(
         driveParent()
         ,
         Commands.parallel(driveToFinal(), m_elevator.setSetpointCommand(m_elevatorSetpoint)),
         Commands.waitSeconds(0.25),
-        m_outtakeWithSensor2
+        shouldIShoot
         );
+    // ((OuttakeWithSensor) m_outtakeWithSensor2).resetSpeed();;
+        
   }
 
   /**
