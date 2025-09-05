@@ -44,6 +44,7 @@ import frc.robot.commands.ExampleCommand;
 import frc.robot.commands.IntakeWithSensor;
 import frc.robot.commands.OuttakeWithSensor;
 import frc.robot.commands.RunOuttake;
+import frc.robot.commands.ReefScoreCommand.ReefSide;
 import frc.robot.commands.RunElevator;
 import frc.robot.commands.RunHinge;
 import frc.robot.commands.RunHang;
@@ -217,7 +218,7 @@ public class RobotContainer {
     NamedCommands.registerCommand("AutoElevatorkLevel3", new AutoElevatorkLevel3(m_elevatorSubSystem));
     NamedCommands.registerCommand("AutoElevatorkLevel4", new AutoElevatorkLevel4(m_elevatorSubSystem));
     NamedCommands.registerCommand("AutoIntake", new IntakeWithSensor(m_intakeSubSystem));
-    NamedCommands.registerCommand("AutoOuttake", new OuttakeWithSensor(m_intakeSubSystem , 0.32));
+    NamedCommands.registerCommand("AutoOuttake", new OuttakeWithSensor(m_intakeSubSystem , 0.20));
     NamedCommands.registerCommand("CLeftDriveToPose",
         drivebase.driveToPose(new Pose2d(new Translation2d(5.311, 5.098), Rotation2d.fromDegrees(-156.631))));
     NamedCommands.registerCommand("BLeftDriveToPose",
@@ -327,22 +328,22 @@ public class RobotContainer {
       // }));
      
       // driverXbox.y().whileTrue(Commands.runOnce(drivebase::lock, drivebase).repeatedly());
-      driverXbox.y().onTrue(Commands.runOnce(() -> {
-        sel.toggleSide();
-      }));
+      // driverXbox.y().onTrue(Commands.runOnce(() -> {
+      //   sel.toggleSide();
+      // }));
 
-      driverXbox.a().whileTrue(
-        Commands.defer(
-            () -> {
-                var level = sel.level();
-                var side  = sel.side();
-                return ReefScoreCommand.score(
-                    drivebase, m_elevatorSubSystem, outtakeWithSensor.asProxy(), level, side
-                );
-            },
-            Set.of(drivebase, m_elevatorSubSystem)
-        )
-    );
+    //   driverXbox.a().whileTrue(
+    //     Commands.defer(
+    //         () -> {
+    //             var level = sel.level();
+    //             var side  = sel.side();
+    //             return ReefScoreCommand.score(
+    //                 drivebase, m_elevatorSubSystem, outtakeWithSensor, level, side
+    //             );
+    //         },
+    //         Set.of(drivebase, m_elevatorSubSystem)
+    //     )
+    // );
 
       driverXbox.x().whileTrue(
         Commands.defer(
@@ -359,15 +360,46 @@ public class RobotContainer {
       );
       driverXbox.back().whileTrue(Commands.runOnce(drivebase::lock, drivebase).repeatedly());
 
-      //selectXbox
-      selXbox.a().onTrue(Commands.runOnce(() -> {
-        SmartDashboard.putString("testingAsel","pressed");
-        sel.selectSide(ReefScoreCommand.ReefSide.LEFT);
-      }));
+      // //selectXbox
+      // selXbox.a().onTrue(Commands.runOnce(() -> {
+      //   SmartDashboard.putString("testingAsel","pressed");
+      //   sel.selectSide(ReefScoreCommand.ReefSide.LEFT);
+      // }));
+      // driverXbox.a().whileTrue(ReefScoreCommand.scoreL3Right(drivebase, m_elevatorSubSystem, outtakeWithSensor));
+      driverXbox.a().whileTrue(
+            Commands.defer(
+                () -> {
+                    var level = sel.level();
+                    var side  = ReefSide.LEFT;
+                    return ReefScoreCommand.score(
+                        drivebase, m_elevatorSubSystem, outtakeWithSensor.asProxy(), level, side
+                    );
+                },
+                Set.of(drivebase, m_elevatorSubSystem)
+            )
+        );
+
+      driverXbox.b().whileTrue(
+            Commands.defer(
+                () -> {
+                    var level = sel.level();
+                    var side  = ReefSide.RIGHT;
+                    return ReefScoreCommand.score(
+                        drivebase, m_elevatorSubSystem, outtakeWithSensor.asProxy(), level, side
+                    );
+                },
+                Set.of(drivebase, m_elevatorSubSystem)
+            )
+        );
+    
+      // selectXbox
+      // selXbox.a().onTrue(Commands.runOnce(() -> {
+      //   sel.selectSide(ReefScoreCommand.ReefSide.LEFT);
+      // }));
       
-      selXbox.b().onTrue(Commands.runOnce(() -> {
-        sel.selectSide(ReefScoreCommand.ReefSide.RIGHT);
-      }));
+      // selXbox.b().onTrue(Commands.runOnce(() -> {
+      //   sel.selectSide(ReefScoreCommand.ReefSide.RIGHT);
+      // }));
 
       selXbox.povUp().onTrue(Commands.runOnce(() -> {
         sel.selectLevel(Setpoint.kLevel4);
@@ -394,7 +426,8 @@ public class RobotContainer {
       auxXbox.axisMagnitudeGreaterThan(1, 0.2).whileTrue(runElevator);
       auxXbox.axisMagnitudeGreaterThan(5, 0.2).whileTrue(runOuttake);
       auxXbox.axisMagnitudeGreaterThan(3, 0.2).onTrue(m_elevatorSubSystem.setSetpointCommand(Setpoint.kFeederStation));
-      // auxXbox.axisMagnitudeGreaterThan(2, 0.2).onTrue(nextCycleLevel());
+      auxXbox.axisMagnitudeGreaterThan(2, 0.2).onTrue(Commands.runOnce(() -> {
+        sel.nextCycleLevel();}));
 
     }
 
