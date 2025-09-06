@@ -1,9 +1,7 @@
 package frc.robot.commands;
 
 import java.util.Set;
-import java.util.function.DoubleSupplier;
 
-import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
@@ -13,10 +11,9 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
-import frc.robot.subsystems.swervedrive.SwerveSubsystem;
 import frc.robot.subsystems.ElevatorSubsystem;
 import frc.robot.subsystems.ElevatorSubsystem.Setpoint;
-import frc.robot.commands.OuttakeWithSensor;
+import frc.robot.subsystems.swervedrive.SwerveSubsystem;
 /**
  * Drives to reef:
  * - first a coarse 3-ft approach,
@@ -60,16 +57,10 @@ public class ReefScoreCommand extends SequentialCommandGroup {
 
     addRequirements(drive);
 
-    Command shouldIShoot = Commands.none();
-    if (elevatorSetpoint.kLevel4 != elevatorSetpoint)
-    {
-      shouldIShoot = m_outtakeWithSensor2;
-      }
-//     if (elevatorSetpoint.kLevel4 == elevatorSetpoint)
-// {
+    Command shouldIShoot = m_outtakeWithSensor2;
+    shouldIShoot = Setpoint.kLevel4 == elevatorSetpoint ? Commands.none() : m_outtakeWithSensor2;
 
-//   ((OuttakeWithSensor) m_outtakeWithSensor2).setSpeed(0.35);
-// }
+  ((OuttakeWithSensor) m_outtakeWithSensor2).setSpeed(0.35);
 
     
     addCommands(
@@ -79,7 +70,7 @@ public class ReefScoreCommand extends SequentialCommandGroup {
         Commands.waitSeconds(0.25),
         shouldIShoot
         );
-    // ((OuttakeWithSensor) m_outtakeWithSensor2).resetSpeed();;
+    ((OuttakeWithSensor) m_outtakeWithSensor2).resetSpeed();
         
   }
 
