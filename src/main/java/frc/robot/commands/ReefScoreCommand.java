@@ -113,6 +113,13 @@ public class ReefScoreCommand extends SequentialCommandGroup {
       if (m_sector == ReefSide.LEFT) {
         mOffset *= -1;
       }
+      
+      // changes which side is left/right based on alliance
+      var alliance = DriverStation.getAlliance();
+      if (alliance.isPresent() && alliance.get() == DriverStation.Alliance.Blue) {
+        mOffset *= -1;
+      }
+
       Pose2d current = m_drive.getPose();
 
       double sectorDeg = getReefSector(current);
