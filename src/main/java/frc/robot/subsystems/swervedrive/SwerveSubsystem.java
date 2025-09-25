@@ -5,6 +5,7 @@
 package frc.robot.subsystems.swervedrive;
 
 import static edu.wpi.first.units.Units.Meter;
+import static frc.robot.commands.PrettyDouble.prettyDouble;
 
 import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.commands.PathPlannerAuto;
@@ -142,13 +143,7 @@ public class SwerveSubsystem extends SubsystemBase {
             Rotation2d.fromDegrees(0)));
   }
 
-  public static String prettyDouble(double value, int precision) {
-    return Math.round(value * Math.pow(10, precision)) / Math.pow(10, precision) + "";
-  }
-
-  public static String prettyDouble(double value) {
-    return prettyDouble(value, 2);
-  }
+ 
 
   /**
    * Setup the photon vision class.
