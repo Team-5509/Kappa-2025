@@ -15,6 +15,7 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Configs;
 import frc.robot.Constants.ElevatorSubsystemConstants;
 import frc.robot.Constants.ElevatorSubsystemConstants.ElevatorSetpoints;
+import org.littletonrobotics.junction.Logger;
 
 
 public class ElevatorSubsystem extends SubsystemBase {
@@ -161,6 +162,10 @@ public class ElevatorSubsystem extends SubsystemBase {
     moveToSetpoint();
     zeroElevatorOnLimitSwitch();
     zeroOnUserButton();
+    Logger.recordOutput("Odometry/Elevator/Target", elevatorCurrentTarget);
+    Logger.recordOutput("Odometry/Elevator/Actual", elevatorEncoder.getPosition());
+
+
 
     // Display subsystem values
 
